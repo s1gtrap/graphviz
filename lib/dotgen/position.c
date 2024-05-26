@@ -891,12 +891,11 @@ static void rec_bb(graph_t * g, graph_t * root)
 /* Recursively rescale all bounding boxes using scale factors
  * xf and yf. We assume all the bboxes have been computed.
  */
-static void scale_bb(graph_t * g, graph_t * root, double xf, double yf)
-{
+static void scale_bb(graph_t *g, double xf, double yf) {
     int c;
 
     for (c = 1; c <= GD_n_cluster(g); c++)
-	scale_bb(GD_clust(g)[c], root, xf, yf);
+	scale_bb(GD_clust(g)[c], xf, yf);
     GD_bb(g).LL.x *= xf;
     GD_bb(g).LL.y *= yf;
     GD_bb(g).UR.x *= xf;
@@ -974,7 +973,7 @@ static void set_aspect(graph_t *g) {
 		ND_coord(n).x = round(ND_coord(n).x * xf);
 		ND_coord(n).y = round(ND_coord(n).y * yf);
 	    }
-	    scale_bb(g, g, xf, yf);
+	    scale_bb(g, xf, yf);
 	}
     }
 }
