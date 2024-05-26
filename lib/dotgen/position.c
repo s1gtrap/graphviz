@@ -914,8 +914,7 @@ static void set_aspect(graph_t *g) {
 
     rec_bb(g, g);
     if (GD_maxrank(g) > 0 && GD_drawing(g)->ratio_kind) {
-	pointf sz = {.x = GD_bb(g).UR.x - GD_bb(g).LL.x,
-	             .y = GD_bb(g).UR.y - GD_bb(g).LL.y}; // normalize
+	pointf sz = sub_pointf(GD_bb(g).UR, GD_bb(g).LL); // normalize
 	if (GD_flip(g)) {
 	    sz = exch_xyf(sz);
 	}
