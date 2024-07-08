@@ -172,8 +172,8 @@ int gvRenderContext(GVC_t *gvc, graph_t *g, const char *format, void *context)
 }
 
 /* Render layout in a specified format to a malloc'ed string */
-int gvRenderData(GVC_t *gvc, graph_t *g, const char *format, char **result, unsigned int *length)
-{
+int gvRenderData(GVC_t *gvc, graph_t *g, const char *format, char **result,
+                 size_t *length) {
     int rc;
     GVJ_t *job;
 

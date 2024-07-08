@@ -24,6 +24,7 @@
 #pragma once
 
 #include <stdbool.h>
+#include <stddef.h>
 
 #include "types.h"
 #include "gvplugin.h"
@@ -94,7 +95,8 @@ GVC_API int gvRenderFilename(GVC_t *gvc, graph_t *g, const char *format, const c
 GVC_API int gvRenderContext(GVC_t *gvc, graph_t *g, const char *format, void *context);
 
 /* Render layout in a specified format to a malloc'ed string */
-GVC_API int gvRenderData(GVC_t *gvc, graph_t *g, const char *format, char **result, unsigned int *length);
+GVC_API int gvRenderData(GVC_t *gvc, graph_t *g, const char *format,
+                         char **result, size_t *length);
 
 /* Free memory allocated and pointed to by *result in gvRenderData */
 GVC_API void gvFreeRenderData (char* data);

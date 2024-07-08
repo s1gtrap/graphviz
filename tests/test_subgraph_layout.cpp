@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <string>
 
 #include <catch2/catch_all.hpp>
@@ -48,7 +49,7 @@ TEST_CASE("subgraph layout in directed and undirected graphs with different "
     }
 
     char *result = nullptr;
-    unsigned length = 0;
+    size_t length = 0;
     {
       const auto rc = gvRenderData(gvc, subg, "svg", &result, &length);
       REQUIRE(rc == 0);
