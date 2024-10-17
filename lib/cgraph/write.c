@@ -421,9 +421,10 @@ static bool irrelevant_subgraph(Agraph_t * g)
 
 static bool node_in_subg(Agraph_t * g, Agnode_t * n)
 {
-    Agraph_t *subg;
+    Agraphs_t *subgs = g_seq2(g);
 
-    for (subg = agfstsubg(g); subg; subg = agnxtsubg(subg)) {
+    for (size_t i = 0; i < Agraphs_size(subgs); ++i) {
+	Agraph_t *subg = Agraphs_get(subgs, i);
 	if (irrelevant_subgraph(subg))
 	    continue;
 	if (agsubnode(subg, n, 0))
