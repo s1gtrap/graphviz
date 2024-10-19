@@ -1388,12 +1388,19 @@ lint_cpplint:
     - tags
 
 lint_cmake_format:
-  image: "$CI_REGISTRY_IMAGE/fedora40:$CI_COMMIT_SHA"
   stage: test
-  needs:
-    - docker_build_fedora40
+  needs: [] # no dependencies
   script:
+    - env DEBIAN_FRONTEND=noninteractive apt-get update -y
+    - env DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y python3-venv
+    # output some info into the logs for debugging
+    - python3 --version
+    - cat /etc/os-release
+    - uname -rms
+    - python3 -m venv /opt/virtualenv
     - source /opt/virtualenv/bin/activate
+    - python3 -m pip install --requirement requirements.txt
+    - python3 -m pip install --requirement doc/infosrc/requirements.txt
     - git ls-files -z -- ':(glob)**/CMakeLists.txt' ':(glob)**/*.cmake' ':(glob)**/*.cmake.in' | xargs -0 -- python3 -m cmakelang.lint
   except:
     - tags
