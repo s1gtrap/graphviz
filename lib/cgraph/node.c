@@ -483,12 +483,6 @@ Agsubnode_t *node_set_find(node_set_t *self, IDTYPE key) {
 void node_set_remove(node_set_t *self, IDTYPE item) {
   assert(self != NULL);
 
-  // early exit to avoid `self->slots == NULL`/`self->capacity == 0`
-  // complications
-  if (self->size == 0) {
-    return;
-  }
-
   const size_t hash = node_set_hash(item);
 
   for (size_t i = 0; i < self->capacity; ++i) {
