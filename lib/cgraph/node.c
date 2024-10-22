@@ -401,7 +401,7 @@ node_set_t *node_set_new(void) { return gv_alloc(sizeof(node_set_t)); }
 /// algorithm. None of the callers depend on the exact implementation.
 ///
 /// @param self Set to compute with respect to
-/// @param item Element being sought/added
+/// @param id Identifier of element being sought/added
 /// @return Initial index to examine
 static size_t node_set_index(const node_set_t *self, IDTYPE id) {
   assert(self != NULL);
