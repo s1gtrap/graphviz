@@ -399,6 +399,16 @@ static int write_trl(Agraph_t * g, iochan_t * ofile)
 static bool is_anonymous(Agraph_t *g) {
   assert(g != NULL);
 
+  // handle the common case inline for performance
+  if (AGDISC(g, id) == &AgIdDisc) {
+    // replicate `idprint`
+    const IDTYPE id = AGID(g);
+    if (id % 2 != 0) {
+      return true;
+    }
+    return *(char *)(uintptr_t)id == LOCALNAMEPREFIX;
+  }
+
   const char *const name = agnameof(g);
   return name == NULL || name[0] == LOCALNAMEPREFIX;
 }
