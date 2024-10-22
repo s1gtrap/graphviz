@@ -64,7 +64,7 @@ static enum {
   EXTRACT,
 } printMode = INTERNAL;
 static bool useClusters = false;
-static int doEdges = 1; // induce edges
+static bool doEdges = true; ///< induce edges
 static int doAll = 1; // induce subgraphs
 static char *suffix = 0;
 static char *outfile = 0;
@@ -127,7 +127,7 @@ static void init(int argc, char *argv[])
 	    useClusters = true;
 	    break;
 	case 'e':
-	    doEdges = 0;
+	    doEdges = false;
 	    break;
 	case 'n':
 	    doAll = 0;
