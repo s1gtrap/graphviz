@@ -56,7 +56,7 @@ typedef struct {
 #include <string.h>
 
 static char **Inputs;
-static int verbose;
+static bool verbose = false;
 static enum {
   INTERNAL, ///< all components need to be generated before output
   EXTERNAL,
@@ -176,7 +176,7 @@ static void init(int argc, char *argv[])
 	    }
 	    break;
 	case 'v':
-	    verbose = 1;
+	    verbose = true;
 	    break;
 	case 'z':
 	    sorted = 1;
