@@ -36,7 +36,7 @@
 
 typedef struct {
     Agrec_t h;
-    char cc_subg;   /* true iff subgraph corresponds to a component */
+    bool cc_subg; ///< true iff subgraph corresponds to a component
 } graphinfo_t;
 
 typedef struct {
@@ -572,7 +572,7 @@ static int processClusters(Agraph_t * g, char* graphName)
 	    agxbfree(&buf);
 	}
 	aginit(out, AGRAPH, "graphinfo", sizeof(graphinfo_t), true);
-	GD_cc_subg(out) = 1;
+	GD_cc_subg(out) = true;
 	dn = ND_dn(n);
 	n_cnt = dfs(dg, dn, dout);
 	unionNodes(dout, out);
@@ -601,7 +601,7 @@ static int processClusters(Agraph_t * g, char* graphName)
 	    agxbfree(&buf);
 	}
 	aginit(out, AGRAPH, "graphinfo", sizeof(graphinfo_t), true);
-	GD_cc_subg(out) = 1;
+	GD_cc_subg(out) = true;
 	n_cnt = dfs(dg, dn, dout);
 	unionNodes(dout, out);
 	size_t e_cnt = 0;
@@ -703,7 +703,7 @@ static int process(Agraph_t * g, char* graphName)
 	    agxbfree(&name);
 	}
 	aginit(out, AGRAPH, "graphinfo", sizeof(graphinfo_t), true);
-	GD_cc_subg(out) = 1;
+	GD_cc_subg(out) = true;
 	n_cnt = dfs(g, n, out);
 	size_t e_cnt = 0;
 	if (doEdges)
@@ -728,7 +728,7 @@ static int process(Agraph_t * g, char* graphName)
 	    agxbfree(&name);
 	}
 	aginit(out, AGRAPH, "graphinfo", sizeof(graphinfo_t), true);
-	GD_cc_subg(out) = 1;
+	GD_cc_subg(out) = true;
 	n_cnt = dfs(g, n, out);
 	size_t e_cnt = 0;
 	if (doEdges)
