@@ -395,11 +395,10 @@ static void deriveClusters(Agraph_t* dg, Agraph_t * g)
  */
 static Agraph_t *deriveGraph(Agraph_t * g)
 {
-    Agraph_t *dg;
     Agnode_t *dn;
     Agnode_t *n;
 
-    dg = agopen("dg", Agstrictundirected, (Agdisc_t *) 0);
+    Agraph_t *dg = agopen("dg", Agstrictundirected, NULL);
 
     deriveClusters (dg, g);
 
