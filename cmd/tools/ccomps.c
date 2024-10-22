@@ -27,6 +27,7 @@
 #include <cgraph/gv_ctype.h>
 #include <cgraph/ingraphs.h>
 #include <cgraph/list.h>
+#include <cgraph/strview.h>
 #include <common/render.h>
 #include <common/utils.h>
 #include <util/alloc.h>
@@ -68,7 +69,7 @@ static bool doEdges = true; ///< induce edges
 static bool doAll = true; ///< induce subgraphs
 static char *suffix = 0;
 static char *outfile = 0;
-static char *rootpath = 0;
+static strview_t rootpath;
 static int sufcnt = 0;
 static bool sorted = false;
 static int sortIndex = 0;
@@ -105,9 +106,9 @@ static void split(void) {
     if (sfx) {
 	suffix = sfx + 1;
 	size_t size = (size_t)(sfx - outfile);
-	rootpath = gv_strndup(outfile, size);
+	rootpath = (strview_t){.data = outfile, .size = size};
     } else {
-	rootpath = outfile;
+	rootpath = strview(outfile, '\0');
     }
 }
 
@@ -264,9 +265,10 @@ static char *getName(void)
 	agxbput(&name, outfile);
     else {
 	if (suffix)
-	    agxbprint(&name, "%s_%d.%s", rootpath, sufcnt, suffix);
+	    agxbprint(&name, "%.*s_%d.%s", (int)rootpath.size, rootpath.data, sufcnt,
+	              suffix);
 	else
-	    agxbprint(&name, "%s_%d", rootpath, sufcnt);
+	    agxbprint(&name, "%.*s_%d", (int)rootpath.size, rootpath.data, sufcnt);
     }
     sufcnt++;
     return agxbdisown(&name);
