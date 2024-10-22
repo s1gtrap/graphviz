@@ -55,9 +55,6 @@ typedef struct {
 
 #include <string.h>
 
-#define BY_INDEX 1
-#define BY_SIZE  2
-
 static char* Cmd;
 static char **Inputs;
 static int verbose;
@@ -79,7 +76,7 @@ static int sortIndex = 0;
 static int sortFinal;
 static int x_index = -1;
 static int x_final = -1; // require 0 <= x_index <= x_final or x_final= -1
-static int x_mode;
+static enum { BY_INDEX = 1, BY_SIZE = 2 } x_mode;
 static char *x_node;
 
 static char *useString =
