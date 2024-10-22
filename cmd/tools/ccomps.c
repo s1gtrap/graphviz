@@ -55,7 +55,6 @@ typedef struct {
 
 #include <string.h>
 
-static char* Cmd;
 static char **Inputs;
 static int verbose;
 static enum {
@@ -117,7 +116,6 @@ static void init(int argc, char *argv[])
     int c;
     char* endp;
 
-    Cmd = argv[0];
     opterr = 0;
     while ((c = getopt(argc, argv, ":zo:xCX:nesv?")) != -1) {
 	switch (c) {
