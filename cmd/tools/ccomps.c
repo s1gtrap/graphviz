@@ -55,20 +55,18 @@ typedef struct {
 
 #include <string.h>
 
-#define INTERNAL 0       /* Basically means all components need to be 
-                          * generated before output
-                          */
-#define EXTERNAL 1
-#define SILENT   2
-#define EXTRACT  3
-
 #define BY_INDEX 1
 #define BY_SIZE  2
 
 static char* Cmd;
 static char **Inputs;
 static int verbose;
-static int printMode = INTERNAL;
+static enum {
+  INTERNAL, ///< all components need to be generated before output
+  EXTERNAL,
+  SILENT,
+  EXTRACT,
+} printMode = INTERNAL;
 static int useClusters = 0;
 static int doEdges = 1; // induce edges
 static int doAll = 1; // induce subgraphs
