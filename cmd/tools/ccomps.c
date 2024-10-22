@@ -543,7 +543,7 @@ static int processClusters(Agraph_t * g, char* graphName)
     Agnode_t *n;
     Agraph_t *dout;
     Agnode_t *dn;
-    int extracted = 0;
+    bool extracted = false;
 
     dg = deriveGraph(g);
 
@@ -605,7 +605,7 @@ static int processClusters(Agraph_t * g, char* graphName)
 	} else if (printMode == EXTRACT) {
 	    if (x_mode == BY_INDEX) {
 		if (x_index <= c_cnt) {
-		    extracted = 1;
+		    extracted = true;
 		    if (doAll)
 			subGInduce(g, out);
 		    gwrite(out);
@@ -616,7 +616,7 @@ static int processClusters(Agraph_t * g, char* graphName)
 	    else if (x_mode == BY_SIZE) {
 		int sz = agnnodes(out);
 		if (x_index <= sz && (x_final == -1 || sz <= x_final)) {
-		    extracted = 1;
+		    extracted = true;
 		    if (doAll)
 			subGInduce(g, out);
 		    gwrite(out);
