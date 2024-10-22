@@ -390,24 +390,15 @@ static Agsubnode_t *const TOMBSTONE = (Agsubnode_t *)-1;
 
 node_set_t *node_set_new(void) { return gv_alloc(sizeof(node_set_t)); }
 
-/// compute initial index to attempt to store/find an item in
-///
-/// This function only returns the first index to be examined. `node_set_t` is
-/// implemented using linear probing, so steps sequentially through indices
-/// following this.
+/// compute a hash of a node
 ///
 /// If the suboptimal choice of using the ID here turns out to be bad for
 /// performance, this could be converted to a more sophisticated hashing
 /// algorithm. None of the callers depend on the exact implementation.
 ///
-/// @param self Set to compute with respect to
 /// @param id Identifier of element being sought/added
-/// @return Initial index to examine
-static size_t node_set_index(const node_set_t *self, IDTYPE id) {
-  assert(self != NULL);
-  assert(self->capacity != 0);
-  return (size_t)id % self->capacity;
-}
+/// @return Hash digest of the target node
+static size_t node_set_hash(IDTYPE id) { return (size_t)id; }
 
 void node_set_add(node_set_t *self, Agsubnode_t *item) {
   assert(self != NULL);
@@ -447,10 +438,10 @@ void node_set_add(node_set_t *self, Agsubnode_t *item) {
 
   assert(self->capacity > self->size);
 
-  const size_t index = node_set_index(self, item->node->base.tag.id);
+  const size_t hash = node_set_hash(item->node->base.tag.id);
 
   for (size_t i = 0; i < self->capacity; ++i) {
-    const size_t candidate = (index + i) % self->capacity;
+    const size_t candidate = (hash + i) % self->capacity;
 
     // if we found an empty slot or a previously deleted slot, we can insert
     if (self->slots[candidate] == NULL || self->slots[candidate] == TOMBSTONE) {
@@ -472,10 +463,10 @@ Agsubnode_t *node_set_find(node_set_t *self, IDTYPE key) {
     return NULL;
   }
 
-  const size_t index = node_set_index(self, key);
+  const size_t hash = node_set_hash(key);
 
   for (size_t i = 0; i < self->capacity; ++i) {
-    const size_t candidate = (index + i) % self->capacity;
+    const size_t candidate = (hash + i) % self->capacity;
 
     // if we found an empty slot, the sought item does not exist
     if (self->slots[candidate] == NULL) {
@@ -504,10 +495,10 @@ void node_set_remove(node_set_t *self, IDTYPE item) {
     return;
   }
 
-  const size_t index = node_set_index(self, item);
+  const size_t hash = node_set_hash(item);
 
   for (size_t i = 0; i < self->capacity; ++i) {
-    const size_t candidate = (index + i) % self->capacity;
+    const size_t candidate = (hash + i) % self->capacity;
 
     // if we found an empty slot, the sought item does not exist
     if (self->slots[candidate] == NULL) {
