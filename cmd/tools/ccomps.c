@@ -671,7 +671,7 @@ static int process(Agraph_t * g, char* graphName)
     long n_cnt, c_cnt;
     Agraph_t *out;
     Agnode_t *n;
-    int extracted = 0;
+    bool extracted = false;
 
     aginit(g, AGNODE, "nodeinfo", sizeof(nodeinfo_t), true);
     bindGraphinfo (g);
@@ -731,7 +731,7 @@ static int process(Agraph_t * g, char* graphName)
 	} else if (printMode == EXTRACT) {
 	    if (x_mode == BY_INDEX) {
 		if (x_index <= c_cnt) {
-		    extracted = 1;
+		    extracted = true;
 		    if (doAll)
 			subGInduce(g, out);
 		    gwrite(out);
@@ -742,7 +742,7 @@ static int process(Agraph_t * g, char* graphName)
 	    else if (x_mode == BY_SIZE) {
 		int sz = agnnodes(out);
 		if (x_index <= sz && (x_final == -1 || sz <= x_final)) {
-		    extracted = 1;
+		    extracted = true;
 		    if (doAll)
 			subGInduce(g, out);
 		    gwrite(out);
