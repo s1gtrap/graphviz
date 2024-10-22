@@ -55,9 +55,6 @@ typedef struct {
 
 #include <string.h>
 
-  /* internals of libgraph */
-#define TAG_NODE            1
-
 #define INTERNAL 0       /* Basically means all components need to be 
                           * generated before output
                           */
