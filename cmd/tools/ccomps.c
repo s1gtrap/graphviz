@@ -70,7 +70,7 @@ static char *suffix = 0;
 static char *outfile = 0;
 static char *rootpath = 0;
 static int sufcnt = 0;
-static int sorted = 0;
+static bool sorted = false;
 static int sortIndex = 0;
 static int sortFinal;
 static int x_index = -1;
@@ -179,7 +179,7 @@ static void init(int argc, char *argv[])
 	    verbose = true;
 	    break;
 	case 'z':
-	    sorted = 1;
+	    sorted = true;
 	    break;
 	case ':':
 	    fprintf(stderr,
@@ -212,7 +212,7 @@ static void init(int argc, char *argv[])
 	    printMode = INTERNAL;
 	}
 	else
-	    sorted = 0;    /* not relevant; turn off */
+	    sorted = false; // not relevant; turn off
     }
     if (argc > 0)
 	Inputs = argv;
