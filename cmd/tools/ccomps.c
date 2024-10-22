@@ -65,7 +65,7 @@ static enum {
 } printMode = INTERNAL;
 static bool useClusters = false;
 static bool doEdges = true; ///< induce edges
-static int doAll = 1; // induce subgraphs
+static bool doAll = true; ///< induce subgraphs
 static char *suffix = 0;
 static char *outfile = 0;
 static char *rootpath = 0;
@@ -130,7 +130,7 @@ static void init(int argc, char *argv[])
 	    doEdges = false;
 	    break;
 	case 'n':
-	    doAll = 0;
+	    doAll = false;
 	    break;
 	case 'x':
 	    printMode = EXTERNAL;
