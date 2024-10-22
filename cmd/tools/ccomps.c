@@ -782,7 +782,7 @@ static int process(Agraph_t * g, char* graphName)
  * to the nodes and edges involved.
  *
  * This function checks for an initial '%' and if found, prepends '_'
- * the the graph name.
+ * to the graph name.
  * NB: static buffer is used.
  */
 static char*
