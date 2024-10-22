@@ -457,12 +457,6 @@ void node_set_add(node_set_t *self, Agsubnode_t *item) {
 Agsubnode_t *node_set_find(node_set_t *self, IDTYPE key) {
   assert(self != NULL);
 
-  // early exit to avoid `self->slots == NULL`/`self->capacity == 0`
-  // complications
-  if (self->size == 0) {
-    return NULL;
-  }
-
   const size_t hash = node_set_hash(key);
 
   for (size_t i = 0; i < self->capacity; ++i) {
