@@ -80,15 +80,15 @@ static size_t dfs(Agraph_t *g, Agnode_t *n, void *state, stk_t *stk) {
   return cnt;
 }
 
-static int isLegal(const char *p) {
+static bool isLegal(const char *p) {
   char c;
 
   while ((c = *p++)) {
     if (c != '_' && !gv_isalnum(c))
-      return 0;
+      return false;
   }
 
-  return 1;
+  return true;
 }
 
 static void insertFn(Agnode_t *n, void *state) { agsubnode(state, n, 1); }
