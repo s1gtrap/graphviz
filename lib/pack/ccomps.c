@@ -185,11 +185,9 @@ Agraph_t **pccomps(Agraph_t *g, size_t *ncc, char *pfx, bool *pinned) {
  * Returns NULL on error or if graph is empty.
  */
 Agraph_t **ccomps(Agraph_t *g, size_t *ncc, char *pfx) {
-  size_t c_cnt = 0;
   agxbuf name = {0};
   Agraph_t *out;
   Agnode_t *n;
-  size_t bnd = 10;
   stk_t stk;
 
   if (agnnodes(g) == 0) {
@@ -197,7 +195,7 @@ Agraph_t **ccomps(Agraph_t *g, size_t *ncc, char *pfx) {
     return NULL;
   }
 
-  Agraph_t **ccs = gv_calloc(bnd, sizeof(Agraph_t *));
+  Agraphs_t ccs = {0};
   initStk(&stk, insertFn, markFn);
   for (n = agfstnode(g); n; n = agnxtnode(g, n))
     unmark(&stk, n);
@@ -206,23 +204,17 @@ Agraph_t **ccomps(Agraph_t *g, size_t *ncc, char *pfx) {
     if (marked(&stk, n))
       continue;
     setPrefix(&name, pfx);
-    agxbprint(&name, "%" PRISIZE_T, c_cnt);
+    agxbprint(&name, "%" PRISIZE_T, Agraphs_size(&ccs));
     out = agsubg(g, agxbuse(&name), 1);
     agbindrec(out, "Agraphinfo_t", sizeof(Agraphinfo_t),
               true); // node custom data
     dfs(g, n, out, &stk);
-    if (c_cnt == bnd) {
-      ccs = gv_recalloc(ccs, bnd, bnd * 2, sizeof(Agraph_t *));
-      bnd *= 2;
-    }
-    ccs[c_cnt] = out;
-    c_cnt++;
+    Agraphs_append(&ccs, out);
   }
   freeStk(&stk);
-  ccs = gv_recalloc(ccs, bnd, c_cnt, sizeof(Agraph_t *));
   agxbfree(&name);
-  *ncc = c_cnt;
-  return ccs;
+  *ncc = Agraphs_size(&ccs);
+  return Agraphs_detach(&ccs);
 }
 
 typedef struct {
