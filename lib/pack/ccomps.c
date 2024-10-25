@@ -217,13 +217,7 @@ Agraph_t **ccomps(Agraph_t *g, size_t *ncc, char *pfx) {
     out = agsubg(g, agxbuse(&name), 1);
     agbindrec(out, "Agraphinfo_t", sizeof(Agraphinfo_t),
               true); // node custom data
-    if (dfs(g, n, out, &stk) == SIZE_MAX) {
-      freeStk(&stk);
-      free(ccs);
-      agxbfree(&name);
-      *ncc = 0;
-      return NULL;
-    }
+    dfs(g, n, out, &stk);
     if (c_cnt == bnd) {
       ccs = gv_recalloc(ccs, bnd, bnd * 2, sizeof(Agraph_t *));
       bnd *= 2;
@@ -496,16 +490,6 @@ Agraph_t **cccomps(Agraph_t *g, size_t *ncc, char *pfx) {
     agbindrec(out, GRECNAME, sizeof(ccgraphinfo_t), false);
     GD_cc_subg(out) = 1;
     n_cnt = dfs(dg, dn, dout, &stk);
-    if (n_cnt == SIZE_MAX) {
-      agclose(dg);
-      agclean(g, AGRAPH, GRECNAME);
-      agclean(g, AGNODE, NRECNAME);
-      freeStk(&stk);
-      free(ccs);
-      agxbfree(&name);
-      *ncc = 0;
-      return NULL;
-    }
     unionNodes(dout, out);
     e_cnt = graphviz_node_induce(out, NULL);
     subGInduce(g, out);
@@ -554,9 +538,6 @@ int isConnected(Agraph_t *g) {
   n = agfstnode(g);
   cnt = dfs(g, agfstnode(g), NULL, &stk);
   freeStk(&stk);
-  if (cnt == SIZE_MAX) { /* dfs failed */
-    return -1;
-  }
   if (cnt != (size_t)agnnodes(g))
     ret = 0;
   return ret;
