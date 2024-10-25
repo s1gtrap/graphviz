@@ -108,6 +108,8 @@ static void setPrefix(agxbuf *xb, const char *pfx) {
   agxbput(xb, pfx);
 }
 
+DEFINE_LIST(Agraphs, Agraph_t *)
+
 /* pccomps:
  * Return an array of subgraphs consisting of the connected
  * components of graph g. The number of components is returned in ncc.
@@ -121,11 +123,9 @@ static void setPrefix(agxbuf *xb, const char *pfx) {
  * Return NULL if graph is empty.
  */
 Agraph_t **pccomps(Agraph_t *g, size_t *ncc, char *pfx, bool *pinned) {
-  size_t c_cnt = 0;
   agxbuf name = {0};
   Agraph_t *out = NULL;
   Agnode_t *n;
-  size_t bnd = 10;
   bool pin = false;
   stk_t stk;
 
@@ -134,7 +134,7 @@ Agraph_t **pccomps(Agraph_t *g, size_t *ncc, char *pfx, bool *pinned) {
     return NULL;
   }
 
-  Agraph_t **ccs = gv_calloc(bnd, sizeof(Agraph_t *));
+  Agraphs_t ccs = {0};
 
   initStk(&stk, insertFn, markFn);
   for (n = agfstnode(g); n; n = agnxtnode(g, n))
@@ -146,12 +146,11 @@ Agraph_t **pccomps(Agraph_t *g, size_t *ncc, char *pfx, bool *pinned) {
       continue;
     if (!out) {
       setPrefix(&name, pfx);
-      agxbprint(&name, "%" PRISIZE_T, c_cnt);
+      agxbprint(&name, "%" PRISIZE_T, Agraphs_size(&ccs));
       out = agsubg(g, agxbuse(&name), 1);
       agbindrec(out, "Agraphinfo_t", sizeof(Agraphinfo_t),
                 true); // node custom data
-      ccs[c_cnt] = out;
-      c_cnt++;
+      Agraphs_append(&ccs, out);
       pin = true;
     }
     dfs(g, n, out, &stk);
@@ -162,24 +161,18 @@ Agraph_t **pccomps(Agraph_t *g, size_t *ncc, char *pfx, bool *pinned) {
     if (marked(&stk, n))
       continue;
     setPrefix(&name, pfx);
-    agxbprint(&name, "%" PRISIZE_T, c_cnt);
+    agxbprint(&name, "%" PRISIZE_T, Agraphs_size(&ccs));
     out = agsubg(g, agxbuse(&name), 1);
     agbindrec(out, "Agraphinfo_t", sizeof(Agraphinfo_t),
               true); // node custom data
     dfs(g, n, out, &stk);
-    if (c_cnt == bnd) {
-      ccs = gv_recalloc(ccs, bnd, bnd * 2, sizeof(Agraph_t *));
-      bnd *= 2;
-    }
-    ccs[c_cnt] = out;
-    c_cnt++;
+    Agraphs_append(&ccs, out);
   }
   freeStk(&stk);
   agxbfree(&name);
-  ccs = gv_recalloc(ccs, bnd, c_cnt, sizeof(Agraph_t *));
-  *ncc = c_cnt;
+  *ncc = Agraphs_size(&ccs);
   *pinned = pin;
-  return ccs;
+  return Agraphs_detach(&ccs);
 }
 
 /* ccomps:
