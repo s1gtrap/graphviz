@@ -438,7 +438,7 @@ static void subGInduce(Agraph_t *g, Agraph_t *out) { subgInduce(g, out, 0); }
  */
 Agraph_t **cccomps(Agraph_t *g, size_t *ncc, char *pfx) {
   Agraph_t *dg;
-  size_t n_cnt, c_cnt, e_cnt;
+  size_t n_cnt, e_cnt;
   agxbuf name = {0};
   Agraph_t *out;
   Agraph_t *dout;
@@ -460,15 +460,15 @@ Agraph_t **cccomps(Agraph_t *g, size_t *ncc, char *pfx) {
   dg = deriveGraph(g);
 
   size_t ccs_length = (size_t)agnnodes(dg);
-  Agraph_t **ccs = gv_calloc(ccs_length, sizeof(Agraph_t *));
+  Agraphs_t ccs = {0};
+  Agraphs_reserve(&ccs, ccs_length);
   initStk(&stk, insertFn, clMarkFn);
 
-  c_cnt = 0;
   for (dn = agfstnode(dg); dn; dn = agnxtnode(dg, dn)) {
     if (marked(&stk, dn))
       continue;
     setPrefix(&name, pfx);
-    agxbprint(&name, "%" PRISIZE_T, c_cnt);
+    agxbprint(&name, "%" PRISIZE_T, Agraphs_size(&ccs));
     char *name_str = agxbuse(&name);
     dout = agsubg(dg, name_str, 1);
     out = agsubg(g, name_str, 1);
@@ -478,28 +478,26 @@ Agraph_t **cccomps(Agraph_t *g, size_t *ncc, char *pfx) {
     unionNodes(dout, out);
     e_cnt = graphviz_node_induce(out, NULL);
     subGInduce(g, out);
-    ccs[c_cnt] = out;
+    Agraphs_append(&ccs, out);
     agdelete(dg, dout);
     if (Verbose)
       fprintf(stderr,
               "(%4" PRISIZE_T ") %7" PRISIZE_T " nodes %7" PRISIZE_T " edges\n",
-              c_cnt, n_cnt, e_cnt);
-    c_cnt++;
+              Agraphs_size(&ccs) - 1, n_cnt, e_cnt);
   }
 
   if (Verbose)
     fprintf(stderr,
             "       %7d nodes %7d edges %7" PRISIZE_T " components %s\n",
-            agnnodes(g), agnedges(g), c_cnt, agnameof(g));
+            agnnodes(g), agnedges(g), Agraphs_size(&ccs), agnameof(g));
 
   agclose(dg);
   agclean(g, AGRAPH, GRECNAME);
   agclean(g, AGNODE, NRECNAME);
   freeStk(&stk);
-  ccs = gv_recalloc(ccs, ccs_length, c_cnt, sizeof(Agraph_t *));
   agxbfree(&name);
-  *ncc = c_cnt;
-  return ccs;
+  *ncc = Agraphs_size(&ccs);
+  return Agraphs_detach(&ccs);
 }
 
 /* isConnected:
