@@ -1796,7 +1796,7 @@ def test_1925():
 def test_1931():
     """
     New lines within strings should not be discarded during parsing
-
+    https://gitlab.com/graphviz/graphviz/-/issues/1931
     """
 
     # a graph with \n inside of strings
