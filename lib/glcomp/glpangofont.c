@@ -31,6 +31,7 @@ static PangoLayout *get_pango_layout(char *markup_text,
 	return NULL;
     PangoContext *const context = pango_font_map_create_context(fontmap);
     layout = pango_layout_new(context);
+    g_object_unref(context);
     pango_layout_set_text(layout, text, -1);
     pango_layout_set_font_description(layout, desc);
     pango_layout_set_attributes(layout, attr_list);
