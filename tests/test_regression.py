@@ -1741,6 +1741,58 @@ def test_1913():
         assert f"Warning: Illegal value {input} for ALIGN - ignored" in stderr
 
 
+@pytest.mark.skipif(which("gvpr") is None, reason="GVPR not available")
+@pytest.mark.xfail(
+    strict=True, reason="https://gitlab.com/graphviz/graphviz/-/issues/1925"
+)
+def test_1925():
+    """
+    GVPR `hasAttr` should work accurately
+    https://gitlab.com/graphviz/graphviz/-/issues/1925
+    """
+
+    # locate our associated test case in this directory
+    input = Path(__file__).parent / "1925.dot"
+    assert input.exists(), "unexpectedly missing test case"
+    script = Path(__file__).parent / "1925.gvpr"
+    assert script.exists(), "unexpectedly missing test case"
+
+    # run GVPR
+    gvpr_bin = which("gvpr")
+    stdout = subprocess.check_output(
+        [gvpr_bin, "-c", "-f", script, input], universal_newlines=True
+    )
+
+    # check we got expected results
+    styled = set(["L"])
+    minlened = set(["S->T"])
+    active = None
+    for line in stdout.split("\n"):
+        if m := re.match("// (NODE|EDGE): (?P<name>.*)$", line):
+            active = m.group("name")
+            continue
+        if m := re.match(r"//\s+style :: (?P<value>0|1)$", line):
+            assert active is not None, "style line with no known node/edge"
+            if m.group("value") == "0":
+                assert (
+                    active not in styled
+                ), f"{active} incorrectly considered to have 'style' attribute"
+            else:
+                assert (
+                    active in styled
+                ), f"{active} incorrectly considered to not have 'style' attribute"
+        if m := re.match(r"//\s+minlen :: (?P<value>0|1)$", line):
+            assert active is not None, "minlen line with no known node/edge"
+            if m.group("value") == "0":
+                assert (
+                    active not in minlened
+                ), f"{active} incorrectly considered to have 'minlen' attribute"
+            else:
+                assert (
+                    active in minlened
+                ), f"{active} incorrectly considered to not have 'minlen' attribute"
+
+
 def test_1931():
     """
     New lines within strings should not be discarded during parsing
