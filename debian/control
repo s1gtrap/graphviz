@@ -8,7 +8,7 @@ Homepage: http://www.graphviz.org/
 
 Package: graphviz
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: libgraphviz4 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
 Conflicts: gdtclft
 Suggests: msttcorefonts, gsfonts, graphviz-doc
 Description: rich set of graph drawing tools
@@ -37,7 +37,7 @@ Description: rich set of graph drawing tools
 Package: libgv-guile
 Architecture: any
 Section: interpreters
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: libgraphviz4 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
 Description: Guile bindings for graphviz
  Graphviz is a set of graph drawing tools. See the description of the graphviz
  package for a full description.
@@ -47,7 +47,7 @@ Description: Guile bindings for graphviz
 Package: libgv-lua
 Architecture: any
 Section: interpreters
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: libgraphviz4 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
 Description: Lua bindings for graphviz
  Graphviz is a set of graph drawing tools. See the description of the graphviz
  package for a full description.
@@ -57,7 +57,7 @@ Description: Lua bindings for graphviz
 Package: libgv-perl
 Architecture: any
 Section: perl
-Depends: ${perl:Depends}, ${shlibs:Depends}, ${misc:Depends}
+Depends: libgraphviz4 (= ${binary:Version}), ${perl:Depends}, ${shlibs:Depends}, ${misc:Depends}
 Conflicts: graphviz (<< 2.12-1)
 Description: Perl bindings for graphviz
  Graphviz is a set of graph drawing tools. See the description of the graphviz
@@ -68,7 +68,7 @@ Description: Perl bindings for graphviz
 Package: libgv-php5
 Architecture: any
 Section: interpreters
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: libgraphviz4 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
 Description: Php5 bindings for graphviz
  Graphviz is a set of graph drawing tools. See the description of the graphviz
  package for a full description.
@@ -78,7 +78,7 @@ Description: Php5 bindings for graphviz
 Package: libgv-python
 Architecture: any
 Section: interpreters
-Depends: ${shlibs:Depends}, ${python:Depends}, ${misc:Depends}
+Depends: libgraphviz4 (= ${binary:Version}), ${shlibs:Depends}, ${python:Depends}, ${misc:Depends}
 Description: Python bindings for graphviz
  Graphviz is a set of graph drawing tools. See the description of the graphviz
  package for a full description.
@@ -88,7 +88,7 @@ Description: Python bindings for graphviz
 Package: libgv-ruby
 Architecture: any
 Section: interpreters
-Depends: ${shlibs:Depends}, ruby, ${misc:Depends}
+Depends: libgraphviz4 (= ${binary:Version}), ${shlibs:Depends}, ruby, ${misc:Depends}
 Description: Ruby bindings for graphviz
  Graphviz is a set of graph drawing tools. See the description of the graphviz
  package for a full description.
@@ -99,7 +99,7 @@ Description: Ruby bindings for graphviz
 Package: libgv-tcl
 Architecture: any
 Section: interpreters
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: libgraphviz4 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
 Conflicts: graphviz (<< 2.12-1)
 Description: Tcl bindings for graphviz
  Graphviz is a set of graph drawing tools. See the description of the graphviz
