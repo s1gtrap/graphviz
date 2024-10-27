@@ -31,6 +31,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `href` attributes. #1425
 - In the Autotools build system, `pkg-config` is the only supported way for
   discovering Guile. Previous use of `guile-config*` has been removed. #2606
+- The Autotools release artifacts for macOS (`Darwin_*_graphviz-*.tar.gz`) now
+  use relative paths in links to dependent libraries and plugins. This should
+  make the tree relocatable instead of having to live at /Users/gitlab/builds.
+  #2501
 
 ### Fixed
 
