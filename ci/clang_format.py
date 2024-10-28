@@ -314,7 +314,6 @@ EXCLUDE = (
     "lib/gvpr/gdefs.h",
     "lib/gvpr/gprstate.c",
     "lib/gvpr/gprstate.h",
-    "lib/gvpr/gvpr.c",
     "lib/gvpr/gvpr.h",
     "lib/gvpr/parse.c",
     "lib/gvpr/parse.h",
