@@ -974,8 +974,8 @@ static int gvpr_core(int argc, char *argv[], gvpropts *uopts,
         /* begin graph */
         if (incoreGraphs && gs->opts.compflags.clone)
           gs->state->curgraph =
-              (Agraph_t *)cloneO(0, (Agobj_t *)gs->state->curgraph);
-        gs->state->curobj = (Agobj_t *)gs->state->curgraph;
+              (Agraph_t *)cloneO(0, &gs->state->curgraph->base);
+        gs->state->curobj = &gs->state->curgraph->base;
         gs->state->tvroot = 0;
         if (bp->begg_stmt)
           exeval(gs->xprog->prog, bp->begg_stmt, gs->state);
@@ -987,7 +987,7 @@ static int gvpr_core(int argc, char *argv[], gvpropts *uopts,
       }
 
       /* end graph */
-      gs->state->curobj = (Agobj_t *)gs->state->curgraph;
+      gs->state->curobj = &gs->state->curgraph->base;
       if (gs->xprog->endg_stmt != NULL)
         exeval(gs->xprog->prog, gs->xprog->endg_stmt, gs->state);
       if (gs->opts.verbose)
