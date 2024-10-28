@@ -217,7 +217,9 @@ qatom	:  T_qatom {$$ = $1;}
 static item *newitem(int tag, void *p0, char *p1)
 {
 	item	*rv = agalloc(G,sizeof(item));
-	rv->tag = tag; rv->u.name = (char*)p0; rv->str = p1;
+	rv->tag = tag;
+	rv->u.name = p0;
+	rv->str = p1;
 	return rv;
 }
 
