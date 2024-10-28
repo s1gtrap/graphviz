@@ -353,6 +353,8 @@ static void freeOpts(options opts) {
   free(opts.argv);
 }
 
+DEFINE_LIST(strs, char *)
+
 /* scanArgs:
  * Parse command line options.
  */
@@ -366,15 +368,9 @@ static options scanArgs(int argc, char **argv) {
   setErrorId(opts.cmdName);
   opts.verbose = 0;
 
-  /* estimate number of file names */
-  size_t nfiles = 0;
-  for (int i = 1; i < argc; i++)
-    if (argv[i] && argv[i][0] != '-')
-      nfiles++;
-  char **input_filenames = gv_calloc(nfiles + 1, sizeof(char *));
+  strs_t input_filenames = {0};
 
   /* loop over arguments */
-  nfiles = 0;
   for (int i = 1; i < argc;) {
     arg = argv[i++];
     if (*arg == '-') {
@@ -384,27 +380,25 @@ static options scanArgs(int argc, char **argv) {
         goto opts_done;
       }
     } else if (arg)
-      input_filenames[nfiles++] = arg;
+      strs_append(&input_filenames, arg);
   }
 
   /* Handle additional semantics */
   if (opts.useFile == 0) {
-    if (nfiles == 0) {
+    if (strs_is_empty(&input_filenames)) {
       error(ERROR_ERROR, "No program supplied via argument or -f option");
       opts.state = -1;
     } else {
-      opts.program = input_filenames[0];
-      for (size_t i = 1; i <= nfiles; i++)
-        input_filenames[i - 1] = input_filenames[i];
-      nfiles--;
+      opts.program = strs_pop_front(&input_filenames);
     }
   }
-  if (nfiles == 0) {
+  if (strs_is_empty(&input_filenames)) {
     opts.inFiles = 0;
-    free(input_filenames);
-    input_filenames = 0;
-  } else
-    opts.inFiles = input_filenames;
+    strs_free(&input_filenames);
+  } else {
+    strs_append(&input_filenames, NULL);
+    opts.inFiles = strs_detach(&input_filenames);
+  }
 
   if (!opts.outFile)
     opts.outFile = stdout;
@@ -413,7 +407,7 @@ opts_done:
   if (opts.state <= 0) {
     if (opts.state < 0)
       error(ERROR_USAGE | ERROR_ERROR, "%s", usage);
-    free(input_filenames);
+    strs_free(&input_filenames);
   }
 
   return opts;
