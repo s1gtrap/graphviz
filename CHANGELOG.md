@@ -81,6 +81,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   full path to libguile, fixing issues on macOS.
 - The provided release packages for Debian-based operating systems (only Ubuntu
   currently) have corrected package dependencies. #2466
+- Discussion of `gvpr -c ""` in the `gvpr` man page has been removed. This
+  invocation did not do what was claimed. #2584
 
 ## [12.1.2] – 2024-09-28
 
