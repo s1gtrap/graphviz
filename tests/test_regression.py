@@ -4372,9 +4372,6 @@ def test_2577_1():
 
 
 @pytest.mark.skipif(which("gml2gv") is None, reason="gml2gv not available")
-@pytest.mark.xfail(
-    strict=True, reason="https://gitlab.com/graphviz/graphviz/-/issues/2586"
-)
 def test_2586():
     """
     labels should be preserved in GML→GV translation
