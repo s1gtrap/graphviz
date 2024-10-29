@@ -1044,8 +1044,8 @@ static bool _neato_set_aspect(graph_t * g)
 	    /* fill is weird because both X and Y can stretch */
 	    if (GD_drawing(g)->size.x <= 0)
 		return translated;
-	    xf = (double) GD_drawing(g)->size.x / GD_bb(g).UR.x;
-	    yf = (double) GD_drawing(g)->size.y / GD_bb(g).UR.y;
+	    xf = GD_drawing(g)->size.x / GD_bb(g).UR.x;
+	    yf = GD_drawing(g)->size.y / GD_bb(g).UR.y;
 	    /* handle case where one or more dimensions is too big */
 	    if (xf < 1.0 || yf < 1.0) {
 		if (xf < yf) {
@@ -1059,8 +1059,8 @@ static bool _neato_set_aspect(graph_t * g)
 	} else if (GD_drawing(g)->ratio_kind == R_EXPAND) {
 	    if (GD_drawing(g)->size.x <= 0)
 		return translated;
-	    xf = (double) GD_drawing(g)->size.x / GD_bb(g).UR.x;
-	    yf = (double) GD_drawing(g)->size.y / GD_bb(g).UR.y;
+	    xf = GD_drawing(g)->size.x / GD_bb(g).UR.x;
+	    yf = GD_drawing(g)->size.y / GD_bb(g).UR.y;
 	    if (xf > 1.0 && yf > 1.0) {
 		double scale = fmin(xf, yf);
 		xf = yf = scale;
