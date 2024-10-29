@@ -1,5 +1,5 @@
 /*************************************************************************
- * Copyright (c) 2011 AT&T Intellectual Property 
+ * Copyright (c) 2011 AT&T Intellectual Property
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,62 +8,51 @@
  * Contributors: Details at https://graphviz.org
  *************************************************************************/
 
-#include <limits.h>
-#include <stdlib.h>
 #include <cgraph/agxbuf.h>
 #include <cgraph/cgraph.h>
 #include <cgraph/gv_ctype.h>
 #include <cgraph/list.h>
 #include <common/render.h>
 #include <common/utils.h>
+#include <limits.h>
 #include <pack/pack.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include <util/alloc.h>
 #include <util/prisize_t.h>
 
 DEFINE_LIST(node_stack, Agnode_t *)
 
 typedef struct {
-    node_stack_t data;
-    void (*actionfn) (Agnode_t *, void *);
-    bool (*markfn)(Agnode_t *, int);
+  node_stack_t data;
+  void (*actionfn)(Agnode_t *, void *);
+  bool (*markfn)(Agnode_t *, int);
 } stk_t;
 
 /// does `n` have a mark set?
-static bool marked(const stk_t *stk, Agnode_t *n) {
-  return stk->markfn(n, -1);
-}
+static bool marked(const stk_t *stk, Agnode_t *n) { return stk->markfn(n, -1); }
 
 /// set a mark on `n`
-static void mark(const stk_t *stk, Agnode_t *n) {
-  stk->markfn(n, 1);
-}
+static void mark(const stk_t *stk, Agnode_t *n) { stk->markfn(n, 1); }
 
 /// unset a mark on `n`
-static void unmark(const stk_t *stk, Agnode_t *n) {
-  stk->markfn(n, 0);
+static void unmark(const stk_t *stk, Agnode_t *n) { stk->markfn(n, 0); }
+
+static void initStk(stk_t *sp, void (*actionfn)(Agnode_t *, void *),
+                    bool (*markfn)(Agnode_t *, int)) {
+  sp->data = (node_stack_t){0};
+  sp->actionfn = actionfn;
+  sp->markfn = markfn;
 }
 
-static void initStk(stk_t *sp, void (*actionfn)(Agnode_t*, void*),
-                    bool (*markfn)(Agnode_t *, int))
-{
-    sp->data = (node_stack_t){0};
-    sp->actionfn = actionfn;
-    sp->markfn = markfn;
-}
-
-static void freeStk (stk_t* sp)
-{
-  node_stack_free(&sp->data);
-}
+static void freeStk(stk_t *sp) { node_stack_free(&sp->data); }
 
 static void push(stk_t *sp, Agnode_t *np) {
   mark(sp, np);
   node_stack_push_back(&sp->data, np);
 }
 
-static Agnode_t *pop(stk_t* sp)
-{
+static Agnode_t *pop(stk_t *sp) {
   if (node_stack_is_empty(&sp->data)) {
     return NULL;
   }
@@ -71,60 +60,59 @@ static Agnode_t *pop(stk_t* sp)
   return node_stack_pop_back(&sp->data);
 }
 
+static size_t dfs(Agraph_t *g, Agnode_t *n, void *state, stk_t *stk) {
+  Agedge_t *e;
+  Agnode_t *other;
+  size_t cnt = 0;
 
-static size_t dfs(Agraph_t * g, Agnode_t * n, void *state, stk_t* stk)
-{
-    Agedge_t *e;
-    Agnode_t *other;
-    size_t cnt = 0;
-
-    push(stk, n);
-    while ((n = pop(stk))) {
-	cnt++;
-	if (stk->actionfn) stk->actionfn(n, state);
-        for (e = agfstedge(g, n); e; e = agnxtedge(g, e, n)) {
-	    if ((other = agtail(e)) == n)
-		other = aghead(e);
-            if (!marked(stk, other))
-                push(stk, other);
-        }
+  push(stk, n);
+  while ((n = pop(stk))) {
+    cnt++;
+    if (stk->actionfn)
+      stk->actionfn(n, state);
+    for (e = agfstedge(g, n); e; e = agnxtedge(g, e, n)) {
+      if ((other = agtail(e)) == n)
+        other = aghead(e);
+      if (!marked(stk, other))
+        push(stk, other);
     }
-    return cnt;
+  }
+  return cnt;
 }
 
-static int isLegal(const char *p) {
-    char c;
+static bool isLegal(const char *p) {
+  char c;
 
-    while ((c = *p++)) {
-	if (c != '_' && !gv_isalnum(c))
-	    return 0;
-    }
+  while ((c = *p++)) {
+    if (c != '_' && !gv_isalnum(c))
+      return false;
+  }
 
-    return 1;
+  return true;
 }
 
-static void insertFn(Agnode_t * n, void *state)
-{
-    agsubnode(state, n, 1);
-}
+static void insertFn(Agnode_t *n, void *state) { agsubnode(state, n, 1); }
 
 static bool markFn(Agnode_t *n, int v) {
-    if (v < 0) return ND_mark(n) != 0;
-    const size_t ret = ND_mark(n);
-    ND_mark(n) = v != 0;
-    return ret != 0;
+  if (v < 0)
+    return ND_mark(n) != 0;
+  const size_t ret = ND_mark(n);
+  ND_mark(n) = v != 0;
+  return ret != 0;
 }
 
 static void setPrefix(agxbuf *xb, const char *pfx) {
-    if (!pfx || !isLegal(pfx)) {
-        pfx = "_cc_";
-    }
-    agxbput(xb, pfx);
+  if (!pfx || !isLegal(pfx)) {
+    pfx = "_cc_";
+  }
+  agxbput(xb, pfx);
 }
 
+DEFINE_LIST(Agraphs, Agraph_t *)
+
 /* pccomps:
- * Return an array of subgraphs consisting of the connected 
- * components of graph g. The number of components is returned in ncc. 
+ * Return an array of subgraphs consisting of the connected
+ * components of graph g. The number of components is returned in ncc.
  * All pinned nodes are in one component.
  * If pfx is non-null and a legal graph name, we use it as the prefix
  * for the name of the subgraphs created. If not, a simple default is used.
@@ -135,63 +123,56 @@ static void setPrefix(agxbuf *xb, const char *pfx) {
  * Return NULL if graph is empty.
  */
 Agraph_t **pccomps(Agraph_t *g, size_t *ncc, char *pfx, bool *pinned) {
-    size_t c_cnt = 0;
-    agxbuf name = {0};
-    Agraph_t *out = NULL;
-    Agnode_t *n;
-    size_t bnd = 10;
-    bool pin = false;
-    stk_t stk;
+  agxbuf name = {0};
+  Agraph_t *out = NULL;
+  Agnode_t *n;
+  bool pin = false;
+  stk_t stk;
 
-    if (agnnodes(g) == 0) {
-	*ncc = 0;
-	return NULL;
+  if (agnnodes(g) == 0) {
+    *ncc = 0;
+    return NULL;
+  }
+
+  Agraphs_t ccs = {0};
+
+  initStk(&stk, insertFn, markFn);
+  for (n = agfstnode(g); n; n = agnxtnode(g, n))
+    unmark(&stk, n);
+
+  /* Component with pinned nodes */
+  for (n = agfstnode(g); n; n = agnxtnode(g, n)) {
+    if (marked(&stk, n) || !isPinned(n))
+      continue;
+    if (!out) {
+      setPrefix(&name, pfx);
+      agxbprint(&name, "%" PRISIZE_T, Agraphs_size(&ccs));
+      out = agsubg(g, agxbuse(&name), 1);
+      agbindrec(out, "Agraphinfo_t", sizeof(Agraphinfo_t),
+                true); // node custom data
+      Agraphs_append(&ccs, out);
+      pin = true;
     }
+    dfs(g, n, out, &stk);
+  }
 
-    Agraph_t **ccs = gv_calloc(bnd, sizeof(Agraph_t*));
-
-    initStk(&stk, insertFn, markFn);
-    for (n = agfstnode(g); n; n = agnxtnode(g, n))
-	unmark(&stk, n);
-
-    /* Component with pinned nodes */
-    for (n = agfstnode(g); n; n = agnxtnode(g, n)) {
-	if (marked(&stk, n) || !isPinned(n))
-	    continue;
-	if (!out) {
-	    setPrefix(&name, pfx);
-	    agxbprint(&name, "%" PRISIZE_T, c_cnt);
-	    out = agsubg(g, agxbuse(&name),1);
-	    agbindrec(out, "Agraphinfo_t", sizeof(Agraphinfo_t), true);	//node custom data
-	    ccs[c_cnt] = out;
-	    c_cnt++;
-	    pin = true;
-	}
-	dfs(g, n, out, &stk);
-    }
-
-    /* Remaining nodes */
-    for (n = agfstnode(g); n; n = agnxtnode(g, n)) {
-	if (marked(&stk, n))
-	    continue;
-	setPrefix(&name, pfx);
-	agxbprint(&name, "%" PRISIZE_T, c_cnt);
-	out = agsubg(g, agxbuse(&name), 1);
-	agbindrec(out, "Agraphinfo_t", sizeof(Agraphinfo_t), true);	//node custom data
-	dfs(g, n, out, &stk);
-	if (c_cnt == bnd) {
-	    ccs = gv_recalloc(ccs, bnd, bnd * 2, sizeof(Agraph_t*));
-	    bnd *= 2;
-	}
-	ccs[c_cnt] = out;
-	c_cnt++;
-    }
-    freeStk (&stk);
-    agxbfree(&name);
-    ccs = gv_recalloc(ccs, bnd, c_cnt, sizeof(Agraph_t*));
-    *ncc = c_cnt;
-    *pinned = pin;
-    return ccs;
+  /* Remaining nodes */
+  for (n = agfstnode(g); n; n = agnxtnode(g, n)) {
+    if (marked(&stk, n))
+      continue;
+    setPrefix(&name, pfx);
+    agxbprint(&name, "%" PRISIZE_T, Agraphs_size(&ccs));
+    out = agsubg(g, agxbuse(&name), 1);
+    agbindrec(out, "Agraphinfo_t", sizeof(Agraphinfo_t),
+              true); // node custom data
+    dfs(g, n, out, &stk);
+    Agraphs_append(&ccs, out);
+  }
+  freeStk(&stk);
+  agxbfree(&name);
+  *ncc = Agraphs_size(&ccs);
+  *pinned = pin;
+  return Agraphs_detach(&ccs);
 }
 
 /* ccomps:
@@ -204,208 +185,188 @@ Agraph_t **pccomps(Agraph_t *g, size_t *ncc, char *pfx, bool *pinned) {
  * Returns NULL on error or if graph is empty.
  */
 Agraph_t **ccomps(Agraph_t *g, size_t *ncc, char *pfx) {
-    size_t c_cnt = 0;
-    agxbuf name = {0};
-    Agraph_t *out;
-    Agnode_t *n;
-    size_t bnd = 10;
-    stk_t stk;
+  agxbuf name = {0};
+  Agraph_t *out;
+  Agnode_t *n;
+  stk_t stk;
 
-    if (agnnodes(g) == 0) {
-	*ncc = 0;
-	return NULL;
-    }
+  if (agnnodes(g) == 0) {
+    *ncc = 0;
+    return NULL;
+  }
 
-    Agraph_t **ccs = gv_calloc(bnd, sizeof(Agraph_t*));
-    initStk(&stk, insertFn, markFn);
-    for (n = agfstnode(g); n; n = agnxtnode(g, n))
-	unmark(&stk, n);
+  Agraphs_t ccs = {0};
+  initStk(&stk, insertFn, markFn);
+  for (n = agfstnode(g); n; n = agnxtnode(g, n))
+    unmark(&stk, n);
 
-    for (n = agfstnode(g); n; n = agnxtnode(g, n)) {
-	if (marked(&stk, n))
-	    continue;
-	setPrefix(&name, pfx);
-	agxbprint(&name, "%" PRISIZE_T, c_cnt);
-	out = agsubg(g, agxbuse(&name), 1);
-	agbindrec(out, "Agraphinfo_t", sizeof(Agraphinfo_t), true);	//node custom data
-	if (dfs(g, n, out, &stk) == SIZE_MAX) {
-	    freeStk (&stk);
-	    free (ccs);
-	    agxbfree(&name);
-	    *ncc = 0;
-	    return NULL;
-	}
-	if (c_cnt == bnd) {
-	    ccs = gv_recalloc(ccs, bnd, bnd * 2, sizeof(Agraph_t*));
-	    bnd *= 2;
-	}
-	ccs[c_cnt] = out;
-	c_cnt++;
-    }
-    freeStk (&stk);
-    ccs = gv_recalloc(ccs, bnd, c_cnt, sizeof(Agraph_t*));
-    agxbfree(&name);
-    *ncc = c_cnt;
-    return ccs;
+  for (n = agfstnode(g); n; n = agnxtnode(g, n)) {
+    if (marked(&stk, n))
+      continue;
+    setPrefix(&name, pfx);
+    agxbprint(&name, "%" PRISIZE_T, Agraphs_size(&ccs));
+    out = agsubg(g, agxbuse(&name), 1);
+    agbindrec(out, "Agraphinfo_t", sizeof(Agraphinfo_t),
+              true); // node custom data
+    dfs(g, n, out, &stk);
+    Agraphs_append(&ccs, out);
+  }
+  freeStk(&stk);
+  agxbfree(&name);
+  *ncc = Agraphs_size(&ccs);
+  return Agraphs_detach(&ccs);
 }
 
 typedef struct {
-    Agrec_t h;
-    char cc_subg;   /* true iff subgraph corresponds to a component */
+  Agrec_t h;
+  char cc_subg; /* true iff subgraph corresponds to a component */
 } ccgraphinfo_t;
 
 typedef struct {
-    Agrec_t h;
-    char mark;
-    union {
-	Agraph_t* g;
-	Agnode_t* n;
-	void*     v;
-    } ptr;
+  Agrec_t h;
+  char mark;
+  union {
+    Agraph_t *g;
+    Agnode_t *n;
+    void *v;
+  } ptr;
 } ccgnodeinfo_t;
 
 #define GRECNAME "ccgraphinfo"
 #define NRECNAME "ccgnodeinfo"
-#define GD_cc_subg(g)  (((ccgraphinfo_t*)aggetrec(g, GRECNAME, 0))->cc_subg)
+#define GD_cc_subg(g) (((ccgraphinfo_t *)aggetrec(g, GRECNAME, 0))->cc_subg)
 #ifdef DEBUG
-Agnode_t*
-dnodeOf (Agnode_t* v)
-{
-  ccgnodeinfo_t* ip = (ccgnodeinfo_t*)aggetrec(v, NRECNAME, 0);
+Agnode_t *dnodeOf(Agnode_t *v) {
+  ccgnodeinfo_t *ip = (ccgnodeinfo_t *)aggetrec(v, NRECNAME, 0);
   if (ip)
     return ip->ptr.n;
-  fprintf (stderr, "nodeinfo undefined\n");
+  fprintf(stderr, "nodeinfo undefined\n");
   return NULL;
 }
-void
-dnodeSet (Agnode_t* v, Agnode_t* n)
-{
-  ((ccgnodeinfo_t*)aggetrec(v, NRECNAME, 0))->ptr.n = n;
+void dnodeSet(Agnode_t *v, Agnode_t *n) {
+  ((ccgnodeinfo_t *)aggetrec(v, NRECNAME, 0))->ptr.n = n;
 }
 #else
-#define dnodeOf(v)  (((ccgnodeinfo_t*)aggetrec(v, NRECNAME, 0))->ptr.n)
-#define dnodeSet(v,w) (((ccgnodeinfo_t*)aggetrec(v, NRECNAME, 0))->ptr.n=w)
+#define dnodeOf(v) (((ccgnodeinfo_t *)aggetrec(v, NRECNAME, 0))->ptr.n)
+#define dnodeSet(v, w) (((ccgnodeinfo_t *)aggetrec(v, NRECNAME, 0))->ptr.n = w)
 #endif
 
-#define ptrOf(np)  (((ccgnodeinfo_t*)((np)->base.data))->ptr.v)
-#define nodeOf(np)  (((ccgnodeinfo_t*)((np)->base.data))->ptr.n)
-#define clustOf(np)  (((ccgnodeinfo_t*)((np)->base.data))->ptr.g)
-#define clMark(n) (((ccgnodeinfo_t*)(n->base.data))->mark)
+#define ptrOf(np) (((ccgnodeinfo_t *)((np)->base.data))->ptr.v)
+#define nodeOf(np) (((ccgnodeinfo_t *)((np)->base.data))->ptr.n)
+#define clustOf(np) (((ccgnodeinfo_t *)((np)->base.data))->ptr.g)
+#define clMark(n) (((ccgnodeinfo_t *)(n->base.data))->mark)
 
 /* deriveClusters:
  * Construct nodes in derived graph corresponding top-level clusters.
  * Since a cluster might be wrapped in a subgraph, we need to traverse
  * down into the tree of subgraphs
  */
-static void deriveClusters(Agraph_t* dg, Agraph_t * g)
-{
-    Agraph_t *subg;
-    Agnode_t *dn;
-    Agnode_t *n;
+static void deriveClusters(Agraph_t *dg, Agraph_t *g) {
+  Agraph_t *subg;
+  Agnode_t *dn;
+  Agnode_t *n;
 
-    for (subg = agfstsubg(g); subg; subg = agnxtsubg(subg)) {
-	if (is_a_cluster(subg)) {
-	    dn = agnode(dg, agnameof(subg), 1);
-	    agbindrec (dn, NRECNAME, sizeof(ccgnodeinfo_t), true);
-	    clustOf(dn) = subg;
-	    for (n = agfstnode(subg); n; n = agnxtnode(subg, n)) {
-		if (dnodeOf(n)) {
-		   fprintf (stderr, "Error: node \"%s\" belongs to two non-nested clusters \"%s\" and \"%s\"\n",
-			agnameof (n), agnameof(subg), agnameof(dnodeOf(n)));  
-		}
-		dnodeSet(n,dn);
-	    }
-	}
-	else {
-	    deriveClusters (dg, subg);
-	}
+  for (subg = agfstsubg(g); subg; subg = agnxtsubg(subg)) {
+    if (is_a_cluster(subg)) {
+      dn = agnode(dg, agnameof(subg), 1);
+      agbindrec(dn, NRECNAME, sizeof(ccgnodeinfo_t), true);
+      clustOf(dn) = subg;
+      for (n = agfstnode(subg); n; n = agnxtnode(subg, n)) {
+        if (dnodeOf(n)) {
+          fprintf(stderr,
+                  "Error: node \"%s\" belongs to two non-nested clusters "
+                  "\"%s\" and \"%s\"\n",
+                  agnameof(n), agnameof(subg), agnameof(dnodeOf(n)));
+        }
+        dnodeSet(n, dn);
+      }
+    } else {
+      deriveClusters(dg, subg);
     }
+  }
 }
 
 /* deriveGraph:
- * Create derived graph dg of g where nodes correspond to top-level nodes 
+ * Create derived graph dg of g where nodes correspond to top-level nodes
  * or clusters, and there is an edge in dg if there is an edge in g
  * between any nodes in the respective clusters.
  */
-static Agraph_t *deriveGraph(Agraph_t * g)
-{
-    Agraph_t *dg;
-    Agnode_t *dn;
-    Agnode_t *n;
+static Agraph_t *deriveGraph(Agraph_t *g) {
+  Agraph_t *dg;
+  Agnode_t *dn;
+  Agnode_t *n;
 
-    dg = agopen("dg", Agstrictundirected, NULL);
+  dg = agopen("dg", Agstrictundirected, NULL);
 
-    deriveClusters (dg, g);
+  deriveClusters(dg, g);
 
-    for (n = agfstnode(g); n; n = agnxtnode(g, n)) {
-	if (dnodeOf(n))
-	    continue;
-	dn = agnode(dg, agnameof(n), 1);
-	agbindrec (dn, NRECNAME, sizeof(ccgnodeinfo_t), true);
-	nodeOf(dn) = n;
-	dnodeSet(n,dn);
+  for (n = agfstnode(g); n; n = agnxtnode(g, n)) {
+    if (dnodeOf(n))
+      continue;
+    dn = agnode(dg, agnameof(n), 1);
+    agbindrec(dn, NRECNAME, sizeof(ccgnodeinfo_t), true);
+    nodeOf(dn) = n;
+    dnodeSet(n, dn);
+  }
+
+  for (n = agfstnode(g); n; n = agnxtnode(g, n)) {
+    Agedge_t *e;
+    Agnode_t *hd;
+    Agnode_t *tl = dnodeOf(n);
+    for (e = agfstout(g, n); e; e = agnxtout(g, e)) {
+      hd = aghead(e);
+      hd = dnodeOf(hd);
+      if (hd == tl)
+        continue;
+      if (hd > tl)
+        agedge(dg, tl, hd, NULL, 1);
+      else
+        agedge(dg, hd, tl, NULL, 1);
     }
+  }
 
-    for (n = agfstnode(g); n; n = agnxtnode(g, n)) {
-	Agedge_t *e;
-	Agnode_t *hd;
-	Agnode_t *tl = dnodeOf(n);
-	for (e = agfstout(g, n); e; e = agnxtout(g, e)) {
-	    hd = aghead(e);
-	    hd = dnodeOf(hd);
-	    if (hd == tl)
-		continue;
-	    if (hd > tl)
-		agedge(dg, tl, hd, NULL, 1);
-	    else
-		agedge(dg, hd, tl, NULL, 1);
-	}
-    }
-
-    return dg;
+  return dg;
 }
 
 /* unionNodes:
  * Add all nodes in cluster nodes of dg to g
  */
-static void unionNodes(Agraph_t * dg, Agraph_t * g)
-{
-    Agnode_t *n;
-    Agnode_t *dn;
-    Agraph_t *clust;
+static void unionNodes(Agraph_t *dg, Agraph_t *g) {
+  Agnode_t *n;
+  Agnode_t *dn;
+  Agraph_t *clust;
 
-    for (dn = agfstnode(dg); dn; dn = agnxtnode(dg, dn)) {
-	if (AGTYPE(ptrOf(dn)) == AGNODE) {
-	    agsubnode(g, nodeOf(dn), 1);
-	} else {
-	    clust = clustOf(dn);
-	    for (n = agfstnode(clust); n; n = agnxtnode(clust, n))
-		agsubnode(g, n, 1);
-	}
+  for (dn = agfstnode(dg); dn; dn = agnxtnode(dg, dn)) {
+    if (AGTYPE(ptrOf(dn)) == AGNODE) {
+      agsubnode(g, nodeOf(dn), 1);
+    } else {
+      clust = clustOf(dn);
+      for (n = agfstnode(clust); n; n = agnxtnode(clust, n))
+        agsubnode(g, n, 1);
     }
+  }
 }
 
 static bool clMarkFn(Agnode_t *n, int v) {
-    int ret;
-    if (v < 0) return clMark(n) != 0;
-    ret = clMark(n);
-    clMark(n) = (char) v;
-    return ret != 0;
+  int ret;
+  if (v < 0)
+    return clMark(n) != 0;
+  ret = clMark(n);
+  clMark(n) = (char)v;
+  return ret != 0;
 }
 
 typedef struct {
-    Agrec_t h;
-    Agraph_t* orig;
+  Agrec_t h;
+  Agraph_t *orig;
 } orig_t;
 
 #define ORIG_REC "orig"
 
-Agraph_t*
-mapClust(Agraph_t *cl)
-{
-    orig_t* op = (orig_t*)aggetrec(cl, ORIG_REC, 0);
-    assert (op);
-    return op->orig;
+Agraph_t *mapClust(Agraph_t *cl) {
+  orig_t *op = (orig_t *)aggetrec(cl, ORIG_REC, 0);
+  assert(op);
+  return op->orig;
 }
 
 /* projectG:
@@ -416,62 +377,55 @@ mapClust(Agraph_t *cl)
  * If subg is a cluster, the new subgraph will contain a pointer to it
  * in the record "orig".
  */
-static Agraph_t *projectG(Agraph_t * subg, Agraph_t * g, int inCluster)
-{
-    Agraph_t *proj = NULL;
-    Agnode_t *n;
-    Agnode_t *m;
-    orig_t *op;
+static Agraph_t *projectG(Agraph_t *subg, Agraph_t *g, int inCluster) {
+  Agraph_t *proj = NULL;
+  Agnode_t *n;
+  Agnode_t *m;
+  orig_t *op;
 
-    for (n = agfstnode(subg); n; n = agnxtnode(subg, n)) {
-	if ((m = agfindnode(g, agnameof(n)))) {
-	    if (proj == NULL) {
-		proj = agsubg(g, agnameof(subg), 1);
-	    }
-	    agsubnode(proj, m, 1);
-	}
+  for (n = agfstnode(subg); n; n = agnxtnode(subg, n)) {
+    if ((m = agfindnode(g, agnameof(n)))) {
+      if (proj == NULL) {
+        proj = agsubg(g, agnameof(subg), 1);
+      }
+      agsubnode(proj, m, 1);
     }
-    if (!proj && inCluster) {
-	proj = agsubg(g, agnameof(subg), 1);
+  }
+  if (!proj && inCluster) {
+    proj = agsubg(g, agnameof(subg), 1);
+  }
+  if (proj) {
+    (void)graphviz_node_induce(proj, subg);
+    agcopyattr(subg, proj);
+    if (is_a_cluster(proj)) {
+      op = agbindrec(proj, ORIG_REC, sizeof(orig_t), false);
+      op->orig = subg;
     }
-    if (proj) {
-	(void)graphviz_node_induce(proj, subg);
-	agcopyattr(subg, proj);
-	if (is_a_cluster(proj)) {
-	    op = agbindrec(proj,ORIG_REC, sizeof(orig_t), false);
-	    op->orig = subg;
-	}
-    }
+  }
 
-    return proj;
+  return proj;
 }
 
 /* subgInduce:
  * Project subgraphs of root graph on subgraph.
  * If non-empty, add to subgraph.
  */
-static void
-subgInduce(Agraph_t * root, Agraph_t * g, int inCluster)
-{
-    Agraph_t *subg;
-    Agraph_t *proj;
-    int in_cluster;
+static void subgInduce(Agraph_t *root, Agraph_t *g, int inCluster) {
+  Agraph_t *subg;
+  Agraph_t *proj;
+  int in_cluster;
 
-    for (subg = agfstsubg(root); subg; subg = agnxtsubg(subg)) {
-	if (GD_cc_subg(subg))
-	    continue;
-	if ((proj = projectG(subg, g, inCluster))) {
-	    in_cluster = (inCluster || is_a_cluster(subg));
-	    subgInduce(subg, proj, in_cluster);
-	}
+  for (subg = agfstsubg(root); subg; subg = agnxtsubg(subg)) {
+    if (GD_cc_subg(subg))
+      continue;
+    if ((proj = projectG(subg, g, inCluster))) {
+      in_cluster = (inCluster || is_a_cluster(subg));
+      subgInduce(subg, proj, in_cluster);
     }
+  }
 }
 
-static void
-subGInduce(Agraph_t* g, Agraph_t * out)
-{
-    subgInduce(g, out, 0);
-}
+static void subGInduce(Agraph_t *g, Agraph_t *out) { subgInduce(g, out, 0); }
 
 /* cccomps:
  * Decompose g into "connected" components, where nodes are connected
@@ -483,77 +437,67 @@ subGInduce(Agraph_t* g, Agraph_t * out)
  * to the real cluster.
  */
 Agraph_t **cccomps(Agraph_t *g, size_t *ncc, char *pfx) {
-    Agraph_t *dg;
-    size_t n_cnt, c_cnt, e_cnt;
-    agxbuf name = {0};
-    Agraph_t *out;
-    Agraph_t *dout;
-    Agnode_t *dn;
-    stk_t stk;
-    int sz = (int) sizeof(ccgraphinfo_t);
+  Agraph_t *dg;
+  size_t n_cnt, e_cnt;
+  agxbuf name = {0};
+  Agraph_t *out;
+  Agraph_t *dout;
+  Agnode_t *dn;
+  stk_t stk;
+  int sz = (int)sizeof(ccgraphinfo_t);
 
-    if (agnnodes(g) == 0) {
-	*ncc = 0;
-	return NULL;
-    }
-    
-    /* Bind ccgraphinfo to graph and all subgraphs */
-    aginit(g, AGRAPH, GRECNAME, -sz, false);
+  if (agnnodes(g) == 0) {
+    *ncc = 0;
+    return NULL;
+  }
 
-    /* Bind ccgraphinfo to graph and all subgraphs */
-    aginit(g, AGNODE, NRECNAME, sizeof(ccgnodeinfo_t), false);
+  /* Bind ccgraphinfo to graph and all subgraphs */
+  aginit(g, AGRAPH, GRECNAME, -sz, false);
 
-    dg = deriveGraph(g);
+  /* Bind ccgraphinfo to graph and all subgraphs */
+  aginit(g, AGNODE, NRECNAME, sizeof(ccgnodeinfo_t), false);
 
-    size_t ccs_length = (size_t)agnnodes(dg);
-    Agraph_t **ccs = gv_calloc(ccs_length, sizeof(Agraph_t*));
-    initStk(&stk, insertFn, clMarkFn);
+  dg = deriveGraph(g);
 
-    c_cnt = 0;
-    for (dn = agfstnode(dg); dn; dn = agnxtnode(dg, dn)) {
-	if (marked(&stk, dn))
-	    continue;
-	setPrefix(&name, pfx);
-	agxbprint(&name, "%" PRISIZE_T, c_cnt);
-	char *name_str = agxbuse(&name);
-	dout = agsubg(dg, name_str, 1);
-	out = agsubg(g, name_str, 1);
-	agbindrec(out, GRECNAME, sizeof(ccgraphinfo_t), false);
-	GD_cc_subg(out) = 1;
-	n_cnt = dfs(dg, dn, dout, &stk);
-	if (n_cnt == SIZE_MAX) {
-	    agclose(dg);
-	    agclean (g, AGRAPH, GRECNAME);
-	    agclean (g, AGNODE, NRECNAME);
-	    freeStk (&stk);
-	    free(ccs);
-	    agxbfree(&name);
-	    *ncc = 0;
-	    return NULL;
-	}
-	unionNodes(dout, out);
-	e_cnt = graphviz_node_induce(out, NULL);
-	subGInduce(g, out);
-	ccs[c_cnt] = out;
-	agdelete(dg, dout);
-	if (Verbose)
-	    fprintf(stderr, "(%4" PRISIZE_T ") %7" PRISIZE_T " nodes %7" PRISIZE_T
-	            " edges\n", c_cnt, n_cnt, e_cnt);
-	c_cnt++;
-    }
+  size_t ccs_length = (size_t)agnnodes(dg);
+  Agraphs_t ccs = {0};
+  Agraphs_reserve(&ccs, ccs_length);
+  initStk(&stk, insertFn, clMarkFn);
 
+  for (dn = agfstnode(dg); dn; dn = agnxtnode(dg, dn)) {
+    if (marked(&stk, dn))
+      continue;
+    setPrefix(&name, pfx);
+    agxbprint(&name, "%" PRISIZE_T, Agraphs_size(&ccs));
+    char *name_str = agxbuse(&name);
+    dout = agsubg(dg, name_str, 1);
+    out = agsubg(g, name_str, 1);
+    agbindrec(out, GRECNAME, sizeof(ccgraphinfo_t), false);
+    GD_cc_subg(out) = 1;
+    n_cnt = dfs(dg, dn, dout, &stk);
+    unionNodes(dout, out);
+    e_cnt = graphviz_node_induce(out, NULL);
+    subGInduce(g, out);
+    Agraphs_append(&ccs, out);
+    agdelete(dg, dout);
     if (Verbose)
-	fprintf(stderr, "       %7d nodes %7d edges %7" PRISIZE_T " components %s\n",
-	    agnnodes(g), agnedges(g), c_cnt, agnameof(g));
+      fprintf(stderr,
+              "(%4" PRISIZE_T ") %7" PRISIZE_T " nodes %7" PRISIZE_T " edges\n",
+              Agraphs_size(&ccs) - 1, n_cnt, e_cnt);
+  }
 
-    agclose(dg);
-    agclean (g, AGRAPH, GRECNAME);
-    agclean (g, AGNODE, NRECNAME);
-    freeStk (&stk);
-    ccs = gv_recalloc(ccs, ccs_length, c_cnt, sizeof(Agraph_t*));
-    agxbfree(&name);
-    *ncc = c_cnt;
-    return ccs;
+  if (Verbose)
+    fprintf(stderr,
+            "       %7d nodes %7d edges %7" PRISIZE_T " components %s\n",
+            agnnodes(g), agnedges(g), Agraphs_size(&ccs), agnameof(g));
+
+  agclose(dg);
+  agclean(g, AGRAPH, GRECNAME);
+  agclean(g, AGNODE, NRECNAME);
+  freeStk(&stk);
+  agxbfree(&name);
+  *ncc = Agraphs_size(&ccs);
+  return Agraphs_detach(&ccs);
 }
 
 /* isConnected:
@@ -561,27 +505,23 @@ Agraph_t **cccomps(Agraph_t *g, size_t *ncc, char *pfx) {
  * Returns 0 if the graph is not connected.
  * Returns -1 if the graph is error.
  */
-int isConnected(Agraph_t * g)
-{
-    Agnode_t *n;
-    int ret = 1;
-    size_t cnt = 0;
-    stk_t stk;
+int isConnected(Agraph_t *g) {
+  Agnode_t *n;
+  int ret = 1;
+  size_t cnt = 0;
+  stk_t stk;
 
-    if (agnnodes(g) == 0)
-	return 1;
+  if (agnnodes(g) == 0)
+    return 1;
 
-    initStk(&stk, NULL, markFn);
-    for (n = agfstnode(g); n; n = agnxtnode(g, n))
-	unmark(&stk, n);
+  initStk(&stk, NULL, markFn);
+  for (n = agfstnode(g); n; n = agnxtnode(g, n))
+    unmark(&stk, n);
 
-    n = agfstnode(g);
-    cnt = dfs(g, agfstnode(g), NULL, &stk);
-    freeStk (&stk);
-    if (cnt == SIZE_MAX) { /* dfs failed */
-	return -1;
-    }
-    if (cnt != (size_t) agnnodes(g))
-	ret = 0;
-    return ret;
+  n = agfstnode(g);
+  cnt = dfs(g, agfstnode(g), NULL, &stk);
+  freeStk(&stk);
+  if (cnt != (size_t)agnnodes(g))
+    ret = 0;
+  return ret;
 }

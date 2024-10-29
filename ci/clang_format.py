@@ -422,7 +422,6 @@ EXCLUDE = (
     "lib/ortho/trapezoid.c",
     "lib/osage/osage.h",
     "lib/osage/osageinit.c",
-    "lib/pack/ccomps.c",
     "lib/pack/pack.h",
     "lib/patchwork/patchwork.c",
     "lib/patchwork/patchwork.h",
