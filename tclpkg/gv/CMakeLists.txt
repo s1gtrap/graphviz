@@ -271,6 +271,26 @@ if(ENABLE_SWIG)
     )
   endif()
 
+  if(ENABLE_PYTHON)
+    swig_add_library(gv_python3
+      LANGUAGE python
+      SOURCES gv.cpp gv.i gv_builtins.c gv_dummy_init.c
+    )
+    target_compile_definitions(gv_python3 PRIVATE DEMAND_LOADING=1)
+    set_property(
+      TARGET gv_python3
+      PROPERTY SWIG_GENERATED_INCLUDE_DIRECTORIES ${Python_INCLUDE_DIRS}
+    )
+    target_link_libraries(gv_python3 PRIVATE cdt cgraph gvc ${Python_LIBRARIES})
+
+    install(
+      TARGETS gv_python3
+      RUNTIME DESTINATION ${BINARY_INSTALL_DIR}
+      LIBRARY DESTINATION ${LIBRARY_INSTALL_DIR}/graphviz/python3
+      ARCHIVE DESTINATION ${LIBRARY_INSTALL_DIR}
+    )
+  endif()
+
   if(ENABLE_TCL)
     swig_add_library(gv_tcl
       LANGUAGE tcl
@@ -464,6 +484,27 @@ if(ENABLE_SWIG)
     else()
       install(
         FILES ${CMAKE_CURRENT_BINARY_DIR}/gv.3php
+        DESTINATION ${MAN_INSTALL_DIR}/man3
+      )
+    endif()
+  endif()
+
+  if(ENABLE_PYTHON)
+    if(GZIP)
+      add_custom_target(man-gv_python ALL DEPENDS gv.3python.gz
+                        COMMENT "gv_python man page")
+      add_custom_command(
+        OUTPUT gv.3python.gz
+        COMMAND ${GZIP} -9 --no-name --to-stdout gv.3python
+          >"${CMAKE_CURRENT_BINARY_DIR}/gv.3python.gz"
+        MAIN_DEPENDENCY gv.3python
+        COMMENT "compress gv_python man page")
+      install(
+        FILES ${CMAKE_CURRENT_BINARY_DIR}/gv.3python.gz
+        DESTINATION ${MAN_INSTALL_DIR}/man3)
+    else()
+      install(
+        FILES ${CMAKE_CURRENT_BINARY_DIR}/gv.3python
         DESTINATION ${MAN_INSTALL_DIR}/man3
       )
     endif()
