@@ -62,6 +62,7 @@ glCompPanel *glCompPanelNew(void *parentObj, float x, float y, float w,
     p->base.common.width = w;
     p->base.common.height = h;
 
+    glDeleteFont(&p->base.common.font);
     p->base.common.font = glNewFontFromParent(&p->base, NULL);
     p->text = NULL;
     p->base.common.functions.draw = glCompPanelDraw;
