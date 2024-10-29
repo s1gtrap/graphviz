@@ -15,24 +15,23 @@ static PangoLayout *get_pango_layout(char *markup_text,
 				     char *fontdescription, int fontsize,
 				     double *width, double *height)
 {
-    PangoFontDescription *desc;
     PangoFontMap *fontmap;
-    PangoContext *context;
     PangoLayout *layout;
     int pango_width, pango_height;
     char *text;
     PangoAttrList *attr_list;
     fontmap = pango_cairo_font_map_get_default();
-    context = pango_font_map_create_context(fontmap);
-
-    desc = pango_font_description_from_string(fontdescription);
-    pango_font_description_set_size(desc, (int)(fontsize * PANGO_SCALE));
 
     if (!pango_parse_markup
 	(markup_text, -1, '\0', &attr_list, &text, NULL, NULL))
 	return NULL;
+    PangoContext *const context = pango_font_map_create_context(fontmap);
     layout = pango_layout_new(context);
+    g_object_unref(context);
     pango_layout_set_text(layout, text, -1);
+    PangoFontDescription *const desc =
+      pango_font_description_from_string(fontdescription);
+    pango_font_description_set_size(desc, (int)(fontsize * PANGO_SCALE));
     pango_layout_set_font_description(layout, desc);
     pango_layout_set_attributes(layout, attr_list);
     pango_font_description_free(desc);
