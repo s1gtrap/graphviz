@@ -7,10 +7,11 @@ if(ENABLE_SWIG)
   if(ENABLE_SHARP)
     swig_add_library(gv_sharp
       LANGUAGE csharp
-      SOURCES gv.i gv_dummy_init.c
+      SOURCES gv.cpp gv.i gv_builtins.c gv_dummy_init.c
     )
+    target_compile_definitions(gv_sharp PRIVATE DEMAND_LOADING=1)
     set_property(TARGET gv_sharp PROPERTY SWIG_COMPILE_OPTIONS -namespace)
-    swig_link_libraries(gv_sharp PRIVATE gvc)
+    target_link_libraries(gv_sharp PRIVATE cdt cgraph gvc)
 
     get_property(gv_sharp_support
       TARGET gv_sharp
@@ -31,9 +32,10 @@ if(ENABLE_SWIG)
   if(ENABLE_D)
     swig_add_library(gv_d
       LANGUAGE d
-      SOURCES gv.i gv_dummy_init.c
+      SOURCES gv.cpp gv.i gv_builtins.c gv_dummy_init.c
     )
-    swig_link_libraries(gv_d PRIVATE gvc)
+    target_compile_definitions(gv_d PRIVATE DEMAND_LOADING=1)
+    target_link_libraries(gv_d PRIVATE cdt cgraph gvc)
 
     install(
       TARGETS gv_d
@@ -46,8 +48,9 @@ if(ENABLE_SWIG)
   if(ENABLE_GO)
     swig_add_library(gv_go
       LANGUAGE go
-      SOURCES gv.i gv_dummy_init.c
+      SOURCES gv.cpp gv.i gv_builtins.c gv_dummy_init.c
     )
+    target_compile_definitions(gv_go PRIVATE DEMAND_LOADING=1)
     set_property(
       TARGET gv_go PROPERTY SWIG_COMPILE_OPTIONS -intgosize ${INTGOSIZE}
     )
@@ -57,7 +60,7 @@ if(ENABLE_SWIG)
         PROPERTY SWIG_GENERATED_COMPILE_OPTIONS -Wno-unused-function
       )
     endif()
-    swig_link_libraries(gv_go PRIVATE gvc)
+    target_link_libraries(gv_go PRIVATE cdt cgraph gvc)
 
     add_custom_target(gv.go
       COMMAND echo "package gv" >gv.go
@@ -90,8 +93,9 @@ if(ENABLE_SWIG)
   if(ENABLE_GUILE)
     swig_add_library(gv_guile
       LANGUAGE guile
-      SOURCES gv.i gv_dummy_init.c
+      SOURCES gv.cpp gv.i gv_builtins.c gv_dummy_init.c
     )
+    target_compile_definitions(gv_guile PRIVATE DEMAND_LOADING=1)
     set_property(
       TARGET gv_guile
       PROPERTY SWIG_GENERATED_INCLUDE_DIRECTORIES ${GUILE_INCLUDE_DIRS}
@@ -102,7 +106,9 @@ if(ENABLE_SWIG)
         PROPERTY SWIG_GENERATED_COMPILE_OPTIONS -Wno-unused-parameter
       )
     endif()
-    swig_link_libraries(gv_guile PRIVATE gvc ${GUILE_LIBRARIES})
+    target_link_libraries(
+      gv_guile PRIVATE cdt cgraph gvc ${GUILE_LINK_LIBRARIES}
+    )
 
     install(
       TARGETS gv_guile
@@ -115,8 +121,9 @@ if(ENABLE_SWIG)
   if(ENABLE_JAVA)
     swig_add_library(gv_java
       LANGUAGE java
-      SOURCES gv.i gv_java_init.c
+      SOURCES gv.cpp gv.i gv_builtins.c gv_java_init.c
     )
+    target_compile_definitions(gv_java PRIVATE DEMAND_LOADING=1)
     set_property(
       TARGET gv_java
       PROPERTY SWIG_COMPILE_OPTIONS -package org.graphviz
@@ -126,7 +133,7 @@ if(ENABLE_SWIG)
       PROPERTY SWIG_GENERATED_INCLUDE_DIRECTORIES
         ${JNI_INCLUDE_DIRS}
     )
-    swig_link_libraries(gv_java PRIVATE gvc ${JNI_LIBRARIES})
+    target_link_libraries(gv_java PRIVATE cdt cgraph gvc ${JNI_LIBRARIES})
 
     install(
       TARGETS gv_java
@@ -139,8 +146,9 @@ if(ENABLE_SWIG)
   if(ENABLE_JAVASCRIPT)
     swig_add_library(gv_javascript
       LANGUAGE javascript
-      SOURCES gv.i gv_dummy_init.c
+      SOURCES gv.cpp gv.i gv_builtins.c gv_dummy_init.c
     )
+    target_compile_definitions(gv_javascript PRIVATE DEMAND_LOADING=1)
     set_property(TARGET gv_javascript PROPERTY SWIG_COMPILE_OPTIONS -jsc)
     set_property(
       TARGET gv_javascript
@@ -164,7 +172,9 @@ if(ENABLE_SWIG)
         PROPERTY SWIG_GENERATED_COMPILE_OPTIONS -Wno-unused-parameter
       )
     endif()
-    swig_link_libraries(gv_javascript PRIVATE gvc ${JAVASCRIPTCORE_LIBRARIES})
+    target_link_libraries(gv_javascript
+      PRIVATE cdt cgraph gvc ${JAVASCRIPTCORE_LIBRARIES}
+    )
 
     install(
       TARGETS gv_javascript
@@ -177,13 +187,14 @@ if(ENABLE_SWIG)
   if(ENABLE_LUA)
     swig_add_library(gv_lua
       LANGUAGE lua
-      SOURCES gv.i gv_dummy_init.c
+      SOURCES gv.cpp gv.i gv_builtins.c gv_dummy_init.c
     )
+    target_compile_definitions(gv_lua PRIVATE DEMAND_LOADING=1)
     set_property(
       TARGET gv_lua
       PROPERTY SWIG_GENERATED_INCLUDE_DIRECTORIES ${LUA_INCLUDE_DIR}
     )
-    swig_link_libraries(gv_lua PRIVATE gvc ${LUA_LIBRARIES})
+    target_link_libraries(gv_lua PRIVATE cdt cgraph gvc ${LUA_LIBRARIES})
 
     install(
       TARGETS gv_lua
@@ -196,8 +207,9 @@ if(ENABLE_SWIG)
   if(ENABLE_PERL)
     swig_add_library(gv_perl
       LANGUAGE perl5
-      SOURCES gv.i gv_dummy_init.c
+      SOURCES gv.cpp gv.i gv_builtins.c gv_dummy_init.c
     )
+    target_compile_definitions(gv_perl PRIVATE DEMAND_LOADING=1)
     set_property(
       TARGET gv_perl
       PROPERTY SWIG_GENERATED_INCLUDE_DIRECTORIES ${PERL_INCLUDE_PATH}
@@ -208,7 +220,7 @@ if(ENABLE_SWIG)
         PROPERTY SWIG_GENERATED_COMPILE_OPTIONS -Wno-unused-parameter
       )
     endif()
-    swig_link_libraries(gv_perl PRIVATE gvc ${PERL_LIBRARY})
+    target_link_libraries(gv_perl PRIVATE cdt cgraph gvc ${PERL_LIBRARY})
 
     install(
       TARGETS gv_perl
@@ -221,8 +233,9 @@ if(ENABLE_SWIG)
   if(ENABLE_PHP)
     swig_add_library(gv_php
       LANGUAGE php7
-      SOURCES gv.i gv_php_init.c
+      SOURCES gv.cpp gv.i gv_builtins.c gv_php_init.c
     )
+    target_compile_definitions(gv_php PRIVATE DEMAND_LOADING=1)
     set_property(
       TARGET gv_php
       PROPERTY SWIG_GENERATED_INCLUDE_DIRECTORIES ${PHP_INCLUDE_DIRS}
@@ -248,7 +261,7 @@ if(ENABLE_SWIG)
       TARGET gv_php
       PROPERTY SWIG_GENERATED_COMPILE_OPTIONS "${PHP_FLAGS}"
     )
-    swig_link_libraries(gv_php PRIVATE gvc ${PHP_LIBRARIES})
+    target_link_libraries(gv_php PRIVATE cdt cgraph gvc ${PHP_LIBRARIES})
 
     install(
       TARGETS gv_php
@@ -261,8 +274,9 @@ if(ENABLE_SWIG)
   if(ENABLE_TCL)
     swig_add_library(gv_tcl
       LANGUAGE tcl
-      SOURCES gv.i gv_tcl_init.c
+      SOURCES gv.cpp gv.i gv_builtins.c gv_tcl_init.c
     )
+    target_compile_definitions(gv_tcl PRIVATE DEMAND_LOADING=1)
     set_property(TARGET gv_tcl PROPERTY SWIG_COMPILE_OPTIONS -namespace)
     target_include_directories(gv_tcl PRIVATE SYSTEM ${TCL_INCLUDE_PATH})
     if(HAVE_CXX_WSHADOW)
@@ -271,7 +285,7 @@ if(ENABLE_SWIG)
         PROPERTY SWIG_GENERATED_COMPILE_OPTIONS -Wno-shadow
       )
     endif()
-    swig_link_libraries(gv_tcl PRIVATE gvc tclstubs ${TCL_LIBRARY})
+    target_link_libraries(gv_tcl PRIVATE cdt cgraph gvc tclstubs ${TCL_LIBRARY})
 
     install(
       TARGETS gv_tcl
