@@ -337,7 +337,6 @@ static void cairo_gradient_fill(cairo_t *cr, obj_state_t *obj, int filled,
                                 pointf *A, size_t n) {
     cairo_pattern_t* pat;
     double angle = obj->gradient_angle * M_PI / 180;
-    float r1,r2;
     pointf G[2],c1;
 
     if (filled == GRADIENT) {
@@ -347,8 +346,8 @@ static void cairo_gradient_fill(cairo_t *cr, obj_state_t *obj, int filled,
     else {
 	get_gradient_points(A, G, n, 0, 1);
 	  //r1 is inner radius, r2 is outer radius
-	r1 = G[1].x;    /* Set a r2/4 in get_gradient_points */
-	r2 = G[1].y;
+	const double r1 = G[1].x; // set a r2 ÷ 4 in get_gradient_points
+	const double r2 = G[1].y;
 	if (obj->gradient_angle == 0) {
 	    c1.x = G[0].x;
 	    c1.y = G[0].y;
