@@ -130,45 +130,24 @@ static gvdevice_features_t device_features_kitty = {
 static gvdevice_engine_t device_engine_kitty = {.format = kitty_format};
 
 #ifdef HAVE_LIBZ
-static int zlib_compress(unsigned char *source, size_t source_len,
-                         unsigned char **dest, size_t *dest_len, int level) {
-  int ret;
-
-  z_stream strm;
-  strm.zalloc = Z_NULL;
-  strm.zfree = Z_NULL;
-  strm.opaque = Z_NULL;
-  ret = deflateInit(&strm, level);
-  if (ret != Z_OK) {
-    return ret;
-  }
-
-  size_t dest_cap = deflateBound(&strm, source_len);
+static int zlib_compress(unsigned char *source, uLong source_len,
+                         unsigned char **dest, size_t *dest_len) {
+  uLong dest_cap = compressBound(source_len);
   *dest = gv_alloc(dest_cap);
 
-  strm.avail_in = source_len;
-  strm.next_in = source;
-  strm.next_out = *dest;
-  strm.avail_out = dest_cap;
-
-  ret = deflate(&strm, Z_FINISH);
-  assert(strm.avail_in == 0);
-  assert(ret == Z_STREAM_END);
-
-  *dest_len = dest_cap - strm.avail_out;
-
-  (void)deflateEnd(&strm);
-  return Z_OK;
+  const int ret = compress(*dest, &dest_cap, source, source_len);
+  *dest_len = dest_cap;
+  return ret;
 }
 
 static void zkitty_format(GVJ_t *job) {
   unsigned char *imagedata = (unsigned char *)job->imagedata;
-  size_t imagedata_size = job->width * job->height * 4;
+  const uLong imagedata_size = job->width * job->height * 4;
   fix_colors(imagedata, imagedata_size);
 
   unsigned char *zbuf;
   size_t zsize;
-  int ret = zlib_compress(imagedata, imagedata_size, &zbuf, &zsize, -1);
+  int ret = zlib_compress(imagedata, imagedata_size, &zbuf, &zsize);
   assert(ret == Z_OK);
   (void)ret;
 
