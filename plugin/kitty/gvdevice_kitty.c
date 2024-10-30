@@ -24,10 +24,10 @@
 #include <zlib.h>
 #endif
 
-static void fix_colors(char *imagedata, size_t imagedata_size) {
+static void fix_colors(unsigned char *imagedata, size_t imagedata_size) {
   for (size_t i = 0; i < imagedata_size; i += 4) {
-    char blue = imagedata[i];
-    char red = imagedata[i + 2];
+    const unsigned char blue = imagedata[i];
+    const unsigned char red = imagedata[i + 2];
     imagedata[i] = red;
     imagedata[i + 2] = blue;
   }
@@ -44,7 +44,7 @@ static size_t base64_encoded_size(size_t original_size) {
   return div_up(original_size, 3) * 4;
 }
 
-static char *base64_encode(const char *data, size_t size) {
+static char *base64_encode(const unsigned char *data, size_t size) {
   size_t buf_i = 0;
   size_t data_i = 0;
   char *buf = gv_alloc(base64_encoded_size(size));
@@ -86,8 +86,8 @@ end:
   return buf;
 }
 
-static void kitty_write(char *data, size_t data_size, int width, int height,
-                        bool is_compressed) {
+static void kitty_write(unsigned char *data, size_t data_size, int width,
+                        int height, bool is_compressed) {
   const size_t chunk_size = 4096;
   char *output = base64_encode(data, data_size);
   size_t offset = 0;
@@ -113,7 +113,7 @@ static void kitty_write(char *data, size_t data_size, int width, int height,
 }
 
 static void kitty_format(GVJ_t *job) {
-  char *imagedata = job->imagedata;
+  unsigned char *imagedata = (unsigned char *)job->imagedata;
   size_t imagedata_size = job->width * job->height * 4;
   fix_colors(imagedata, imagedata_size);
 
@@ -130,8 +130,8 @@ static gvdevice_features_t device_features_kitty = {
 static gvdevice_engine_t device_engine_kitty = {.format = kitty_format};
 
 #ifdef HAVE_LIBZ
-static int zlib_compress(char *source, size_t source_len, char **dest,
-                         size_t *dest_len, int level) {
+static int zlib_compress(unsigned char *source, size_t source_len,
+                         unsigned char **dest, size_t *dest_len, int level) {
   int ret;
 
   z_stream strm;
@@ -147,8 +147,8 @@ static int zlib_compress(char *source, size_t source_len, char **dest,
   *dest = gv_alloc(dest_cap);
 
   strm.avail_in = source_len;
-  strm.next_in = (Bytef *)source;
-  strm.next_out = (Bytef *)*dest;
+  strm.next_in = source;
+  strm.next_out = *dest;
   strm.avail_out = dest_cap;
 
   ret = deflate(&strm, Z_FINISH);
@@ -162,11 +162,11 @@ static int zlib_compress(char *source, size_t source_len, char **dest,
 }
 
 static void zkitty_format(GVJ_t *job) {
-  char *imagedata = job->imagedata;
+  unsigned char *imagedata = (unsigned char *)job->imagedata;
   size_t imagedata_size = job->width * job->height * 4;
   fix_colors(imagedata, imagedata_size);
 
-  char *zbuf;
+  unsigned char *zbuf;
   size_t zsize;
   int ret = zlib_compress(imagedata, imagedata_size, &zbuf, &zsize, -1);
   assert(ret == Z_OK);
