@@ -1176,6 +1176,38 @@ def test_1676():
     assert ret != -signal.SIGSEGV, "Graphviz segfaulted"
 
 
+@pytest.mark.skipif(which("gvpr") is None, reason="GVPR not available")
+@pytest.mark.xfail(
+    strict=re.search(r"\basan\b", os.environ.get("CI_JOB_NAME", "").lower())
+    is not None,
+    reason="https://gitlab.com/graphviz/graphviz/-/issues/1702",
+)
+def test_1702():
+    """
+    GVPR library program `depath` should work on arbitrary examples
+    https://gitlab.com/graphviz/graphviz/-/issues/1702
+    """
+
+    # locate our associated test case in this directory
+    input = Path(__file__).parent / "1702.dot"
+    assert input.exists(), "unexpectedly missing test case"
+
+    # find the library program
+    depath = Path(__file__).parents[1] / "cmd/gvpr/lib/depath"
+    assert depath.exists(), "GVPR library program depath missing"
+
+    # run GVPR
+    gvpr_bin = which("gvpr")
+    proc = subprocess.run(
+        [gvpr_bin, "-c", "-o", os.devnull, "-f", depath, input],
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
+        check=True,
+    )
+
+    assert proc.stderr.strip() == "", "depath errored on tests/1702.dot"
+
+
 def test_1724():
     """
     passing malformed node and newrank should not cause segfaults
