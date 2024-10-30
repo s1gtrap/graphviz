@@ -17,6 +17,7 @@
 #include <cgraph/gv_ctype.h>
 #include <cgraph/strview.h>
 #include <util/alloc.h>
+#include <util/prisize_t.h>
 #include <util/strcasecmp.h>
 
 /* FIXME - the following declaration should be removed
@@ -475,18 +476,17 @@ static char *gv_get_font(availfonts_t gv_af_p,
     return NULL;
 }
 
-static void
-printFontMap (gv_font_map*gv_fmap, int sz)
-{
-    int j;
+static void printFontMap(gv_font_map *gv_fmap, size_t sz) {
     char* font;
 
-    for (j = 0; j < sz; j++) {
+    for (size_t j = 0; j < sz; j++) {
 	font = gv_fmap[j].gv_font;
 	if (!font)
-	    fprintf (stderr, " [%d] %s => <Not available>\n", j, gv_fmap[j].gv_ps_fontname);
+	    fprintf(stderr, " [%" PRISIZE_T "] %s => <Not available>\n", j,
+	            gv_fmap[j].gv_ps_fontname);
 	else
-	    fprintf (stderr, " [%d] %s => \"%s\"\n", j, gv_fmap[j].gv_ps_fontname, font);
+	    fprintf(stderr, " [%" PRISIZE_T "] %s => \"%s\"\n", j,
+	            gv_fmap[j].gv_ps_fontname, font);
     }
 }
 
