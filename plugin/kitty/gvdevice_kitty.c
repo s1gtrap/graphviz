@@ -86,8 +86,8 @@ end:
   return buf;
 }
 
-static void kitty_write(unsigned char *data, size_t data_size, int width,
-                        int height, bool is_compressed) {
+static void kitty_write(unsigned char *data, size_t data_size, unsigned width,
+                        unsigned height, bool is_compressed) {
   const size_t chunk_size = 4096;
   char *output = base64_encode(data, data_size);
   size_t offset = 0;
@@ -96,7 +96,7 @@ static void kitty_write(unsigned char *data, size_t data_size, int width,
   while (offset < size) {
     int has_next_chunk = offset + chunk_size <= size;
     if (offset == 0) {
-      printf("\033_Ga=T,f=32,s=%d,v=%d%s%s;", width, height,
+      printf("\033_Ga=T,f=32,s=%u,v=%u%s%s;", width, height,
              chunk_size < size ? ",m=1" : "", is_compressed ? ",o=z" : "");
     } else {
       printf("\033_Gm=%d;", has_next_chunk);
