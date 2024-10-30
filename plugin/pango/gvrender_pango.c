@@ -9,7 +9,10 @@
  *************************************************************************/
 
 #include "config.h"
+
+#include <assert.h>
 #include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -171,8 +174,10 @@ static void cairogen_begin_page(GVJ_t * job)
         default:
 	    if (job->width >= CAIRO_XMAX || job->height >= CAIRO_YMAX) {
 		double scale = fmin(CAIRO_XMAX / job->width, CAIRO_YMAX / job->height);
-		job->width *= scale;
-		job->height *= scale;
+		assert(job->width * scale <= UINT_MAX);
+		job->width = (unsigned)(job->width * scale);
+		assert(job->height * scale <= UINT_MAX);
+		job->height = (unsigned)(job->height * scale);
 		job->scale.x *= scale;
 		job->scale.y *= scale;
                 fprintf(stderr,
