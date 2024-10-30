@@ -184,8 +184,10 @@ static void cairogen_begin_page(GVJ_t * job)
                         "%s: graph is too large for cairo-renderer bitmaps. Scaling by %g to fit\n",
                         job->common->cmdname, scale);
 	    }
-	    surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-			job->width, job->height);
+	    assert(job->width <= INT_MAX);
+	    assert(job->height <= INT_MAX);
+	    surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
+	                                         (int)job->width, (int)job->height);
             if (job->common->verbose)
                 fprintf(stderr,
                         "%s: allocating a %.0fK cairo image surface (%d x %d pixels)\n",
