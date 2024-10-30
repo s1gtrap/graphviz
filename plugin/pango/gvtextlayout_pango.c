@@ -17,6 +17,7 @@
 #include <string.h>
 #include <gvc/gvplugin_render.h>
 #include <cgraph/agxbuf.h>
+#include <cgraph/gv_math.h>
 #include <common/utils.h>
 #include <gvc/gvplugin_textlayout.h>
 #include <util/alloc.h>
@@ -93,7 +94,8 @@ static bool pango_textlayout(textspan_t * span, char **fontpath)
 	g_object_unref(fontmap);
     }
 
-    if (!fontname || strcmp(fontname, span->font->name) != 0 || fontsize != span->font->size) {
+    if (!fontname || strcmp(fontname, span->font->name) != 0 ||
+        !is_exactly_equal(fontsize, span->font->size)) {
 
 	/* check if the conversion to Pango units below will overflow */
 	if (INT_MAX / PANGO_SCALE < span->font->size) {
