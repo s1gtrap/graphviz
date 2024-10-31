@@ -75,6 +75,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   dependencies that were previously missing.
 - In the CMake build system, linking of the Guile language bindings uses the
   full path to libguile, fixing issues on macOS.
+- The provided release packages for Debian-based operating systems (only Ubuntu
+  currently) have corrected package dependencies. #2466
 
 ## [12.1.2] – 2024-09-28
 
