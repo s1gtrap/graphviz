@@ -263,7 +263,7 @@ Agnode_t *agsubnode(Agraph_t * g, Agnode_t * n0, int cflag)
     Agraph_t *par;
     Agnode_t *n;
 
-    if (agroot(g) != n0->root)
+    if (g->root != n0->root)
 	return NULL;
     n = agfindnode_by_id(g, AGID(n0));
     if (n == NULL && cflag) {
