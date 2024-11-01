@@ -10,9 +10,9 @@
 
 #pragma once
 
-#include <cgraph/agxbuf.h>
 #include <color.h>
 #include <common/colorprocs.h>
+#include <util/agxbuf.h>
 
 #ifdef __cplusplus
 extern "C" {

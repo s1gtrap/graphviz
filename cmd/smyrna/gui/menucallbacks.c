@@ -16,12 +16,12 @@
 #include "topviewsettings.h"
 #include "gltemplate.h"
 #include <common/const.h>
-#include <cgraph/agxbuf.h>
 #include <assert.h>
 #include <ctype.h>
 #include <glib.h>
 #include <stdlib.h>
 #include  "frmobjectui.h"
+#include <util/agxbuf.h>
 
 void mAttributesSlot(GtkWidget *widget, void *user_data) {
     (void)widget;

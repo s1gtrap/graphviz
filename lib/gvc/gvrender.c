@@ -22,7 +22,6 @@
 #include <common/macros.h>
 #include <common/colorprocs.h>
 #include <gvc/gvplugin_render.h>
-#include <cgraph/agxbuf.h>
 #include <cgraph/cgraph.h>
 #include <gvc/gvcint.h>
 #include <common/geom.h>
@@ -31,6 +30,7 @@
 #include <gvc/gvcproc.h>
 #include <limits.h>
 #include <stdlib.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/strcasecmp.h>
 #include <util/streq.h>

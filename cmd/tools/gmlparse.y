@@ -21,9 +21,9 @@
 #include <string.h>
 #include <arith.h>
 #include <gml2gv.h>
-#include <agxbuf.h>
 #include <assert.h>
 #include <cgraph/list.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/exit.h>
 

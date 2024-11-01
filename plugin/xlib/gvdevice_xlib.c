@@ -40,9 +40,9 @@
 #endif
 #include <errno.h>
 
-#include <cgraph/agxbuf.h>
 #include <cgraph/gv_math.h>
 #include <gvc/gvplugin_device.h>
+#include <util/agxbuf.h>
 #include <util/exit.h>
 #include <util/prisize_t.h>
 

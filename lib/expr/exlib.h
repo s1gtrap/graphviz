@@ -22,9 +22,9 @@ extern "C" {
  */
 
 #include <ast/ast.h>
-#include <cgraph/agxbuf.h>
 #include <sfio/sfio.h>
 #include <stdio.h>
+#include <util/agxbuf.h>
 
 typedef struct Exinput_s		/* input stack			*/
 {

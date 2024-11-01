@@ -10,7 +10,6 @@
 
 #include "smyrnadefs.h"
 #include "gvprpipe.h"
-#include <cgraph/agxbuf.h>
 #include <common/const.h>
 #include <limits.h>
 #include <stdio.h>
@@ -21,6 +20,7 @@
 #include "draw.h"
 #include "gui.h"
 #include "topviewsettings.h"
+#include <util/agxbuf.h>
 #include <viewport.h>
 
 #include <gvpr/gvpr.h>

@@ -16,7 +16,6 @@
 
 #include    "convert.h"
 #include    <assert.h>
-#include    <cgraph/agxbuf.h>
 #include    <cgraph/gv_ctype.h>
 #include    <cgraph/list.h>
 #include    <getopt.h>
@@ -26,6 +25,7 @@
 #include    <stdlib.h>
 #include    <string.h>
 #include    "openFile.h"
+#include    <util/agxbuf.h>
 #include    <util/alloc.h>
 #include    <util/exit.h>
 #include    <util/unreachable.h>

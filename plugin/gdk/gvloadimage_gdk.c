@@ -9,10 +9,10 @@
  *************************************************************************/
 
 #include "config.h"
-#include <cgraph/agxbuf.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <util/agxbuf.h>
 
 #include <gvc/gvplugin_loadimage.h>
 #include <gvc/gvio.h>

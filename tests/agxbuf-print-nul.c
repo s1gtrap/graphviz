@@ -9,8 +9,8 @@
 #endif
 
 #include <assert.h>
-#include <cgraph/agxbuf.h>
 #include <stdlib.h>
+#include <util/agxbuf.h>
 
 int main(void) {
 

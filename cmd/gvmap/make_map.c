@@ -17,7 +17,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
-#include <cgraph/agxbuf.h>
 #include <cgraph/list.h>
 #include <cgraph/cgraph.h>
 #include "make_map.h"
@@ -25,6 +24,7 @@
 #include "country_graph_coloring.h"
 #include <sparse/colorutil.h>
 #include <neatogen/delaunay.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/prisize_t.h>
 

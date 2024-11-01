@@ -12,11 +12,11 @@
 /* Module for clipping splines to cluster boxes.
  */
 
-#include	<cgraph/agxbuf.h>
 #include	<cgraph/gv_math.h>
 #include	<dotgen/dot.h>
 #include	<stdbool.h>
 #include	<stddef.h>
+#include	<util/agxbuf.h>
 #include	<util/alloc.h>
 
 /* Return point where line segment [pp,cp] intersects

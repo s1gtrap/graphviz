@@ -16,10 +16,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <gvc/gvplugin_render.h>
-#include <cgraph/agxbuf.h>
 #include <cgraph/gv_math.h>
 #include <common/utils.h>
 #include <gvc/gvplugin_textlayout.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 
 #include <pango/pangocairo.h>

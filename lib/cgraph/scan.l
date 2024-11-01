@@ -30,11 +30,11 @@
 #include <assert.h>
 #include <grammar.h>
 #include <cgraph/cghdr.h>
-#include <cgraph/agxbuf.h>
 #include <cgraph/gv_ctype.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
+#include <util/agxbuf.h>
 #include <util/startswith.h>
 // #define YY_BUF_SIZE 128000
 #define GRAPH_EOF_TOKEN		'@'		/* lex class must be defined below */

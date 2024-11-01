@@ -14,7 +14,6 @@ endif()
 
 add_library(cgraph
   # Header files
-  agxbuf.h
   cghdr.h
   cgraph.h
   gv_ctype.h

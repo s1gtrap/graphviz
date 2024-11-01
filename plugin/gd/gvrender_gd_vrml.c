@@ -29,10 +29,10 @@
 /* for gvcolor_t */
 #include <common/color.h>
 
-#include <cgraph/agxbuf.h>
 #include <cgraph/cgraph.h>
 #include <cgraph/strview.h>
 #include <common/render.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 
 /* for wind() */

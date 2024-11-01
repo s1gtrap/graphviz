@@ -15,13 +15,13 @@
 #include <errno.h>
 #include <gvc/gvc.h>
 #include <xdot/xdot.h>
-#include <cgraph/agxbuf.h>
 #include <cgraph/gv_ctype.h>
 #include <cgraph/gv_math.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/exit.h>
 #include <util/gv_fopen.h>

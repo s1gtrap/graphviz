@@ -15,7 +15,6 @@
 #include "config.h"
 #include <assert.h>
 #include <ast/error.h>
-#include <cgraph/agxbuf.h>
 #include <cgraph/cgraph.h>
 #include <gvpr/actions.h>
 #include <gvpr/compile.h>
@@ -28,6 +27,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/exit.h>
 #include <util/prisize_t.h>

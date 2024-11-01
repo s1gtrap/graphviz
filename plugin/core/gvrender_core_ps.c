@@ -18,10 +18,10 @@
 #include <gvc/gvplugin_render.h>
 #include <gvc/gvplugin_device.h>
 #include <gvc/gvio.h>
-#include <cgraph/agxbuf.h>
 #include <cgraph/cgraph.h>
 #include <cgraph/gv_ctype.h>
 #include <common/utils.h>
+#include <util/agxbuf.h>
 #include <util/prisize_t.h>
 #include "ps.h"
 

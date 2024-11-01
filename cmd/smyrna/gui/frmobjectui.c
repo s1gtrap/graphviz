@@ -20,10 +20,10 @@
 #include "frmobjectui.h"
 #include <assert.h>
 #include "gvprpipe.h"
-#include <cgraph/agxbuf.h>
 #include <cgraph/strview.h>
 #include <stdint.h>
 #include <string.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/strcasecmp.h>
 #include <util/startswith.h>

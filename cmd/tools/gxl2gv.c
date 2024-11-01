@@ -15,11 +15,11 @@
 
 #include    <assert.h>
 #include    "convert.h"
-#include    <cgraph/agxbuf.h>
 #include    <cgraph/gv_ctype.h>
 #include    <cgraph/list.h>
 #include    <stdbool.h>
 #include    <stdio.h>
+#include    <util/agxbuf.h>
 #include    <util/alloc.h>
 #include    <util/exit.h>
 #include    <util/startswith.h>

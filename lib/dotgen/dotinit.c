@@ -9,7 +9,6 @@
  *************************************************************************/
 
 #include <assert.h>
-#include <cgraph/agxbuf.h>
 #include <limits.h>
 #include <time.h>
 #include <dotgen/dot.h>
@@ -18,6 +17,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/streq.h>
 

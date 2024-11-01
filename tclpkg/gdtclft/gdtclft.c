@@ -12,7 +12,6 @@
 
 #include "gd.h"
 #include <assert.h>
-#include <cgraph/agxbuf.h>
 #include <errno.h>
 #include <limits.h>
 #include <math.h>
@@ -20,6 +19,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <tcl.h>
+#include <util/agxbuf.h>
 #include <util/startswith.h>
 #include <util/streq.h>
 

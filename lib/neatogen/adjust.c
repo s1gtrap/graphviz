@@ -16,7 +16,6 @@
 #include <assert.h>
 #include <cgraph/gv_ctype.h>
 #include <neatogen/neato.h>
-#include <cgraph/agxbuf.h>
 #include <common/utils.h>
 #include <float.h>
 #include <math.h>
@@ -35,6 +34,7 @@
 #include <neatogen/quad_prog_vpsc.h>
 #endif
 #include <stddef.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/startswith.h>
 #include <util/strcasecmp.h>

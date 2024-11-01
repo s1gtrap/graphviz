@@ -31,7 +31,6 @@
 #include <assert.h>
 #include <common/render.h>
 #include <common/htmltable.h>
-#include <cgraph/agxbuf.h>
 #include <cgraph/gv_math.h>
 #include <common/pointset.h>
 #include <cdt/cdt.h>
@@ -43,6 +42,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/bitarray.h>
 #include <util/exit.h>

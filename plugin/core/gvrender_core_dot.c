@@ -22,11 +22,11 @@
 
 #include <gvc/gvplugin_render.h>
 #include <gvc/gvplugin_device.h>
-#include <cgraph/agxbuf.h>
 #include <cgraph/gv_ctype.h>
 #include <common/utils.h>
 #include <gvc/gvc.h>
 #include <gvc/gvio.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/prisize_t.h>
 #include <util/streq.h>

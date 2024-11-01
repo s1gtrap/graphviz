@@ -15,7 +15,6 @@
  */
 
 #include "config.h"
-#include <cgraph/agxbuf.h>
 #include <common/const.h>
 #include <gvc/gvplugin_loadimage.h>
 #include <gvc/gvcint.h>
@@ -25,6 +24,7 @@
 #include <cgraph/cgraph.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <util/agxbuf.h>
 
 static int gvloadimage_select(GVJ_t * job, char *str)
 {

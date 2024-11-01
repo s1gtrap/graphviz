@@ -12,11 +12,11 @@
 
 #pragma once
 
+#include <util/agxbuf.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include <agxbuf.h>
 
     union HTMLSTYPE;
     typedef struct htmlparserstate_s htmlparserstate_t;

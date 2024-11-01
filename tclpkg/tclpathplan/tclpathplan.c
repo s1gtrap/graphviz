@@ -24,7 +24,6 @@
 #include                <string.h>
 
 #include <assert.h>
-#include <cgraph/agxbuf.h>
 #include <cgraph/list.h>
 #include <limits.h>
 #include "makecw.h"
@@ -34,6 +33,7 @@
 #include <pathplan/tri.h>
 #include "Plegal_arrangement.h"
 #include <tcl.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/prisize_t.h>
 

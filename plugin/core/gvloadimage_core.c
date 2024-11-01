@@ -19,10 +19,10 @@
 #endif
 
 #include <gvc/gvplugin_loadimage.h>
-#include <cgraph/agxbuf.h>
 #include <common/utils.h>
 #include <gvc/gvio.h>
 #include "core_loadimage_xdot.h"
+#include <util/agxbuf.h>
 
 extern shape_desc *find_user_shape(char *name);
 

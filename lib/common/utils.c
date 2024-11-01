@@ -11,7 +11,6 @@
  *************************************************************************/
 
 #include <common/render.h>
-#include <cgraph/agxbuf.h>
 #include <cgraph/gv_ctype.h>
 #include <cgraph/gv_math.h>
 #include <cgraph/strview.h>
@@ -26,6 +25,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <unistd.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/startswith.h>
 #include <util/strcasecmp.h>

@@ -12,7 +12,6 @@
 
 #include "config.h"
 #include <assert.h>
-#include <cgraph/agxbuf.h>
 #include <cgraph/gv_math.h>
 #include <cgraph/list.h>
 #include <common/geomprocs.h>
@@ -25,6 +24,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/prisize_t.h>
 

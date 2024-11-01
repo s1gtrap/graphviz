@@ -15,7 +15,6 @@
  * expression library evaluator
  */
 
-#include <cgraph/agxbuf.h>
 #include <cgraph/strview.h>
 #include <cgraph/gv_ctype.h>
 #include <expr/exlib.h>
@@ -28,6 +27,7 @@
 #include <string.h>
 #include <assert.h>
 #include <time.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/exit.h>
 #include <util/unreachable.h>

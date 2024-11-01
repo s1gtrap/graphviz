@@ -16,11 +16,11 @@
  */
 
 #include <ast/ast.h>
-#include <cgraph/agxbuf.h>
 #include <cgraph/gv_ctype.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <util/agxbuf.h>
 
 /// quote string as with qb...qe
 char *fmtquote(const char *as, const char *qb, const char *qe) {

@@ -23,6 +23,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <util/agxbuf.h>
 
 #include <inttypes.h>
 
@@ -32,7 +33,6 @@
 #include "globals.h"
 #include "colorprocs.h"		/* must follow color.h (in types.h) */
 #include "geomprocs.h"		/* must follow geom.h (in types.h) */
-#include "agxbuf.h"
 #include "utils.h"		/* must follow types.h and agxbuf.h */
 #include "gvplugin.h"		/* must follow gvcext.h (in types.h) */
 #include "gvcjob.h"		/* must follow gvcext.h (in types.h) */

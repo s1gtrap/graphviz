@@ -17,11 +17,11 @@
  */
 
 #include <math.h>
-#include <cgraph/agxbuf.h>
 #include <common/render.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/unreachable.h>
 

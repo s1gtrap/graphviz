@@ -9,7 +9,6 @@
  *************************************************************************/
 
 #include "config.h"
-#include <cgraph/agxbuf.h>
 #include <cgraph/list.h>
 #include <sparse/SparseMatrix.h>
 #include <sfdpgen/spring_electrical.h>
@@ -25,6 +24,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <time.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/bitarray.h>
 

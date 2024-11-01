@@ -16,6 +16,7 @@
 #include <ctype.h>
 #include <cgraph/gv_ctype.h>
 #include <cgraph/strview.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/prisize_t.h>
 #include <util/strcasecmp.h>
@@ -52,7 +53,6 @@ char* strcasestr (const char *str, const char *pat)
 
 #endif
 
-#include <cgraph/agxbuf.h>
 #include <gvc/gvplugin_textlayout.h>
 #include <pango/pangocairo.h>
 #include "gvgetfontlist.h"

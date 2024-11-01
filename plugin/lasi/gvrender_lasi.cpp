@@ -21,9 +21,9 @@
 #include <gvc/gvplugin_device.h>
 #include <gvc/gvio.h>
 #include <gvc/gvcint.h>
-#include <cgraph/agxbuf.h>
 #include <common/const.h>
 #include <common/utils.h>
+#include <util/agxbuf.h>
 #include <util/prisize_t.h>
 #include <util/unreachable.h>
 #include "../core/ps.h"

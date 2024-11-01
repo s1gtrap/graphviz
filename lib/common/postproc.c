@@ -10,11 +10,11 @@
  * Contributors: Details at https://graphviz.org
  *************************************************************************/
 
-#include <cgraph/agxbuf.h>
 #include <common/render.h>
 #include <label/xlabels.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/prisize_t.h>
 #include <util/unreachable.h>
