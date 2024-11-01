@@ -88,6 +88,7 @@ else
         ./configure --prefix=$( pwd )/build --with-quartz=yes
         make
         make install
+        python3 ci/make_relocatable.py $( pwd )/build
         tar cfz ${DIR}/graphviz-${GV_VERSION}-${ARCH}.tar.gz --options gzip:compression-level=9 build
     elif [ "${OSTYPE}" = "cygwin" -o "${OSTYPE}" = "msys" ]; then
         if [ "${OSTYPE}" = "msys" ]; then
