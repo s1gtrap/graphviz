@@ -1177,11 +1177,6 @@ def test_1676():
 
 
 @pytest.mark.skipif(which("gvpr") is None, reason="GVPR not available")
-@pytest.mark.xfail(
-    strict=re.search(r"\basan\b", os.environ.get("CI_JOB_NAME", "").lower())
-    is not None,
-    reason="https://gitlab.com/graphviz/graphviz/-/issues/1702",
-)
 def test_1702():
     """
     GVPR library program `depath` should work on arbitrary examples
