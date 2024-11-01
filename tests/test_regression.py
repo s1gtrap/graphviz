@@ -4400,13 +4400,46 @@ def test_2577_1():
 
 @pytest.mark.parametrize(
     "testcase",
-    ("2585", "2585_1", "2585_2", "2585_3", "2585_4", "2585_5", "2585_6", "2585_7"),
+    (
+        "2585",
+        pytest.param(
+            "2585_1",
+            marks=pytest.mark.xfail(
+                strict=re.search(r"\basan\b", os.environ.get("CI_JOB_NAME", "").lower())
+                is None,
+                reason="https://gitlab.com/graphviz/graphviz/-/issues/2585",
+            ),
+        ),
+        pytest.param(
+            "2585_2",
+            marks=pytest.mark.xfail(
+                strict=re.search(r"\basan\b", os.environ.get("CI_JOB_NAME", "").lower())
+                is None,
+                reason="https://gitlab.com/graphviz/graphviz/-/issues/2585",
+            ),
+        ),
+        pytest.param(
+            "2585_3",
+            marks=pytest.mark.xfail(
+                strict=re.search(r"\basan\b", os.environ.get("CI_JOB_NAME", "").lower())
+                is None,
+                reason="https://gitlab.com/graphviz/graphviz/-/issues/2585",
+            ),
+        ),
+        pytest.param(
+            "2585_4",
+            marks=pytest.mark.xfail(
+                strict=re.search(r"\basan\b", os.environ.get("CI_JOB_NAME", "").lower())
+                is None,
+                reason="https://gitlab.com/graphviz/graphviz/-/issues/2585",
+            ),
+        ),
+        "2585_5",
+        "2585_6",
+        "2585_7",
+    ),
 )
 @pytest.mark.skipif(which("gvpr") is None, reason="GVPR not available")
-@pytest.mark.xfail(
-    strict=re.search(r"\basan\b", os.environ.get("CI_JOB_NAME", "").lower()) is None,
-    reason="https://gitlab.com/graphviz/graphviz/-/issues/2585",
-)
 def test_2585(testcase: str):
     """
     GVPR should reject various invalid uses of `void` types

@@ -1128,6 +1128,9 @@ formal_list	:	formal_item
 
 formal_item	:	DECLARE {expr.declare=$1->type;} name
 		{
+			if ($1->type == 0) {
+				exerror("%s: parameters to functions cannot be void typed", $3->name);
+			}
 			$$ = exnewnode(expr.program, ID, false, $1->type, NULL, NULL);
 			$$->data.variable.symbol = $3;
 			$3->lex = DYNAMIC;
