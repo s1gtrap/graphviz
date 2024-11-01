@@ -1,5 +1,5 @@
 /*************************************************************************
- * Copyright (c) 2011 AT&T Intellectual Property 
+ * Copyright (c) 2011 AT&T Intellectual Property
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,7 +7,6 @@
  *
  * Contributors: Details at https://graphviz.org
  *************************************************************************/
-
 
 /*
  * Top-level parsing of gpr code into blocks
@@ -21,47 +20,37 @@
 #include <gvpr/parse.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 #include <util/alloc.h>
 #include <util/unreachable.h>
 
-static int lineno = 1;		/* current line number */
-static int col0 = 1;		/* true if char ptr is at column 0 */
-static int startLine = 1;	/* set to start line of bracketd content */
-static int kwLine = 1;		/* set to line of keyword */
+static int lineno = 1;    /* current line number */
+static int col0 = 1;      /* true if char ptr is at column 0 */
+static int startLine = 1; /* set to start line of bracketd content */
+static int kwLine = 1;    /* set to line of keyword */
 
 static char *case_str[] = {
-    "BEGIN",
-    "END",
-    "BEG_G",
-    "END_G",
-    "N",
-    "E",
-    "EOF",
-    "ERROR",
+    "BEGIN", "END", "BEG_G", "END_G", "N", "E", "EOF", "ERROR",
 };
 
 /* caseStr:
  * Convert case_t to string.
  */
-static char *caseStr(case_t cs)
-{
-    return case_str[(int) cs];
-}
+static char *caseStr(case_t cs) { return case_str[(int)cs]; }
 
 /* eol:
  * Eat characters until eol.
  */
 static int eol(FILE *str) {
-    int c;
-    while ((c = getc(str)) != '\n') {
-	if (c < 0)
-	    return c;
-    }
-    lineno++;
-    col0 = 1;
-    return c;
+  int c;
+  while ((c = getc(str)) != '\n') {
+    if (c < 0)
+      return c;
+  }
+  lineno++;
+  col0 = 1;
+  return c;
 }
 
 /* readc:
@@ -72,66 +61,66 @@ static int eol(FILE *str) {
  * is non-null, add newline to ostr.
  */
 static int readc(FILE *str, agxbuf *ostr) {
-    int c;
-    int cc;
+  int c;
+  int cc;
 
-    switch (c = getc(str)) {
-    case '\n':
-	lineno++;
-        col0 = 1;
-	break;
-    case '#':
-	if (col0) { /* shell comment */
-	    c = eol (str);
-	}
-	else col0 = 0;
-	break;
-    case '/':
-	cc = getc(str);
-	switch (cc) {
-	case '*':		/* in C comment   */
-	    while (1) {
-		switch (c = getc(str)) {
-		case '\n':
-		    lineno++;
-		    if (ostr)
-			agxbputc(ostr, (char)c);
-		    break;
-		case '*':
-		    switch (cc = getc(str)) {
-		    case -1:
-			return cc;
-			break;
-		    case '\n':
-			lineno++;
-			if (ostr)
-			    agxbputc(ostr, (char)cc);
-			break;
-		    case '*':
-			ungetc(cc, str);
-			break;
-		    case '/':
-			col0 = 0;
-			return ' ';
-			break;
-		    }
-		}
-	    }
-	    break;
-	case '/':		/* in C++ comment */
-	    c = eol (str);
-	    break;
-	default:		/* not a comment  */
-	    if (cc >= '\0')
-		ungetc(cc, str);
-	    break;
-	}
-	break;
-    default:
-        col0 = 0;
-	break;
+  switch (c = getc(str)) {
+  case '\n':
+    lineno++;
+    col0 = 1;
+    break;
+  case '#':
+    if (col0) { /* shell comment */
+      c = eol(str);
+    } else
+      col0 = 0;
+    break;
+  case '/':
+    cc = getc(str);
+    switch (cc) {
+    case '*': /* in C comment   */
+      while (1) {
+        switch (c = getc(str)) {
+        case '\n':
+          lineno++;
+          if (ostr)
+            agxbputc(ostr, (char)c);
+          break;
+        case '*':
+          switch (cc = getc(str)) {
+          case -1:
+            return cc;
+            break;
+          case '\n':
+            lineno++;
+            if (ostr)
+              agxbputc(ostr, (char)cc);
+            break;
+          case '*':
+            ungetc(cc, str);
+            break;
+          case '/':
+            col0 = 0;
+            return ' ';
+            break;
+          }
+        }
+      }
+      break;
+    case '/': /* in C++ comment */
+      c = eol(str);
+      break;
+    default: /* not a comment  */
+      if (cc >= '\0')
+        ungetc(cc, str);
+      break;
     }
-    return c;
+    break;
+  default:
+    col0 = 0;
+    break;
+  }
+  return c;
 }
 
 /* unreadc;
@@ -139,22 +128,22 @@ static int readc(FILE *str, agxbuf *ostr) {
  * if newline, reduce lineno.
  */
 static void unreadc(FILE *str, int c) {
-    ungetc(c, str);
-    if (c == '\n')
-	lineno--;
+  ungetc(c, str);
+  if (c == '\n')
+    lineno--;
 }
 
 /* skipWS:
  */
 static int skipWS(FILE *str) {
-    int c;
+  int c;
 
-    while (true) {
-	c = readc(str, 0);
-	if (!gv_isspace(c)) {
-	    return c;
-	}
+  while (true) {
+    c = readc(str, 0);
+    if (!gv_isspace(c)) {
+      return c;
     }
+  }
 }
 
 /* parseID:
@@ -162,25 +151,24 @@ static int skipWS(FILE *str) {
  * add additional alphas, up to buffer size.
  */
 static void parseID(FILE *str, int c, char *buf, size_t bsize) {
-    char *ptr = buf;
-    char *eptr = buf + (bsize - 1);
+  char *ptr = buf;
+  char *eptr = buf + (bsize - 1);
 
-    *ptr++ = (char)c;
-    while (true) {
-	c = readc(str, 0);
-	if (c < 0)
-	    break;
-	if (gv_isalpha(c) || c == '_') {
-	    if (ptr == eptr)
-		break;
-	    *ptr++ = (char)c;
-	} else {
-	    unreadc(str, c);
-	    break;
-	}
+  *ptr++ = (char)c;
+  while (true) {
+    c = readc(str, 0);
+    if (c < 0)
+      break;
+    if (gv_isalpha(c) || c == '_') {
+      if (ptr == eptr)
+        break;
+      *ptr++ = (char)c;
+    } else {
+      unreadc(str, c);
+      break;
     }
-    *ptr = '\0';
-
+  }
+  *ptr = '\0';
 }
 
 #define BSIZE 8
@@ -190,38 +178,37 @@ static void parseID(FILE *str, int c, char *buf, size_t bsize) {
  * As side-effect, sets kwLine to line of keyword.
  */
 static case_t parseKind(FILE *str) {
-    int c;
-    char buf[BSIZE];
-    case_t cs = Error;
+  int c;
+  char buf[BSIZE];
+  case_t cs = Error;
 
-    c = skipWS(str);
-    if (c < 0)
-	return Eof;
-    if (!gv_isalpha(c)) {
-	error(ERROR_ERROR,
-	      "expected keyword BEGIN/END/N/E...; found '%c', line %d", c,
-	      lineno);
-	return Error;
-    }
+  c = skipWS(str);
+  if (c < 0)
+    return Eof;
+  if (!gv_isalpha(c)) {
+    error(ERROR_ERROR, "expected keyword BEGIN/END/N/E...; found '%c', line %d",
+          c, lineno);
+    return Error;
+  }
 
-    kwLine = lineno;
-    parseID(str, c, buf, BSIZE);
-    if (strcmp(buf, "BEGIN") == 0) {
-	cs = Begin;
-    } else if (strcmp(buf, "BEG_G") == 0) {
-	cs = BeginG;
-    } else if (strcmp(buf, "E") == 0) {
-	cs = Edge;
-    } else if (strcmp(buf, "END") == 0) {
-	cs = End;
-    } else if (strcmp(buf, "END_G") == 0) {
-	cs = EndG;
-    } else if (strcmp(buf, "N") == 0) {
-	cs = Node;
-    }
-    if (cs == Error)
-	error(ERROR_ERROR, "unexpected keyword \"%s\", line %d", buf, kwLine);
-    return cs;
+  kwLine = lineno;
+  parseID(str, c, buf, BSIZE);
+  if (strcmp(buf, "BEGIN") == 0) {
+    cs = Begin;
+  } else if (strcmp(buf, "BEG_G") == 0) {
+    cs = BeginG;
+  } else if (strcmp(buf, "E") == 0) {
+    cs = Edge;
+  } else if (strcmp(buf, "END") == 0) {
+    cs = End;
+  } else if (strcmp(buf, "END_G") == 0) {
+    cs = EndG;
+  } else if (strcmp(buf, "N") == 0) {
+    cs = Node;
+  }
+  if (cs == Error)
+    error(ERROR_ERROR, "unexpected keyword \"%s\", line %d", buf, kwLine);
+  return cs;
 }
 
 /* endString:
@@ -230,24 +217,24 @@ static case_t parseKind(FILE *str) {
  * that is not escaped with a back quote.
  */
 static int endString(FILE *ins, agxbuf *outs, char ec) {
-    int sline = lineno;
-    int c;
+  int sline = lineno;
+  int c;
 
-    while ((c = getc(ins)) != ec) {
-	if (c == '\\') {
-	    agxbputc(outs, (char)c);
-	    c = getc(ins);
-	}
-	if (c < 0) {
-	    error(ERROR_ERROR, "unclosed string, start line %d", sline);
-	    return c;
-	}
-	if (c == '\n')
-	    lineno++;
-	agxbputc(outs, (char) c);
+  while ((c = getc(ins)) != ec) {
+    if (c == '\\') {
+      agxbputc(outs, (char)c);
+      c = getc(ins);
     }
+    if (c < 0) {
+      error(ERROR_ERROR, "unclosed string, start line %d", sline);
+      return c;
+    }
+    if (c == '\n')
+      lineno++;
     agxbputc(outs, (char)c);
-    return 0;
+  }
+  agxbputc(outs, (char)c);
+  return 0;
 }
 
 /* endBracket:
@@ -258,25 +245,26 @@ static int endString(FILE *ins, agxbuf *outs, char ec) {
  * the function is called recursively.
  */
 static int endBracket(FILE *ins, agxbuf *outs, char bc, char ec) {
-    int c;
+  int c;
 
-    while (true) {
-	c = readc(ins, outs);
-	if (c < 0 || c == ec)
-	    return c;
-	else if (c == bc) {
-	    agxbputc(outs, (char) c);
-	    c = endBracket(ins, outs, bc, ec);
-	    if (c < 0)
-		return c;
-	    else
-		agxbputc(outs, (char) c);
-	} else if (c == '\'' || c == '"') {
-	    agxbputc(outs, (char) c);
-	    if (endString(ins, outs, (char)c)) return -1;
-	} else
-	    agxbputc(outs, (char) c);
-    }
+  while (true) {
+    c = readc(ins, outs);
+    if (c < 0 || c == ec)
+      return c;
+    else if (c == bc) {
+      agxbputc(outs, (char)c);
+      c = endBracket(ins, outs, bc, ec);
+      if (c < 0)
+        return c;
+      else
+        agxbputc(outs, (char)c);
+    } else if (c == '\'' || c == '"') {
+      agxbputc(outs, (char)c);
+      if (endString(ins, outs, (char)c))
+        return -1;
+    } else
+      agxbputc(outs, (char)c);
+  }
 }
 
 /* parseBracket:
@@ -285,38 +273,36 @@ static int endBracket(FILE *ins, agxbuf *outs, char bc, char ec) {
  * As a side-effect, set startLine to beginning of content.
  */
 static char *parseBracket(FILE *str, agxbuf *buf, int bc, int ec) {
-    int c;
+  int c;
 
-    c = skipWS(str);
-    if (c < 0)
-	return 0;
-    if (c != bc) {
-	unreadc(str, c);
-	return 0;
-    }
-    startLine = lineno;
-    c = endBracket(str, buf, bc, (char)ec);
-    if (c < 0) {
-	if (!getErrorErrors())
-	    error(ERROR_ERROR,
-	      "unclosed bracket %c%c expression, start line %d", bc, ec,
-	      startLine);
-	return 0;
-    }
-    else
-	return agxbdisown(buf);
+  c = skipWS(str);
+  if (c < 0)
+    return 0;
+  if (c != bc) {
+    unreadc(str, c);
+    return 0;
+  }
+  startLine = lineno;
+  c = endBracket(str, buf, bc, (char)ec);
+  if (c < 0) {
+    if (!getErrorErrors())
+      error(ERROR_ERROR, "unclosed bracket %c%c expression, start line %d", bc,
+            ec, startLine);
+    return 0;
+  } else
+    return agxbdisown(buf);
 }
 
 /* parseAction:
  */
 static char *parseAction(FILE *str, agxbuf *buf) {
-    return parseBracket(str, buf, '{', '}');
+  return parseBracket(str, buf, '{', '}');
 }
 
 /* parseGuard:
  */
 static char *parseGuard(FILE *str, agxbuf *buf) {
-    return parseBracket(str, buf, '[', ']');
+  return parseBracket(str, buf, '[', ']');
 }
 
 /* parseCase:
@@ -332,43 +318,42 @@ static char *parseGuard(FILE *str, agxbuf *buf) {
  *   action = '{' <expr> '}'
  */
 static case_t parseCase(FILE *str, char **guard, int *gline, char **action,
-	  int *aline)
-{
-    case_t kind;
+                        int *aline) {
+  case_t kind;
 
-    agxbuf buf = {0};
+  agxbuf buf = {0};
 
-    kind = parseKind(str);
-    switch (kind) {
-    case Begin:
-    case BeginG:
-    case End:
-    case EndG:
-	*action = parseAction(str, &buf);
-	*aline = startLine;
-	if (getErrorErrors ())
-	    kind = Error;
-	break;
-    case Edge:
-    case Node:
-	*guard = parseGuard(str, &buf);
-	*gline = startLine;
-	if (!getErrorErrors ()) {
-	    *action = parseAction(str, &buf);
-	    *aline = startLine;
-	}
-	if (getErrorErrors ())
-	    kind = Error;
-	break;
-    case Eof:
-    case Error:		/* to silence warnings */
-	break;
-    default:
-	UNREACHABLE();
+  kind = parseKind(str);
+  switch (kind) {
+  case Begin:
+  case BeginG:
+  case End:
+  case EndG:
+    *action = parseAction(str, &buf);
+    *aline = startLine;
+    if (getErrorErrors())
+      kind = Error;
+    break;
+  case Edge:
+  case Node:
+    *guard = parseGuard(str, &buf);
+    *gline = startLine;
+    if (!getErrorErrors()) {
+      *action = parseAction(str, &buf);
+      *aline = startLine;
     }
+    if (getErrorErrors())
+      kind = Error;
+    break;
+  case Eof:
+  case Error: /* to silence warnings */
+    break;
+  default:
+    UNREACHABLE();
+  }
 
-    agxbfree(&buf);
-    return kind;
+  agxbfree(&buf);
+  return kind;
 }
 
 /* addBlock:
@@ -377,14 +362,14 @@ static case_t parseCase(FILE *str, char **guard, int *gline, char **action,
  */
 static void addBlock(parse_blocks_t *list, char *stmt, int line,
                      case_infos_t nodelist, case_infos_t edgelist) {
-    parse_block item = {0};
+  parse_block item = {0};
 
-    item.l_beging = line;
-    item.begg_stmt = stmt;
-    item.node_stmts = nodelist;
-    item.edge_stmts = edgelist;
+  item.l_beging = line;
+  item.begg_stmt = stmt;
+  item.node_stmts = nodelist;
+  item.edge_stmts = edgelist;
 
-    parse_blocks_append(list, item);
+  parse_blocks_append(list, item);
 }
 
 /* addCase:
@@ -392,162 +377,155 @@ static void addBlock(parse_blocks_t *list, char *stmt, int line,
  */
 static void addCase(case_infos_t *list, char *guard, int gline, char *action,
                     int line) {
-    if (!guard && !action) {
-	error(ERROR_WARNING,
-	      "Case with neither guard nor action, line %d - ignored", kwLine);
-	return;
-    }
+  if (!guard && !action) {
+    error(ERROR_WARNING,
+          "Case with neither guard nor action, line %d - ignored", kwLine);
+    return;
+  }
 
-    case_info item = {.guard = guard, .action = action};
-    if (guard)
-	item.gstart = gline;
-    if (action)
-	item.astart = line;
+  case_info item = {.guard = guard, .action = action};
+  if (guard)
+    item.gstart = gline;
+  if (action)
+    item.astart = line;
 
-    case_infos_append(list, item);
+  case_infos_append(list, item);
 }
 
 /* bindAction:
  *
  */
-static void
-bindAction(case_t cs, char *action, int aline, char **ap, int *lp)
-{
-    if (!action)
-	error(ERROR_WARNING, "%s with no action, line %d - ignored",
-	      caseStr(cs), kwLine);
-    else if (*ap)
-	error(ERROR_ERROR, "additional %s section, line %d", caseStr(cs),
-	      kwLine);
-    else {
-	*ap = action;
-	*lp = aline;
-    }
+static void bindAction(case_t cs, char *action, int aline, char **ap, int *lp) {
+  if (!action)
+    error(ERROR_WARNING, "%s with no action, line %d - ignored", caseStr(cs),
+          kwLine);
+  else if (*ap)
+    error(ERROR_ERROR, "additional %s section, line %d", caseStr(cs), kwLine);
+  else {
+    *ap = action;
+    *lp = aline;
+  }
 }
 
 /* parseProg:
  * Parses input into gpr sections.
  */
-parse_prog *parseProg(char *input, int isFile)
-{
-    FILE *str;
-    char *guard = NULL;
-    char *action = NULL;
-    bool more;
-    parse_blocks_t blocklist = {0};
-    case_infos_t edgelist = {0};
-    case_infos_t nodelist = {0};
-    int line = 0, gline = 0;
-    int l_beging = 0;
-    char *begg_stmt;
+parse_prog *parseProg(char *input, int isFile) {
+  FILE *str;
+  char *guard = NULL;
+  char *action = NULL;
+  bool more;
+  parse_blocks_t blocklist = {0};
+  case_infos_t edgelist = {0};
+  case_infos_t nodelist = {0};
+  int line = 0, gline = 0;
+  int l_beging = 0;
+  char *begg_stmt;
 
-    
-    lineno = col0 = startLine = kwLine = 1;
-    parse_prog *prog = calloc(1, sizeof(parse_prog));
-    if (!prog) {
-	error(ERROR_ERROR, "parseProg: out of memory");
-	return NULL;
+  lineno = col0 = startLine = kwLine = 1;
+  parse_prog *prog = calloc(1, sizeof(parse_prog));
+  if (!prog) {
+    error(ERROR_ERROR, "parseProg: out of memory");
+    return NULL;
+  }
+
+  if (isFile) {
+    str = fopen(input, "r");
+    prog->source = input;
+
+  } else {
+    str = tmpfile();
+    if (str != NULL) {
+      fputs(input, str);
+      rewind(str);
     }
+    prog->source = NULL; /* command line */
+  }
 
-    if (isFile) {
-	str = fopen(input, "r");
-	prog->source = input;
-	
-    } else {
-	str = tmpfile();
-	if (str != NULL) {
-	    fputs(input, str);
-	    rewind(str);
-	}
-	prog->source = NULL;	/* command line */
+  if (!str) {
+    if (isFile)
+      error(ERROR_ERROR, "could not open %s for reading", input);
+    else
+      error(ERROR_ERROR, "parseProg : unable to create sfio stream");
+    free(prog);
+    return NULL;
+  }
+
+  begg_stmt = NULL;
+  more = true;
+  while (more) {
+    switch (parseCase(str, &guard, &gline, &action, &line)) {
+    case Begin:
+      bindAction(Begin, action, line, &prog->begin_stmt, &prog->l_begin);
+      break;
+    case BeginG:
+      if (action && (begg_stmt || !case_infos_is_empty(&nodelist) ||
+                     !case_infos_is_empty(&edgelist))) { // non-empty block
+        addBlock(&blocklist, begg_stmt, l_beging, nodelist, edgelist);
+
+        /* reset values */
+        edgelist = (case_infos_t){0};
+        nodelist = (case_infos_t){0};
+        begg_stmt = NULL;
+      }
+      bindAction(BeginG, action, line, &begg_stmt, &l_beging);
+      break;
+    case End:
+      bindAction(End, action, line, &prog->end_stmt, &prog->l_end);
+      break;
+    case EndG:
+      bindAction(EndG, action, line, &prog->endg_stmt, &prog->l_endg);
+      break;
+    case Eof:
+      more = false;
+      break;
+    case Node:
+      addCase(&nodelist, guard, gline, action, line);
+      break;
+    case Edge:
+      addCase(&edgelist, guard, gline, action, line);
+      break;
+    case Error: /* to silence warnings */
+      more = false;
+      break;
+    default:
+      UNREACHABLE();
     }
+  }
 
-    if (!str) {
-	if (isFile)
-	    error(ERROR_ERROR, "could not open %s for reading", input);
-	else
-	    error(ERROR_ERROR, "parseProg : unable to create sfio stream");
-	free (prog);
-	return NULL;
-    }
-    
-    begg_stmt = NULL;
-    more = true;
-    while (more) {
-	switch (parseCase(str, &guard, &gline, &action, &line)) {
-	case Begin:
-	    bindAction(Begin, action, line, &prog->begin_stmt, &prog->l_begin);
-	    break;
-	case BeginG:
-	    if (action && (begg_stmt || !case_infos_is_empty(&nodelist) ||
-	        !case_infos_is_empty(&edgelist))) { // non-empty block
-		addBlock(&blocklist, begg_stmt, l_beging, nodelist, edgelist);
+  if (begg_stmt || !case_infos_is_empty(&nodelist) ||
+      !case_infos_is_empty(&edgelist)) { // non-empty block
+    addBlock(&blocklist, begg_stmt, l_beging, nodelist, edgelist);
+  }
 
-		/* reset values */
-		edgelist = (case_infos_t){0};
-		nodelist = (case_infos_t){0};
-		begg_stmt = NULL;
-	    }
-	    bindAction(BeginG, action, line, &begg_stmt, &l_beging);
-	    break;
-	case End:
-	    bindAction(End, action, line, &prog->end_stmt, &prog->l_end);
-	    break;
-	case EndG:
-	    bindAction(EndG, action, line, &prog->endg_stmt, &prog->l_endg);
-	    break;
-	case Eof:
-	    more = false;
-	    break;
-	case Node:
-	    addCase(&nodelist, guard, gline, action, line);
-	    break;
-	case Edge:
-	    addCase(&edgelist, guard, gline, action, line);
-	    break;
-	case Error:		/* to silence warnings */
-	    more = false;
-	    break;
-	default:
-	    UNREACHABLE();
-	}
-    }
+  prog->blocks = blocklist;
 
-    if (begg_stmt || !case_infos_is_empty(&nodelist) ||
-        !case_infos_is_empty(&edgelist)) { // non-empty block
-	addBlock(&blocklist, begg_stmt, l_beging, nodelist, edgelist);
-    }
+  fclose(str);
 
-    prog->blocks = blocklist;
+  if (getErrorErrors()) {
+    freeParseProg(prog);
+    prog = NULL;
+  }
 
-    fclose(str);
-
-    if (getErrorErrors ()) {
-	freeParseProg (prog);
-	prog = NULL;
-    }
-
-    return prog;
+  return prog;
 }
 
 static void freeBlocks(parse_blocks_t *ip) {
-    for (size_t i = 0; i < parse_blocks_size(ip); ++i) {
-	parse_block p = parse_blocks_get(ip, i);
-	free(p.begg_stmt);
-	case_infos_free(&p.node_stmts);
-	case_infos_free(&p.edge_stmts);
-    }
-    parse_blocks_free(ip);
+  for (size_t i = 0; i < parse_blocks_size(ip); ++i) {
+    parse_block p = parse_blocks_get(ip, i);
+    free(p.begg_stmt);
+    case_infos_free(&p.node_stmts);
+    case_infos_free(&p.edge_stmts);
+  }
+  parse_blocks_free(ip);
 }
 
-void 
-freeParseProg (parse_prog * prog)
-{
-    if (!prog) return;
-    free (prog->begin_stmt);
-    freeBlocks(&prog->blocks);
-    free (prog->endg_stmt);
-    free (prog->end_stmt);
-    free (prog);
+void freeParseProg(parse_prog *prog) {
+  if (!prog)
+    return;
+  free(prog->begin_stmt);
+  freeBlocks(&prog->blocks);
+  free(prog->endg_stmt);
+  free(prog->end_stmt);
+  free(prog);
 }
-
