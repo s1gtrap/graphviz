@@ -501,6 +501,9 @@ dcl_item	:	dcl_name {checkName ($1); expr.id=$1;} array initialize
 			}
 			else
 			{
+				if ($1->type == 0) {
+					exerror("%s: a variable cannot be void typed", $1->name);
+				}
 				$1->lex = DYNAMIC;
 				$1->value = exnewnode(expr.program, 0, false, 0, NULL, NULL);
 				if ($3 && $1->local == NULL)
