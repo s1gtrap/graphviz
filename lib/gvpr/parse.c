@@ -34,14 +34,10 @@ static char *case_str[] = {
     "BEGIN", "END", "BEG_G", "END_G", "N", "E", "EOF", "ERROR",
 };
 
-/* caseStr:
- * Convert case_t to string.
- */
+/// convert case_t to string
 static char *caseStr(case_t cs) { return case_str[(int)cs]; }
 
-/* eol:
- * Eat characters until eol.
- */
+/// eat characters until eol
 static int eol(FILE *str) {
   int c;
   while ((c = getc(str)) != '\n') {
@@ -53,8 +49,7 @@ static int eol(FILE *str) {
   return c;
 }
 
-/* readc:
- * return character from input stream
+/* return character from input stream
  * while keeping track of line number.
  * Strip out comments, and return space or newline.
  * If a newline is seen in comment and ostr
@@ -123,18 +118,13 @@ static int readc(FILE *str, agxbuf *ostr) {
   return c;
 }
 
-/* unreadc;
- * push character back onto stream;
- * if newline, reduce lineno.
- */
+/// push character back onto stream; if newline, reduce lineno
 static void unreadc(FILE *str, int c) {
   ungetc(c, str);
   if (c == '\n')
     lineno--;
 }
 
-/* skipWS:
- */
 static int skipWS(FILE *str) {
   int c;
 
@@ -146,10 +136,7 @@ static int skipWS(FILE *str) {
   }
 }
 
-/* parseID:
- * Put initial alpha in buffer;
- * add additional alphas, up to buffer size.
- */
+/// Put initial alpha in buffer; add additional alphas, up to buffer size.
 static void parseID(FILE *str, int c, char *buf, size_t bsize) {
   char *ptr = buf;
   char *eptr = buf + (bsize - 1);
@@ -173,8 +160,7 @@ static void parseID(FILE *str, int c, char *buf, size_t bsize) {
 
 #define BSIZE 8
 
-/* parseKind:
- * Look for keywords: BEGIN, END, BEG_G, END_G, N, E
+/* Look for keywords: BEGIN, END, BEG_G, END_G, N, E
  * As side-effect, sets kwLine to line of keyword.
  */
 static case_t parseKind(FILE *str) {
@@ -211,8 +197,7 @@ static case_t parseKind(FILE *str) {
   return cs;
 }
 
-/* endString:
- * eat characters from ins, putting them into outs,
+/* eat characters from ins, putting them into outs,
  * up to and including a terminating character ec
  * that is not escaped with a back quote.
  */
@@ -237,8 +222,7 @@ static int endString(FILE *ins, agxbuf *outs, char ec) {
   return 0;
 }
 
-/* endBracket:
- * eat characters from ins, putting them into outs,
+/* eat characters from ins, putting them into outs,
  * up to a terminating character ec.
  * Strings are treated as atomic units: any ec in them
  * is ignored. Since matching bc-ec pairs might nest,
@@ -267,8 +251,7 @@ static int endBracket(FILE *ins, agxbuf *outs, char bc, char ec) {
   }
 }
 
-/* parseBracket:
- *  parse paired expression : bc <string> ec
+/*  parse paired expression : bc <string> ec
  *  returning <string>
  * As a side-effect, set startLine to beginning of content.
  */
@@ -293,20 +276,15 @@ static char *parseBracket(FILE *str, agxbuf *buf, int bc, int ec) {
     return agxbdisown(buf);
 }
 
-/* parseAction:
- */
 static char *parseAction(FILE *str, agxbuf *buf) {
   return parseBracket(str, buf, '{', '}');
 }
 
-/* parseGuard:
- */
 static char *parseGuard(FILE *str, agxbuf *buf) {
   return parseBracket(str, buf, '[', ']');
 }
 
-/* parseCase:
- * Recognize
+/* Recognize
  *   BEGIN <optional action>
  *   END <optional action>
  *   BEG_G <optional action>
@@ -356,10 +334,7 @@ static case_t parseCase(FILE *str, char **guard, int *gline, char **action,
   return kind;
 }
 
-/* addBlock:
- * create new block and append to list;
- * return new item as tail
- */
+/// create new block and append to list; return new item as tail
 static void addBlock(parse_blocks_t *list, char *stmt, int line,
                      case_infos_t nodelist, case_infos_t edgelist) {
   parse_block item = {0};
@@ -372,9 +347,7 @@ static void addBlock(parse_blocks_t *list, char *stmt, int line,
   parse_blocks_append(list, item);
 }
 
-/* addCase:
- * create new case_info and append to list;
- */
+/// create new case_info and append to list
 static void addCase(case_infos_t *list, char *guard, int gline, char *action,
                     int line) {
   if (!guard && !action) {
@@ -392,9 +365,6 @@ static void addCase(case_infos_t *list, char *guard, int gline, char *action,
   case_infos_append(list, item);
 }
 
-/* bindAction:
- *
- */
 static void bindAction(case_t cs, char *action, int aline, char **ap, int *lp) {
   if (!action)
     error(ERROR_WARNING, "%s with no action, line %d - ignored", caseStr(cs),
@@ -407,9 +377,7 @@ static void bindAction(case_t cs, char *action, int aline, char **ap, int *lp) {
   }
 }
 
-/* parseProg:
- * Parses input into gpr sections.
- */
+/// parses input into gpr sections
 parse_prog *parseProg(char *input, int isFile) {
   FILE *str;
   char *guard = NULL;
