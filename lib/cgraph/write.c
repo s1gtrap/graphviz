@@ -607,7 +607,7 @@ static int write_node(Agnode_t * n, iochan_t * ofile, Dict_t * d)
 static bool write_node_test(Agraph_t * g, Agnode_t * n,
 			   uint64_t pred_id)
 {
-    if (!node_in_subg(g, n) && has_no_predecessor_below(g, n, pred_id)) {
+    if (has_no_predecessor_below(g, n, pred_id) && !node_in_subg(g, n)) {
 	if (has_no_edges(g, n) || not_default_attrs(g, n))
 	    return true;
     }
