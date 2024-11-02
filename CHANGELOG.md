@@ -35,6 +35,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   use relative paths in links to dependent libraries and plugins. This should
   make the tree relocatable instead of having to live at /Users/gitlab/builds.
   #2501
+- `gml2gv` no longer maps GML `label` attributes to Graphviz `name` attributes.
+  These are now mapped to Graphviz `label` attributes. #2586
 
 ### Fixed
 

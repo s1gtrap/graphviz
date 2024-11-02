@@ -4371,6 +4371,26 @@ def test_2577_1():
     assert output == "hello world\n", "gvpr cannot handle empty strings to printf"
 
 
+@pytest.mark.skipif(which("gml2gv") is None, reason="gml2gv not available")
+def test_2586():
+    """
+    labels should be preserved in GML→GV translation
+    https://gitlab.com/graphviz/graphviz/-/issues/2586
+    """
+
+    # locate our associated test case in this directory
+    input = Path(__file__).parent / "2586.gml"
+    assert input.exists(), "unexpectedly missing test case"
+
+    # translate it
+    gml2gv = which("gml2gv")
+    gv = subprocess.check_output([gml2gv, input], universal_newlines=True)
+
+    assert (
+        re.search(r'\blabel\s*=\s*"?0"?\b', gv) is not None
+    ), "labels not preserved in GML→GV translation"
+
+
 @pytest.mark.skipif(which("gvgen") is None, reason="gvgen not available")
 def test_2588():
     """

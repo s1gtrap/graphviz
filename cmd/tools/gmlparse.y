@@ -670,9 +670,6 @@ addAttrs (Agobj_t* obj, Dt_t* alist, agxbuf* xb, agxbuf* unk)
 	    else
 		unknown (obj, ap, xb);
 	}
-	else if (ap->sort == LABEL && AGTYPE(obj) != AGRAPH) {
-	    agsafeset (obj, "name", ap->u.value, "");
-	}
 	else
 	    unknown (obj, ap, xb);
     }

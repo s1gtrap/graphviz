@@ -217,7 +217,9 @@ qatom	:  T_qatom {$$ = $1;}
 static item *newitem(int tag, void *p0, char *p1)
 {
 	item	*rv = agalloc(G,sizeof(item));
-	rv->tag = tag; rv->u.name = (char*)p0; rv->str = p1;
+	rv->tag = tag;
+	rv->u.name = p0;
+	rv->str = p1;
 	return rv;
 }
 
@@ -282,7 +284,7 @@ static void appendattr(char *name, char *value)
 
 	assert(value != NULL);
 	v = cons_attr(name,value);
-	listapp(&(S->attrlist),v);
+	listapp(&S->attrlist, v);
 }
 
 static void bindattrs(int kind)
@@ -351,14 +353,14 @@ static void attrstmt(int tkind, char *macroname)
 	for (aptr = S->attrlist.first; aptr; aptr = aptr->next) {
 		/* If the tag is still T_atom, aptr->u.asym has not been set */
 		if (aptr->tag == T_atom) continue;
-		if (!(aptr->u.asym->fixed) || (S->g != G))
+		if (!aptr->u.asym->fixed || S->g != G)
 			sym = agattr(S->g,kind,aptr->u.asym->name,aptr->str);
 		else
 			sym = aptr->u.asym;
 		if (S->g == G)
 			sym->print = true;
 	}
-	deletelist(&(S->attrlist));
+	deletelist(&S->attrlist);
 }
 
 /* nodes */
@@ -371,7 +373,7 @@ static void appendnode(char *name, char *port, char *sport)
 		port = concatPort (port, sport);
 	}
 	elt = cons_node(agnode(S->g, name, 1), port);
-	listapp(&(S->nodelist),elt);
+	listapp(&S->nodelist, elt);
 	agstrfree(G,name);
 }
 
@@ -387,9 +389,9 @@ static void endnode(void)
 	bindattrs(AGNODE);
 	for (ptr = S->nodelist.first; ptr; ptr = ptr->next)
 		applyattrs(ptr->u.n);
-	deletelist(&(S->nodelist));
-	deletelist(&(S->attrlist));
-	deletelist(&(S->edgelist));
+	deletelist(&S->nodelist);
+	deletelist(&S->attrlist);
+	deletelist(&S->edgelist);
 	S->subg = 0;  /* notice a pattern here? :-( */
 }
 
@@ -405,7 +407,7 @@ static void getedgeitems(void)
 	}
 	else {if (S->subg) v = cons_subg(S->subg); S->subg = 0;}
 	/* else nil append */
-	if (v) listapp(&(S->edgelist),v);
+	if (v) listapp(&S->edgelist, v);
 }
 
 static void endedge(void)
@@ -421,7 +423,7 @@ static void endedge(void)
 	/* look for "key" pseudo-attribute */
 	key = NULL;
 	for (aptr = S->attrlist.first; aptr; aptr = aptr->next) {
-		if ((aptr->tag == T_atom) && streq(aptr->u.name,Key))
+		if (aptr->tag == T_atom && streq(aptr->u.name,Key))
 			key = aptr->str;
 	}
 
@@ -437,9 +439,9 @@ static void endedge(void)
 				edgerhs(tptr->u.n,tptr->str,p->next,key);
 		}
 	}
-	deletelist(&(S->nodelist));
-	deletelist(&(S->edgelist));
-	deletelist(&(S->attrlist));
+	deletelist(&S->nodelist);
+	deletelist(&S->edgelist);
+	deletelist(&S->attrlist);
 	S->subg = 0;
 }
 
@@ -513,7 +515,7 @@ static void newedge(Agnode_t *t, char *tport, Agnode_t *h, char *hport, char *ke
 	if (e) {		/* can fail if graph is strict and t==h */
 		char    *tp = tport;
 		char    *hp = hport;
-		if ((agtail(e) != aghead(e)) && (aghead(e) == t)) {
+		if (agtail(e) != aghead(e) && aghead(e) == t) {
 			/* could happen with an undirected edge */
 			char    *temp;
 			temp = tp; tp = hp; hp = temp;
@@ -568,9 +570,9 @@ static void closesubg(void)
 static void freestack(void)
 {
 	while (S) {
-		deletelist(&(S->nodelist));
-		deletelist(&(S->attrlist));
-		deletelist(&(S->edgelist));
+		deletelist(&S->nodelist);
+		deletelist(&S->attrlist);
+		deletelist(&S->edgelist);
 		S = pop(S);
 	}
 }
