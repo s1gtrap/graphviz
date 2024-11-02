@@ -481,6 +481,10 @@ windows-cygwin-build:
         - job: portable-source
           artifacts: true
     script:
+        # drop environment variables we do not need
+        - $Env:CI_COMMIT_DESCRIPTION = $null
+        - $Env:CI_COMMIT_MESSAGE = $null
+        - $Env:CI_COMMIT_TITLE = $null
         # disable Windows Defender
         - Add-MpPreference -ExclusionPath 'C:\'
         - wget https://cygwin.com/setup-x86_64.exe -OutFile C:\setup-x86_64.exe
@@ -509,6 +513,10 @@ windows-cygwin-build-using-autogen:
     stage: build
     needs: []
     script:
+        # drop environment variables we do not need
+        - $Env:CI_COMMIT_DESCRIPTION = $null
+        - $Env:CI_COMMIT_MESSAGE = $null
+        - $Env:CI_COMMIT_TITLE = $null
         # disable Windows Defender
         - Add-MpPreference -ExclusionPath 'C:\'
         - wget https://cygwin.com/setup-x86_64.exe -OutFile C:\setup-x86_64.exe
@@ -871,6 +879,10 @@ windows-cygwin-cmake-build:
     stage: build
     needs: []
     script:
+        # drop environment variables we do not need
+        - $Env:CI_COMMIT_DESCRIPTION = $null
+        - $Env:CI_COMMIT_MESSAGE = $null
+        - $Env:CI_COMMIT_TITLE = $null
         # disable Windows Defender
         - Add-MpPreference -ExclusionPath 'C:\'
         - wget https://cygwin.com/setup-x86_64.exe -OutFile C:\setup-x86_64.exe

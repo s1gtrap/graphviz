@@ -26,6 +26,7 @@ glCompLabel *glCompLabelNew(void *par, char *text) {
     glCompInitCommon(&p->base, par, 0, 0);
 
     p->text = gv_strdup(text);
+    glDeleteFont(&p->base.common.font);
     p->base.common.font = glNewFontFromParent(&p->base, text);
     p->base.common.functions.draw = glCompLabelDraw;
 
