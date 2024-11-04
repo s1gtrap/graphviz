@@ -4692,6 +4692,24 @@ def test_2609(tmp_path: Path):
     pytest.fail("generated GIF was a solid color")
 
 
+@pytest.mark.xfail(
+    strict=re.search(r"\brelease\b", os.environ.get("CI_JOB_NAME", "").lower()) is None,
+    reason="https://gitlab.com/graphviz/graphviz/-/issues/2613",
+)
+def test_2613():
+    """
+    Graphviz should not fail an assertion when processing this graph
+    https://gitlab.com/graphviz/graphviz/-/issues/2613
+    """
+
+    # locate our associated test case in this directory
+    input = Path(__file__).parent / "2613.dot"
+    assert input.exists(), "unexpectedly missing test case"
+
+    # generate it as a PDF
+    dot("pdf", input)
+
+
 @pytest.mark.parametrize("package", ("Tcldot", "Tclpathplan"))
 @pytest.mark.skipif(shutil.which("tclsh") is None, reason="tclsh not available")
 @pytest.mark.xfail(
