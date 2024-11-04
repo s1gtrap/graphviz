@@ -15,6 +15,7 @@
 #include <cgraph/gv_math.h>
 #include <common/render.h>
 #include <common/htmltable.h>
+#include <float.h>
 #include <limits.h>
 #include <math.h>
 #include <stddef.h>
@@ -3125,19 +3126,16 @@ static void point_init(node_t * n)
     size_t i, j;
     double w, h;
 
-    // a value outside of the range of `width`/`height` that we can use to
-    // detect when attributes have not been set
-    static const double UNSET = -1.0;
-
     /* set width and height, and make them equal
      * if user has set weight or height, use it.
      * if both are set, use smallest.
      * if neither, use default
      */
-    w = late_double(n, N_width, UNSET, MIN_NODEWIDTH);
-    h = late_double(n, N_height, UNSET, MIN_NODEHEIGHT);
+    w = late_double(n, N_width, DBL_MAX, MIN_NODEWIDTH);
+    h = late_double(n, N_height, DBL_MAX, MIN_NODEHEIGHT);
     w = fmin(w, h);
-    if (is_exactly_equal(w, UNSET) && is_exactly_equal(h, UNSET)) // neither defined
+    if (is_exactly_equal(w, DBL_MAX) &&
+        is_exactly_equal(h, DBL_MAX)) // neither defined
 	ND_width(n) = ND_height(n) = DEF_POINT;
     else {
 	w = fmin(w, h);

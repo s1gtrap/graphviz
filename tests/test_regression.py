@@ -4692,10 +4692,6 @@ def test_2609(tmp_path: Path):
     pytest.fail("generated GIF was a solid color")
 
 
-@pytest.mark.xfail(
-    strict=re.search(r"\brelease\b", os.environ.get("CI_JOB_NAME", "").lower()) is None,
-    reason="https://gitlab.com/graphviz/graphviz/-/issues/2613",
-)
 def test_2613():
     """
     Graphviz should not fail an assertion when processing this graph
