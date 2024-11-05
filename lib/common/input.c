@@ -307,7 +307,6 @@ int dotneato_args_initialize(GVC_t * gvc, int argc, char **argv)
 		    return dotneato_usage(argv[0], 1);
 		}
 		if (!gvjobs_output_langname(gvc, val)) {
-		    /* TODO: Detect empty results from gvplugin_list() and prompt to configure with '-c' */
 		    char *fmts;
 		    fprintf(stderr, "Format: \"%s\" not recognized.", val);
 		    fmts = gvplugin_list(gvc, API_device, val);
@@ -334,8 +333,6 @@ int dotneato_args_initialize(GVC_t * gvc, int argc, char **argv)
                         fprintf(stderr, "Perhaps \"dot -c\" needs to be run (with installer's privileges) to register the plugins?\n");
                     }
 		    else {
-			/* TODO: Detect empty results from gvplugin_list() and prompt to configure with '-c' */
-			/* fprintf(stderr, "Use one of:%s\n", gvplugin_list(gvc, API_layout, val)); */
 			char *lyts;
 			lyts = gvplugin_list(gvc, API_layout, val);
 			if (strlen(lyts) > 1) {
