@@ -316,7 +316,7 @@ int dotneato_args_initialize(GVC_t * gvc, int argc, char **argv)
 			fprintf(stderr, " No formats found.\nPerhaps \"dot -c\" needs to be run (with installer's privileges) to register the plugins?\n");
 		    }
 		    if (GvExitOnUsage) graphviz_exit(1);
-		    return(2);
+		    return 2;
 		}
 		break;
 	    case 'K':
@@ -341,7 +341,7 @@ int dotneato_args_initialize(GVC_t * gvc, int argc, char **argv)
 			}
 		    }
 		    if (GvExitOnUsage) graphviz_exit(1);
-		    return(2);
+		    return 2;
                 }
 		Kflag = 1;
 		break;
