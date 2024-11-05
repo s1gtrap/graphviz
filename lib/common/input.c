@@ -333,8 +333,7 @@ int dotneato_args_initialize(GVC_t * gvc, int argc, char **argv)
                         fprintf(stderr, "Perhaps \"dot -c\" needs to be run (with installer's privileges) to register the plugins?\n");
                     }
 		    else {
-			char *lyts;
-			lyts = gvplugin_list(gvc, API_layout, val);
+			const char *const lyts = gvplugin_list(gvc, API_layout, val);
 			if (strlen(lyts) > 1) {
 			    fprintf(stderr, " Use one of:%s\n", lyts);
 			} else {
