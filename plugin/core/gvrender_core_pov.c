@@ -297,8 +297,6 @@
 #define RENDERER_COLOR_TYPE RGBA_BYTE
 typedef enum { FORMAT_POV, } format_type;
 
-//#define DEBUG
-
 //TODO: check why this dot file does not work (90 rotated)
 //   /usr/share/graphviz/graphs/directed/NaN.gv
 //TODO: add Texttures
