@@ -307,9 +307,8 @@ int dotneato_args_initialize(GVC_t * gvc, int argc, char **argv)
 		    return dotneato_usage(argv[0], 1);
 		}
 		if (!gvjobs_output_langname(gvc, val)) {
-		    char *fmts;
+		    const char *const fmts = gvplugin_list(gvc, API_device, val);
 		    fprintf(stderr, "Format: \"%s\" not recognized.", val);
-		    fmts = gvplugin_list(gvc, API_device, val);
 		    if (strlen(fmts) > 1) {
 			fprintf(stderr, " Use one of:%s\n", fmts);
 		    } else {
