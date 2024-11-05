@@ -18,7 +18,6 @@
 #define agfindattr(x, s) agattrsym(x, s)
 #define agraphattr(g, n, s) agattr(g, AGRAPH, n, s)
 #define agnodeattr(g, n, s) agattr(g, AGNODE, n, s)
-#define agedgeattr(g, n, s) agattr(g, AGEDGE, n, s)
 
 static char emptystring[] = {'\0'};
 
