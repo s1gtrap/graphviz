@@ -4,7 +4,6 @@
 #cmakedefine HAVE_SYS_MMAN_H
 #cmakedefine HAVE_SYS_SELECT_H
 #cmakedefine HAVE_SYS_TIME_H
-#cmakedefine HAVE_SYS_TYPES_H
 #cmakedefine HAVE_GETOPT_H
 
 // Functions
