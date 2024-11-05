@@ -237,7 +237,6 @@ static attr_t *pBinarySearch(attr_list *l, const char *searchKey) {
 
 static void create_filtered_list(const char *prefix, attr_list *sl,
                                  attr_list *tl) {
-    int res;
     attr_t *at;
     int objKind = get_object_type();
 
@@ -248,14 +247,12 @@ static void create_filtered_list(const char *prefix, attr_list *sl,
     if (!at)
 	return;
 
-    res = 0;
     /*go backward to get the first */
-    while (at->index > 0 && res == 0) {
+    for (int res = 0; at->index > 0 && res == 0; ) {
 	at = attrs_get(&sl->attributes, at->index - 1);
 	res = strncasecmp(prefix, at->name, strlen(prefix));
     }
-    res = 0;
-    while (at->index < attrs_size(&sl->attributes) && res == 0) {
+    for (int res = 0; at->index < attrs_size(&sl->attributes) && res == 0; ) {
 	at = attrs_get(&sl->attributes, at->index + 1);
 	res = strncasecmp(prefix, at->name, strlen(prefix));
 	if (res == 0 && at->objType[objKind] == 1)
