@@ -4639,9 +4639,6 @@ def test_2600():
 
 
 @pytest.mark.skipif(which("dot_builtins") is None, reason="dot_builtins not available")
-@pytest.mark.xfail(
-    strict=True, reason="https://gitlab.com/graphviz/graphviz/-/issues/2604"
-)
 def test_2604():
     """
     dot_builtins should not repeat formats in guidance
