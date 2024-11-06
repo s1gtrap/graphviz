@@ -33,6 +33,7 @@ sys.path.append(os.path.dirname(__file__))
 from gvtest import (  # pylint: disable=wrong-import-position
     dot,
     gvpr,
+    is_asan_instrumented,
     is_autotools,
     is_cmake,
     is_macos,
@@ -3413,7 +3414,8 @@ def test_2370():
     # supporting library because it is otherwise unaware that Tcldot depends on this
     # being loaded first
     env = os.environ.copy()
-    if re.search(r"\basan\b", os.environ.get("CI_JOB_NAME", "").lower()):
+    dot_exe = which("dot")
+    if is_asan_instrumented(dot_exe):
         cc = os.environ.get("CC", "gcc")
         libasan = subprocess.check_output(
             [cc, "-print-file-name=libasan.so"], universal_newlines=True
@@ -4253,7 +4255,8 @@ def test_2568():
     # supporting library because it is otherwise unaware that Tcldot depends on this
     # being loaded first
     env = os.environ.copy()
-    if re.search(r"\basan\b", os.environ.get("CI_JOB_NAME", "").lower()):
+    dot_exe = which("dot")
+    if is_asan_instrumented(dot_exe):
         cc = os.environ.get("CC", "gcc")
         libasan = subprocess.check_output(
             [cc, "-print-file-name=libasan.so"], universal_newlines=True
@@ -4539,7 +4542,8 @@ def test_2596():
     # supporting library because it is otherwise unaware that Tcldot depends on this
     # being loaded first
     env = os.environ.copy()
-    if re.search(r"\basan\b", os.environ.get("CI_JOB_NAME", "").lower()):
+    dot_exe = which("dot")
+    if is_asan_instrumented(dot_exe):
         cc = os.environ.get("CC", "gcc")
         libasan = subprocess.check_output(
             [cc, "-print-file-name=libasan.so"], universal_newlines=True
@@ -4607,7 +4611,7 @@ def test_2599():
 
     # Address Sanitizer catches segfaults and turns them into non-zero exits, so ignore
     # testing in this scenario
-    if re.search(r"\basan\b", os.environ.get("CI_JOB_NAME", "").lower()):
+    if is_asan_instrumented(mingle):
         pytest.skip("crashes of mingle are harder to detect under ASan")
 
     assert proc.returncode in (0, 1), "mingle crashed"
@@ -4709,7 +4713,8 @@ def test_import_tcl_package(package: str):
     # supporting library because it is otherwise unaware that Tcldot depends on this
     # being loaded first
     env = os.environ.copy()
-    if re.search(r"\basan\b", os.environ.get("CI_JOB_NAME", "").lower()):
+    dot_exe = which("dot")
+    if is_asan_instrumented(dot_exe):
         cc = os.environ.get("CC", "gcc")
         libasan = subprocess.check_output(
             [cc, "-print-file-name=libasan.so"], universal_newlines=True
@@ -4759,7 +4764,8 @@ def test_triangulation_overflow():
     # supporting library because it is otherwise unaware that Tcldot depends on this
     # being loaded first
     env = os.environ.copy()
-    if re.search(r"\basan\b", os.environ.get("CI_JOB_NAME", "").lower()):
+    dot_exe = which("dot")
+    if is_asan_instrumented(dot_exe):
         cc = os.environ.get("CC", "gcc")
         libasan = subprocess.check_output(
             [cc, "-print-file-name=libasan.so"], universal_newlines=True
@@ -4828,7 +4834,8 @@ def test_vgpane_bad_triangulation():
     # supporting library because it is otherwise unaware that Tcldot depends on this
     # being loaded first
     env = os.environ.copy()
-    if re.search(r"\basan\b", os.environ.get("CI_JOB_NAME", "").lower()):
+    dot_exe = which("dot")
+    if is_asan_instrumented(dot_exe):
         cc = os.environ.get("CC", "gcc")
         libasan = subprocess.check_output(
             [cc, "-print-file-name=libasan.so"], universal_newlines=True
@@ -4895,7 +4902,8 @@ def test_vgpane_delete():
     # supporting library because it is otherwise unaware that Tcldot depends on this
     # being loaded first
     env = os.environ.copy()
-    if re.search(r"\basan\b", os.environ.get("CI_JOB_NAME", "").lower()):
+    dot_exe = which("dot")
+    if is_asan_instrumented(dot_exe):
         cc = os.environ.get("CC", "gcc")
         libasan = subprocess.check_output(
             [cc, "-print-file-name=libasan.so"], universal_newlines=True

@@ -170,6 +170,33 @@ def build_system() -> str:
     return os.getenv("build_system")
 
 
+def is_asan_instrumented(binary: Path) -> bool:
+    """
+    is the given binary using Address Sanitizer?
+
+    This function returns false negatives (incorrectly says “False” for
+    ASan-instrumented binaries) if there is no tool for inspecting symbol tables or if
+    the symbol table has been stripped.
+    """
+    assert binary.exists()
+
+    # Get the symbol table of the binary. We deliberately avoid
+    # `universal_newlines=True` to tolerate non-ASCII bytes in the symbol table.
+    if objdump := shutil.which("objdump"):
+        symbols = subprocess.check_output([objdump, "--syms", binary])
+    elif llvm_objdump := shutil.which("llvm-objdump"):
+        symbols = subprocess.check_output([llvm_objdump, "--syms", binary])
+    elif dumpbin := shutil.which("dumpbin"):
+        symbols = subprocess.check_output([dumpbin, "/SYMBOLS", binary])
+    else:
+        # if we cannot examine the symbol table, assume ASan is not in use
+        return False
+
+    # Look for a reference to a known ASan symbol. This exists even if ASan has been
+    # statically linked (`-static-libasan`).
+    return re.search(rb"\b__asan_init\b", symbols) is not None
+
+
 def is_autotools() -> bool:
     """was the Grapviz under test built with Autotools?"""
     if platform.system() == "Windows":
