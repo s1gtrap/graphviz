@@ -4706,9 +4706,6 @@ def test_2613():
     dot("pdf", input)
 
 
-@pytest.mark.xfail(
-    strict=True, reason="https://gitlab.com/graphviz/graphviz/-/issues/2614"
-)
 def test_2614():
     """
     quotes in strings should be correctly escaped
