@@ -28,7 +28,6 @@ extern "C" {
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #define ex_lex()		extoken_fn(expr.program)
 
@@ -866,9 +865,7 @@ expop(Expr_t* p)
  * clear global state of stale pointers
  */
 
-void exinit(void) {
-	memset (&expr, 0, sizeof(Exstate_t));
-}
+void exinit(void) { expr = (Exstate_t){0}; }
 
 int excomp(Expr_t *p, const char *name, int line, FILE *fp, char *prefix) {
 	int	eof;

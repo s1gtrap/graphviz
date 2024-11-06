@@ -4398,6 +4398,39 @@ def test_2577_1():
     assert output == "hello world\n", "gvpr cannot handle empty strings to printf"
 
 
+@pytest.mark.parametrize(
+    "testcase",
+    (
+        "2585",
+        "2585_1",
+        "2585_2",
+        "2585_3",
+        "2585_4",
+        "2585_5",
+        "2585_6",
+        "2585_7",
+    ),
+)
+@pytest.mark.skipif(which("gvpr") is None, reason="GVPR not available")
+def test_2585(testcase: str):
+    """
+    GVPR should reject various invalid uses of `void` types
+    https://gitlab.com/graphviz/graphviz/-/issues/2585
+    """
+
+    # locate our associated test case in this directory
+    input = Path(__file__).parent / f"{testcase}.gvpr"
+    assert input.exists(), "unexpectedly missing test case"
+
+    # run the program
+    gvprbin = which("gvpr")
+    ret = subprocess.call(
+        [gvprbin, "-o", os.devnull, "-f", input], stdin=subprocess.DEVNULL
+    )
+
+    assert ret == 1, "GVPR did not reject invalid use of `void`"
+
+
 @pytest.mark.skipif(which("gml2gv") is None, reason="gml2gv not available")
 def test_2586():
     """

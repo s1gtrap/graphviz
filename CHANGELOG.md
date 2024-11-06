@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - The GVPR library program `depath` no longer acts on previously deleted nodes,
   causing unpredictable results. #1702
+- Void-typed function parameters (`int foo(void bar)`) and variables `void baz;`
+  in GVPR are gracefully rejected. #2585
 
 ## [12.2.0] – 2024-11-04
 

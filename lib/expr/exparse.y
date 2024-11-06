@@ -501,6 +501,9 @@ dcl_item	:	dcl_name {checkName ($1); expr.id=$1;} array initialize
 			}
 			else
 			{
+				if ($1->type == 0) {
+					exerror("%s: a variable cannot be void typed", $1->name);
+				}
 				$1->lex = DYNAMIC;
 				$1->value = exnewnode(expr.program, 0, false, 0, NULL, NULL);
 				if ($3 && $1->local == NULL)
@@ -1128,6 +1131,9 @@ formal_list	:	formal_item
 
 formal_item	:	DECLARE {expr.declare=$1->type;} name
 		{
+			if ($1->type == 0) {
+				exerror("%s: parameters to functions cannot be void typed", $3->name);
+			}
 			$$ = exnewnode(expr.program, ID, false, $1->type, NULL, NULL);
 			$$->data.variable.symbol = $3;
 			$3->lex = DYNAMIC;
