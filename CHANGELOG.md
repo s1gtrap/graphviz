@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   causing unpredictable results. #1702
 - Void-typed function parameters (`int foo(void bar)`) and variables `void baz;`
   in GVPR are gracefully rejected. #2585
+- Input that induce a set node height but no set node width no longer crash with
+  the failure “Assertion failed: `(r->boundary[i] <= r->boundary[NUMDIMS + i])`,
+  function RTreeInsert”. It is typically not obvious to users when their input
+  falls into this situation, hence why the assertion message is quoted here.
+  This was a regression in Graphviz 12.0.0. #2613
 
 ## [12.2.0] – 2024-11-04
 
