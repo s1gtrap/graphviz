@@ -13,7 +13,6 @@
  */
 
 #include <assert.h>
-#include <cgraph/agxbuf.h>
 #include <cgraph/list.h>
 #include <common/boxes.h>
 #include <dotgen/dot.h>
@@ -22,6 +21,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 
 #ifdef ORTHO

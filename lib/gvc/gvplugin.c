@@ -20,7 +20,6 @@
 #include	<ltdl.h>
 #endif
 
-#include	<cgraph/agxbuf.h>
 #include        <common/types.h>
 #include        <gvc/gvc.h>
 #include        <gvc/gvplugin.h>
@@ -32,6 +31,7 @@
 #include	<common/const.h>
 #include <cgraph/list.h>
 #include <cgraph/strview.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/startswith.h>
 #include <util/strcasecmp.h>

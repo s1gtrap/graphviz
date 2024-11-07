@@ -17,7 +17,6 @@
 #include "builddate.h"
 #include <assert.h>
 #include <ast/error.h>
-#include <cgraph/agxbuf.h>
 #include <cgraph/cgraph.h>
 #include <cgraph/gv_ctype.h>
 #include <cgraph/ingraphs.h>
@@ -34,6 +33,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/exit.h>
 #include <util/unreachable.h>

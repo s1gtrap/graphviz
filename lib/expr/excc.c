@@ -15,11 +15,11 @@
  * expression library C program generator
  */
 
-#include <cgraph/agxbuf.h>
 #include <expr/exlib.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <util/agxbuf.h>
 #include <util/exit.h>
 
 typedef struct Excc_s Excc_t;

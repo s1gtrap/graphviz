@@ -11,12 +11,12 @@
  *************************************************************************/
 
 #include <common/render.h>
-#include <cgraph/agxbuf.h>
 #include <gvc/gvc.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
+#include <util/agxbuf.h>
 #include <util/prisize_t.h>
 
 /// state for offset calculations

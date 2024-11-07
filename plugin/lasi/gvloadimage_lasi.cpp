@@ -18,11 +18,11 @@
 #include <sys/mman.h>
 #endif
 
-#include <cgraph/agxbuf.h>
 #include <common/render.h>
 #include <common/utils.h>
 #include <gvc/gvio.h>
 #include <gvc/gvplugin_loadimage.h>
+#include <util/agxbuf.h>
 
 typedef enum {
   FORMAT_PS_PS,

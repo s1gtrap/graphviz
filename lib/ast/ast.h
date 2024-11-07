@@ -14,10 +14,10 @@
 extern "C" {
 #endif
 
-#include <cgraph/agxbuf.h>
 #include <sfio/sfio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <util/agxbuf.h>
 
 /*
  * strgrpmatch() flags

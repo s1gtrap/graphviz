@@ -13,7 +13,6 @@
  * Contributors: Details at https://graphviz.org
  *************************************************************************/
 
-#include <cgraph/agxbuf.h>
 #include <cgraph/gv_ctype.h>
 #include <common/types.h>
 #include <common/utils.h>
@@ -21,6 +20,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/startswith.h>
 

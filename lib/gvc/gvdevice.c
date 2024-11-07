@@ -47,7 +47,6 @@ static uint64_t crc;
 #endif /* HAVE_LIBZ */
 
 #include <assert.h>
-#include <cgraph/agxbuf.h>
 #include <common/const.h>
 #include <gvc/gvplugin_device.h>
 #include <gvc/gvcjob.h>
@@ -55,6 +54,7 @@ static uint64_t crc;
 #include <gvc/gvcproc.h>
 #include <common/utils.h>
 #include <gvc/gvio.h>
+#include <util/agxbuf.h>
 #include <util/exit.h>
 #include <util/startswith.h>
 

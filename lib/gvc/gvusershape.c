@@ -29,7 +29,6 @@
 
 #include <common/types.h>
 #include <common/usershape.h>
-#include <cgraph/agxbuf.h>
 #include <cgraph/gv_ctype.h>
 #include <cgraph/strview.h>
 #include <common/utils.h>
@@ -37,6 +36,7 @@
 #include <gvc/gvplugin.h>
 #include <gvc/gvcint.h>
 #include <gvc/gvcproc.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 
 extern char *Gvimagepath;

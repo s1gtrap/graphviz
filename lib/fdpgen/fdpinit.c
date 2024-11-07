@@ -25,8 +25,8 @@
 
 #include    <fdpgen/tlayout.h>
 #include    <neatogen/neatoprocs.h>
-#include    <cgraph/agxbuf.h>
 #include    <stdbool.h>
+#include    <util/agxbuf.h>
 #include    <util/alloc.h>
 
 static void initialPositions(graph_t * g)

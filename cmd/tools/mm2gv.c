@@ -25,8 +25,8 @@
 #include <math.h>
 #include <assert.h>
 #include "mmio.h"
-#include <cgraph/agxbuf.h>
 #include <sparse/SparseMatrix.h>
+#include <util/agxbuf.h>
 #include <util/unreachable.h>
 #include "matrix_market.h"
 #include <getopt.h>

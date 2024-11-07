@@ -14,8 +14,8 @@
 #include <string.h>
 
 #include "openFile.h"
-#include <cgraph/agxbuf.h>
 #include <getopt.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/exit.h>
 #include <util/unreachable.h>

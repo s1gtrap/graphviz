@@ -39,7 +39,7 @@
 #endif
 #include <gd.h>
 #include <stdbool.h>
-#include <cgraph/agxbuf.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/exit.h>
 

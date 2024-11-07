@@ -20,7 +20,6 @@
 /* use PRIVATE interface */
 #define FDP_PRIVATE 1
 
-#include <cgraph/agxbuf.h>
 #include <cgraph/cgraph.h>
 #include <fdpgen/fdp.h>
 #include <fdpgen/comp.h>
@@ -28,6 +27,7 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/bitarray.h>
 #include <util/prisize_t.h>

@@ -19,11 +19,11 @@
 #include <time.h>
 #include <common/const.h>
 #include <gvc/gvplugin_render.h>
-#include <cgraph/agxbuf.h>
 #include <common/utils.h>
 #include <gvc/gvplugin_device.h>
 #include <gvc/gvio.h>
 #include <math.h>
+#include <util/agxbuf.h>
 
 #include "gvplugin_pango.h"
 

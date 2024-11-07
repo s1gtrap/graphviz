@@ -10,12 +10,12 @@
  * Contributors: Details at https://graphviz.org
  *************************************************************************/
 
-#include <cgraph/agxbuf.h>
 #include <common/render.h>
 #include <common/htmltable.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 
 static char *strdup_and_subst_obj0 (char *str, void *obj, int escBackslash);

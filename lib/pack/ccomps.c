@@ -8,7 +8,6 @@
  * Contributors: Details at https://graphviz.org
  *************************************************************************/
 
-#include <cgraph/agxbuf.h>
 #include <cgraph/cgraph.h>
 #include <cgraph/gv_ctype.h>
 #include <cgraph/list.h>
@@ -18,6 +17,7 @@
 #include <pack/pack.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/prisize_t.h>
 

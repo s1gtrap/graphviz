@@ -28,11 +28,11 @@ extern "C" {
 
 #include <assert.h>
 #include <cdt.h>
-#include <cgraph/agxbuf.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <util/agxbuf.h>
 #include <vmalloc/vmalloc.h>
 
 #define EX_VERSION	20000101L

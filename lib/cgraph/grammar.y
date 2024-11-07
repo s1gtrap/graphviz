@@ -20,8 +20,8 @@
    */
 %define api.prefix {aag}
 %code requires {
-#include <agxbuf.h>
 #include <cghdr.h>
+#include <util/agxbuf.h>
 
 struct gstack_s;
 
@@ -39,7 +39,6 @@ struct aagextra_s {
 #include <stdbool.h>
 #include <stdio.h>
 #include <cghdr.h>
-#include <cgraph/agxbuf.h>
 #include <stddef.h>
 #include <util/alloc.h>
 #include <util/streq.h>

@@ -8,10 +8,10 @@
  * Contributors: Details at https://graphviz.org
  *************************************************************************/
 
-#include <cgraph/agxbuf.h>
 #include <sparse/colorutil.h>
 #include <sparse/general.h>
 #include <stdio.h>
+#include <util/agxbuf.h>
 
 static int r2i(float r) {
   /* convert a number in [0,1] to 0 to 255 */

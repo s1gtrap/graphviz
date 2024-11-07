@@ -13,7 +13,6 @@
  * Contributors: Details at https://graphviz.org
  *************************************************************************/
 
-#include <cgraph/agxbuf.h>
 #include <cgraph/gv_ctype.h>
 #include <stdio.h>
 #include <string.h>
@@ -22,6 +21,7 @@
 #include <search.h>
 #endif
 #include <ctype.h>
+#include <util/agxbuf.h>
 typedef struct {
     char *name;
     unsigned char h, s, b;

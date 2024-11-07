@@ -8,10 +8,10 @@
  * Contributors: Details at https://graphviz.org
  *************************************************************************/
 
-#include    <cgraph/agxbuf.h>
 #include    <circogen/circular.h>
 #include    <circogen/blocktree.h>
 #include    <circogen/circpos.h>
+#include    <util/agxbuf.h>
 
 #define		MINDIST			1.0
 

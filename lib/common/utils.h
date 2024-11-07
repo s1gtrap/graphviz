@@ -14,9 +14,9 @@
 
 #include "config.h"
 
-#include <cgraph/agxbuf.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <util/agxbuf.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -9,7 +9,6 @@
  *************************************************************************/
 
 #define STANDALONE
-#include <cgraph/agxbuf.h>
 #include <sparse/general.h>
 #include <sparse/DotIO.h>
 #include <sparse/clustering.h>
@@ -19,6 +18,7 @@
 #include <sparse/colorutil.h>
 #include <stdbool.h>
 #include <string.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/startswith.h>
 #include <util/unreachable.h>

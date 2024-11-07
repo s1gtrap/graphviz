@@ -22,10 +22,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <types.h>
-#include <cgraph/agxbuf.h>
 #include <cgraph/list.h>
 #include <common/render.h>
 #include <common/utils.h>
+#include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/prisize_t.h>
 
