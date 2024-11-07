@@ -1017,6 +1017,32 @@ def test_1489():
     ), "malformed input caused an invalid memory access"
 
 
+@pytest.mark.xfail(
+    strict=is_asan_instrumented(which("dot")),
+    reason="https://gitlab.com/graphviz/graphviz/-/issues/1494",
+)
+def test_1494():
+    """
+    processing this input found by fuzzing should not trigger a double-free
+    https://gitlab.com/graphviz/graphviz/-/issues/1494
+    """
+
+    # locate our associated test case in this directory
+    input = Path(__file__).parent / "1494.dot"
+    assert input.exists(), "unexpectedly missing test case"
+
+    # run this through Graphviz
+    proc = subprocess.run(
+        ["dot", "-o", os.devnull, input], stderr=subprocess.PIPE, check=False
+    )
+
+    assert proc.returncode != 0, "invalid input was not rejected"
+
+    assert (
+        re.search(rb"\bAddressSanitizer: double-free\b", proc.stderr) is None
+    ), "malformed input caused a double free()"
+
+
 def test_1554():
     """
     small distances between nodes should not cause a crash in majorization
