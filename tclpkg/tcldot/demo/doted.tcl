@@ -30,7 +30,7 @@ proc mouse_anyleave {c} {
 		-fill [lindex $saveFill 1] -stipple {}
 }
 
-# if b1 is pressed over the brackground then start a node,
+# if b1 is pressed over the background then start a node,
 # if b1 is pressed over a node then start an edge
 proc mouse_b1_press {c x y} {
 	global startObj graphtype
