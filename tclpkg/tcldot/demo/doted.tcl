@@ -481,7 +481,7 @@ proc zoom {c fact} {
         set data(idle) [after idle "zoomupdate $c"]
 }
 
-# update all text strings after zom operation is complete
+# update all text strings after zoom operation is complete
 proc zoomupdate {c} {
         upvar #0 $c data
         # adjust fonts
