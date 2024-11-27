@@ -957,7 +957,8 @@ def test_1453():
 
 
 @pytest.mark.xfail(
-    strict=True, reason="https://gitlab.com/graphviz/graphviz/-/issues/1472"
+    strict=is_asan_instrumented(which("dot")),
+    reason="https://gitlab.com/graphviz/graphviz/-/issues/1472",
 )
 def test_1472():
     """
@@ -969,8 +970,17 @@ def test_1472():
     input = Path(__file__).parent / "1472.dot"
     assert input.exists(), "unexpectedly missing test case"
 
-    # run it through Graphviz
-    dot("svg", input)
+    # run this through Graphviz
+    proc = subprocess.run(
+        ["dot", "-o", os.devnull, input], stderr=subprocess.PIPE, check=True
+    )
+
+    assert (
+        re.search(rb"\bAddressSanitizer: heap-buffer-overflow\b", proc.stderr) is None
+    ), "malformed input caused a buffer overflow"
+    assert (
+        re.search(rb"\bAddressSanitizer: heap-use-after-free\b", proc.stderr) is None
+    ), "malformed input caused a use-after-free"
 
 
 def test_1474():
