@@ -9,7 +9,7 @@
  *************************************************************************/
 
 #include <glcomp/glpangofont.h>
-#include <stddef.h>
+#include <stdlib.h>
 
 static PangoLayout *get_pango_layout(char *markup_text,
 				     char *fontdescription, int fontsize,
@@ -29,6 +29,7 @@ static PangoLayout *get_pango_layout(char *markup_text,
     layout = pango_layout_new(context);
     g_object_unref(context);
     pango_layout_set_text(layout, text, -1);
+    free(text);
     PangoFontDescription *const desc =
       pango_font_description_from_string(fontdescription);
     pango_font_description_set_size(desc, (int)(fontsize * PANGO_SCALE));
