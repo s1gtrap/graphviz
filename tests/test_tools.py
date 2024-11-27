@@ -19,6 +19,7 @@ import pytest
 sys.path.append(os.path.dirname(__file__))
 from gvtest import (  # pylint: disable=wrong-import-position
     has_sandbox,
+    remove_asan_summary,
     remove_xtype_warnings,
     which,
 )
@@ -99,6 +100,7 @@ def test_tools(tool):
 
     assert ret == 0, f"`{tool} -?` failed. Output was: {output}"
 
+    output = remove_asan_summary(output)
     output = remove_xtype_warnings(output)
     assert (
         re.match("usage", output, flags=re.IGNORECASE) is not None
