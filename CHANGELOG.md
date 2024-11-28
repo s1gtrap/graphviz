@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased (12.2.2)]
 
+### Fixed
+
+- Numeric overflows when computing the total crossings in a graph with a large
+  number of crossings have been avoided. #2621
+
 ## [12.2.1] – 2024-12-07
 
 ### Added
