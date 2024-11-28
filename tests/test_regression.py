@@ -4860,6 +4860,23 @@ def test_2620():
     assert abs(float(bezier2[2][1]) - expected) < 1000, "incorrect edge construction"
 
 
+@pytest.mark.slow  # ~10min
+@pytest.mark.xfail(
+    strict=False, reason="https://gitlab.com/graphviz/graphviz/-/issues/2621"
+)
+def test_2621():
+    """
+    this graph should not trigger an integer overflow in crossing calculation
+    https://gitlab.com/graphviz/graphviz/-/issues/2621
+    """
+
+    # locate our associated test case in this directory
+    input = Path(__file__).parent / "2621.dot"
+    assert input.exists(), "unexpectedly missing test case"
+
+    subprocess.check_call(["dot", "-Gnslimit=50", "-Tsvg", "-o", os.devnull, input])
+
+
 @pytest.mark.parametrize("package", ("Tcldot", "Tclpathplan"))
 @pytest.mark.skipif(shutil.which("tclsh") is None, reason="tclsh not available")
 @pytest.mark.xfail(
