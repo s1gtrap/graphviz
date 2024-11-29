@@ -4810,9 +4810,6 @@ def test_2619():
     subprocess.check_call(["dot", "-Tpdf", "-o", os.devnull, "2619.dot"], cwd=cwd)
 
 
-@pytest.mark.xfail(
-    strict=True, reason="https://gitlab.com/graphviz/graphviz/-/issues/2620"
-)
 def test_2620():
     """
     arrows in this graph should not be truncated
