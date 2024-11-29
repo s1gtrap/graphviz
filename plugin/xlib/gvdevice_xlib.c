@@ -357,14 +357,12 @@ static void init_window(GVJ_t *job, Display *dpy, int scr) {
 }
 
 static int handle_stdin_events(GVJ_t *job) {
-  int rc = 0;
 
   if (feof(stdin))
     return -1;
   job->callbacks->read(job, job->input_filename, job->layout_type);
 
-  rc++;
-  return rc;
+  return 1;
 }
 
 #ifdef HAVE_SYS_INOTIFY_H
