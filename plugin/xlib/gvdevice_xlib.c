@@ -169,8 +169,8 @@ static int handle_xlib_events(GVJ_t *firstjob, Display *dpy) {
       if (xev.xany.window == window->win) {
         switch (xev.xany.type) {
         case ButtonPress:
-          pointer.x = (double)xev.xbutton.x;
-          pointer.y = (double)xev.xbutton.y;
+          pointer.x = xev.xbutton.x;
+          pointer.y = xev.xbutton.y;
           assert(xev.xbutton.button <= (unsigned)INT_MAX &&
                  "Xlib returned invalid button event");
           job->callbacks->button_press(job, (int)xev.xbutton.button, pointer);
@@ -178,15 +178,15 @@ static int handle_xlib_events(GVJ_t *firstjob, Display *dpy) {
           break;
         case MotionNotify:
           if (job->button) { /* only interested while a button is pressed */
-            pointer.x = (double)xev.xbutton.x;
-            pointer.y = (double)xev.xbutton.y;
+            pointer.x = xev.xbutton.x;
+            pointer.y = xev.xbutton.y;
             job->callbacks->motion(job, pointer);
             rc++;
           }
           break;
         case ButtonRelease:
-          pointer.x = (double)xev.xbutton.x;
-          pointer.y = (double)xev.xbutton.y;
+          pointer.x = xev.xbutton.x;
+          pointer.y = xev.xbutton.y;
           assert(xev.xbutton.button <= (unsigned)INT_MAX &&
                  "Xlib returned invalid button event");
           job->callbacks->button_release(job, (int)xev.xbutton.button, pointer);
