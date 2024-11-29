@@ -4753,9 +4753,6 @@ def test_2614():
     assert canonical.count('\\"') == 2, "quotes in string were not properly escaped"
 
 
-@pytest.mark.xfail(
-    strict=True, reason="https://gitlab.com/graphviz/graphviz/-/issues/2619"
-)
 def test_2619():
     """
     loading a JPEG with initial EXIF stream should be possible
