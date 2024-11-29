@@ -102,9 +102,7 @@ static void handle_client_message(GVJ_t *job, XClientMessageEvent *cmev) {
 }
 
 static bool handle_keypress(GVJ_t *job, XKeyEvent *kev) {
-  KeyCode *keycodes;
-
-  keycodes = job->keycodes;
+  const KeyCode *const keycodes = job->keycodes;
   for (size_t i = 0; i < job->numkeys; i++) {
     if (kev->keycode == keycodes[i])
       return job->keybindings[i].callback(job) != 0;
