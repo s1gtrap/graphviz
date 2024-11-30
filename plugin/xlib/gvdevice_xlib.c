@@ -600,6 +600,7 @@ static void xlib_finalize(GVJ_t *firstjob) {
   XCloseDisplay(dpy);
   free(keycodes);
   firstjob->keycodes = NULL;
+  initialized = false;
 }
 
 static gvdevice_features_t device_features_xlib = {
