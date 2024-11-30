@@ -47,7 +47,7 @@ Source0: https://gitlab.com/graphviz/graphviz/-/archive/@VERSION@/graphviz-@VERS
 %endif
 
 # Overrides for Rocky
-%if 0%{?rhel} >= 8
+%if 0%{?rhel}
 %global ANN        0
 %endif
 
