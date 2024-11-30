@@ -2071,6 +2071,9 @@ def test_2087():
     # work around macOS warnings
     warnings = remove_xtype_warnings(warnings).strip()
 
+    # work around ASan informational printing
+    warnings = remove_asan_summary(warnings)
+
     # no warnings should have been printed
     assert (
         warnings == ""
