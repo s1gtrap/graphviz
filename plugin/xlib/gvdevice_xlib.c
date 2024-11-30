@@ -419,8 +419,6 @@ static int handle_file_events(GVJ_t *job, int inotify_fd) {
 }
 #endif
 
-static bool initialized;
-
 static void xlib_initialize(GVJ_t *firstjob) {
   KeySym keysym;
   KeyCode *keycodes;
@@ -434,7 +432,6 @@ static void xlib_initialize(GVJ_t *firstjob) {
   }
   scr = DefaultScreen(dpy);
 
-  firstjob->display = dpy;
   firstjob->screen = scr;
 
   keycodes = malloc(firstjob->numkeys * sizeof(KeyCode));
@@ -460,7 +457,7 @@ static void xlib_initialize(GVJ_t *firstjob) {
       DisplayHeight(dpy, scr) * 25.4 / DisplayHeightMM(dpy, scr);
   firstjob->device_sets_dpi = true;
 
-  initialized = true;
+  firstjob->display = dpy;
 }
 
 static void xlib_finalize(GVJ_t *firstjob) {
@@ -500,7 +497,7 @@ static void xlib_finalize(GVJ_t *firstjob) {
 #endif
 
   /* skip if initialization previously failed */
-  if (!initialized) {
+  if (dpy == NULL) {
     return;
   }
 
@@ -598,9 +595,9 @@ static void xlib_finalize(GVJ_t *firstjob) {
 #endif
 
   XCloseDisplay(dpy);
+  firstjob->display = NULL;
   free(keycodes);
   firstjob->keycodes = NULL;
-  initialized = false;
 }
 
 static gvdevice_features_t device_features_xlib = {
