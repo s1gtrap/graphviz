@@ -23,10 +23,10 @@
 #include <common/color.h>
 #include <common/colorprocs.h>
 #include <common/colortbl.h>
-#include <cgraph/gv_ctype.h>
 #include <cgraph/gv_math.h>
 #include <util/agxbuf.h>
 #include <util/alloc.h>
+#include <util/gv_ctype.h>
 #include <util/strcasecmp.h>
 #include <util/unreachable.h>
 

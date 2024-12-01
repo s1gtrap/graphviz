@@ -1,7 +1,6 @@
 /// @file
 /// @ingroup common_render
 #include <assert.h>
-#include <cgraph/gv_ctype.h>
 #include <common/render.h>
 #include <common/textspan_lut.h>
 #include <common/types.h>
@@ -12,6 +11,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <util/agxbuf.h>
+#include <util/gv_ctype.h>
 
 // Currently we just store the width of every ASCII character, which seems to
 // produce good enough results. We could also store kerning metrics and line

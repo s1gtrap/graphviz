@@ -13,7 +13,6 @@
  * Contributors: Details at https://graphviz.org
  *************************************************************************/
 
-#include <cgraph/gv_ctype.h>
 #include <common/types.h>
 #include <common/utils.h>
 #include "convert.h"
@@ -22,6 +21,7 @@
 #include <stdlib.h>
 #include <util/agxbuf.h>
 #include <util/alloc.h>
+#include <util/gv_ctype.h>
 #include <util/startswith.h>
 
 #define EMPTY(s)	((s == 0) || (*s == '\0'))

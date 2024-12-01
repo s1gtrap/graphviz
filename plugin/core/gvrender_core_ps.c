@@ -19,9 +19,9 @@
 #include <gvc/gvplugin_device.h>
 #include <gvc/gvio.h>
 #include <cgraph/cgraph.h>
-#include <cgraph/gv_ctype.h>
 #include <common/utils.h>
 #include <util/agxbuf.h>
+#include <util/gv_ctype.h>
 #include <util/prisize_t.h>
 #include "ps.h"
 

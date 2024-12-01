@@ -20,12 +20,12 @@
  */
 
 #include <assert.h>
-#include <cgraph/gv_ctype.h>
 #include <common/render.h>
 #include <fdpgen/tlayout.h>
 #include <gvc/gvc.h>
 #include <fdpgen/fdp.h>
 #include <stdbool.h>
+#include <util/gv_ctype.h>
 
 /* Handle special neato arguments.
  * Return number of unprocessed arguments; return < 0 on error.

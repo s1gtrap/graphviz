@@ -15,8 +15,8 @@
  * expression library
  */
 
-#include <cgraph/gv_ctype.h>
 #include <expr/exlib.h>
+#include <util/gv_ctype.h>
 
 /*
  * copy input token error context into buf of n chars and reset the context

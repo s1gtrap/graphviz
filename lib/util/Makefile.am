@@ -5,6 +5,7 @@ noinst_HEADERS = \
   alloc.h \
   bitarray.h \
   exit.h \
+  gv_ctype.h \
   gv_fopen.h \
   overflow.h \
   prisize_t.h \

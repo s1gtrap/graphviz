@@ -13,12 +13,13 @@
  * Contributors: Details at https://graphviz.org
  *************************************************************************/
 
-#include <cgraph/gv_ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <util/agxbuf.h>
+#include <util/gv_ctype.h>
+
 typedef struct {
     char *name;
     unsigned char h, s, b;

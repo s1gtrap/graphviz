@@ -22,12 +22,12 @@ extern "C" {
 #if !defined(_EXGRAM_H) && ( defined(MINTOKEN) || defined(YYTOKENTYPE) )
 #define _EXGRAM_H
 
-#include <cgraph/gv_ctype.h>
 #include <expr/exlib.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <util/agxbuf.h>
+#include <util/gv_ctype.h>
 
 #define ex_lex()		extoken_fn(expr.program)
 

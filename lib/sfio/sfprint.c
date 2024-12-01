@@ -9,13 +9,13 @@
  *************************************************************************/
 
 #include <assert.h>
-#include <cgraph/gv_ctype.h>
 #include <cgraph/gv_math.h>
 #include <inttypes.h>
 #include	<sfio/sfhdr.h>
 #include	<stddef.h>
 #include	<stdio.h>
 #include	<string.h>
+#include <util/gv_ctype.h>
 
 /*	The engine for formatting data
 **

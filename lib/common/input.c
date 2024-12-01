@@ -15,7 +15,6 @@
 #include <errno.h>
 #include <gvc/gvc.h>
 #include <xdot/xdot.h>
-#include <cgraph/gv_ctype.h>
 #include <cgraph/gv_math.h>
 #include <limits.h>
 #include <stdbool.h>
@@ -24,6 +23,7 @@
 #include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/exit.h>
+#include <util/gv_ctype.h>
 #include <util/gv_fopen.h>
 #include <util/startswith.h>
 #include <util/strcasecmp.h>

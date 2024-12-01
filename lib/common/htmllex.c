@@ -16,7 +16,6 @@
 #include "htmlparse.h"
 #include <common/htmllex.h>
 #include <cdt/cdt.h>
-#include <cgraph/gv_ctype.h>
 #include <cgraph/strview.h>
 #include <cgraph/tokenize.h>
 #include <limits.h>
@@ -24,6 +23,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <util/alloc.h>
+#include <util/gv_ctype.h>
 #include <util/startswith.h>
 #include <util/strcasecmp.h>
 #include <util/unused.h>

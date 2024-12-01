@@ -26,13 +26,13 @@
  */
 
 #include <assert.h>
-#include <cgraph/gv_ctype.h>
 #include <expr/exop.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ast/ast.h>
+#include <util/gv_ctype.h>
 #include <util/streq.h>
 
 %}

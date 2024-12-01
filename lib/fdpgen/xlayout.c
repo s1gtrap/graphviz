@@ -23,11 +23,11 @@ Increase less between tries
 
 /* uses PRIVATE interface */
 #define FDP_PRIVATE 1
-#include <cgraph/gv_ctype.h>
 #include <fdpgen/xlayout.h>
 #include <neatogen/adjust.h>
 #include <fdpgen/dbg.h>
 #include <math.h>
+#include <util/gv_ctype.h>
 
 #define DFLT_overlap   "9:prism"    /* default overlap value */
 

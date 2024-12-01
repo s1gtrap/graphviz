@@ -23,8 +23,8 @@
 #include <stdio.h>		/* need sprintf() */
 #include <ctype.h>
 #include <cgraph/cghdr.h>
-#include <cgraph/gv_ctype.h>
 #include <inttypes.h>
+#include <util/gv_ctype.h>
 #include <util/strcasecmp.h>
 
 #define EMPTY(s)		(((s) == 0) || (s)[0] == '\0')

@@ -16,7 +16,6 @@ add_library(cgraph
   # Header files
   cghdr.h
   cgraph.h
-  gv_ctype.h
   gv_math.h
   ingraphs.h
   list.h

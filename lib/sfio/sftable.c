@@ -8,10 +8,10 @@
  * Contributors: Details at https://graphviz.org
  *************************************************************************/
 
-#include	<cgraph/gv_ctype.h>
 #include	<limits.h>
 #include	<sfio/sfhdr.h>
 #include	<stddef.h>
+#include	<util/gv_ctype.h>
 
 /*	Dealing with $ argument addressing stuffs.
 **

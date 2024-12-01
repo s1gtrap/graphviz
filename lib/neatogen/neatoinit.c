@@ -34,13 +34,13 @@
 #include <common/utils.h>
 #include <neatogen/sgd.h>
 #include <cgraph/cgraph.h>
-#include <cgraph/gv_ctype.h>
 #include <float.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/bitarray.h>
+#include <util/gv_ctype.h>
 #include <util/prisize_t.h>
 #include <util/startswith.h>
 #include <util/strcasecmp.h>
