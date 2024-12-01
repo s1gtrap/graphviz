@@ -186,9 +186,7 @@ getInfo (posinfo_t* pi, posstate * stp, double min_dist)
     for (child = stp->cp; child; child = child->next) {
 	if (BLK_PARENT(child) == pi->n) {
 	    childCount++;
-	    if (maxRadius < child->radius) {
-		maxRadius = child->radius;
-	    }
+	    maxRadius = fmax(maxRadius, child->radius);
 	    diameter += 2 * child->radius + min_dist;
 	}
     }
