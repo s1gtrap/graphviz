@@ -362,7 +362,6 @@ AC_TYPE_SSIZE_T
 dnl -----------------------------------
 dnl Checks for header files
 
-# AC_HEADER_STDC
 AC_CHECK_HEADERS([sys/time.h sys/select.h sys/mman.h sys/ioctl.h sys/inotify.h])
 
 dnl -----------------------------------
