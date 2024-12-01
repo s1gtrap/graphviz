@@ -15,6 +15,7 @@ pacman -S --noconfirm --needed \
     ${MINGW_PACKAGE_PREFIX}-diffutils \
     ${MINGW_PACKAGE_PREFIX}-expat \
     flex \
+    git \
     ${MINGW_PACKAGE_PREFIX}-gcc \
     ${MINGW_PACKAGE_PREFIX}-ghostscript \
     ${MINGW_PACKAGE_PREFIX}-gts \
