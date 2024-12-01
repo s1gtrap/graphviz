@@ -234,8 +234,7 @@ static void positionChildren(posinfo_t *info, posstate *stp, size_t length,
     else
 	childAngle = info->theta - info->diameter / (2 * childRadius);
 
-    if ((childRadius + info->maxRadius) > snRadius)
-	snRadius = childRadius + info->maxRadius;
+    snRadius = fmax(snRadius, childRadius + info->maxRadius);
 
     mindistAngle = min_dist / childRadius;
 
