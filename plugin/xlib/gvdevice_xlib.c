@@ -419,29 +419,26 @@ static int handle_file_events(GVJ_t *job, int inotify_fd) {
 }
 #endif
 
-static bool initialized;
-
 static void xlib_initialize(GVJ_t *firstjob) {
-  Display *dpy;
   KeySym keysym;
   KeyCode *keycodes;
   const char *display_name = NULL;
   int scr;
 
-  dpy = XOpenDisplay(display_name);
+  Display *dpy = XOpenDisplay(display_name);
   if (dpy == NULL) {
     fprintf(stderr, "Failed to open XLIB display: %s\n", XDisplayName(NULL));
     return;
   }
   scr = DefaultScreen(dpy);
 
-  firstjob->display = dpy;
   firstjob->screen = scr;
 
   keycodes = malloc(firstjob->numkeys * sizeof(KeyCode));
   if (firstjob->numkeys > 0 && keycodes == NULL) {
     fprintf(stderr, "Failed to malloc %" PRISIZE_T "*KeyCode\n",
             firstjob->numkeys);
+    XCloseDisplay(dpy);
     return;
   }
   for (size_t i = 0; i < firstjob->numkeys; i++) {
@@ -460,7 +457,7 @@ static void xlib_initialize(GVJ_t *firstjob) {
       DisplayHeight(dpy, scr) * 25.4 / DisplayHeightMM(dpy, scr);
   firstjob->device_sets_dpi = true;
 
-  initialized = true;
+  firstjob->display = dpy;
 }
 
 static void xlib_finalize(GVJ_t *firstjob) {
@@ -500,7 +497,7 @@ static void xlib_finalize(GVJ_t *firstjob) {
 #endif
 
   /* skip if initialization previously failed */
-  if (!initialized) {
+  if (dpy == NULL) {
     return;
   }
 
@@ -598,6 +595,7 @@ static void xlib_finalize(GVJ_t *firstjob) {
 #endif
 
   XCloseDisplay(dpy);
+  firstjob->display = NULL;
   free(keycodes);
   firstjob->keycodes = NULL;
 }

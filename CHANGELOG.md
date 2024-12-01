@@ -40,6 +40,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   #2604
 - A precision error that resulted in truncated edge lines has been corrected.
   This was a regression in Graphviz 12.0.0. #2620
+- The xlib plugin (`-Tx11`) resets its initialization state during finalization.
+  This fixes a rare scenario where multiple input graphs are supplied and
+  initialization for one of the not-first graphs fails. In this scenario,
+  finalization would be unaware of this failure and act on invalid state.
 
 ## [12.2.0] – 2024-11-04
 
