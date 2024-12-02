@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Numeric overflows when computing the total crossings in a graph with a large
   number of crossings have been avoided. #2621
+- A `free` of an invalid pointer has been fixed in the GD plugin. This was a
+  regression in Graphviz 12.1.1.
 
 ## [12.2.1] – 2024-12-07
 

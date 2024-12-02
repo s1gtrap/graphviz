@@ -123,6 +123,7 @@ static void gd_loadimage_cairo(GVJ_t * job, usershape_t *us, boxf b, bool filled
 	unsigned char *data = gv_calloc((size_t)stride, (size_t)height);
 	surface = cairo_image_surface_create_for_data (data, CAIRO_FORMAT_ARGB32,
 							width, height, stride);
+	unsigned char *const orig_data = data;
 
 	if (im->trueColor) {
 	    if (im->saveAlphaFlag) {
@@ -169,7 +170,7 @@ static void gd_loadimage_cairo(GVJ_t * job, usershape_t *us, boxf b, bool filled
         cairo_restore(cr);
 
 	cairo_surface_destroy(surface);
-	free(data);
+	free(orig_data);
     }
 }
 #endif
