@@ -717,14 +717,17 @@ void round_corners(GVJ_t *job, pointf *AF, size_t sides,
 	unsigned shape: 7;
     } mode = {0};
 
-    if (style.diagonals)
-	return diagonals_draw(job, AF, sides, style, filled);
-    else if (style.shape != 0)
+    if (style.diagonals) {
+	diagonals_draw(job, AF, sides, style, filled);
+	return;
+    } else if (style.shape != 0) {
 	mode.shape = style.shape;
-    else if (style.rounded)
-	return rounded_draw(job, AF, sides, style, filled);
-    else
+    } else if (style.rounded) {
+	rounded_draw(job, AF, sides, style, filled);
+	return;
+    } else {
 	UNREACHABLE();
+    }
 
     if (mode.shape == CYLINDER) {
 	cylinder_draw(job, AF, sides, filled);
