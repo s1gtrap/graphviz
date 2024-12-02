@@ -2149,7 +2149,8 @@ static void poly_init(node_t * n)
 	ND_label(n)->space.y = dimen.y + temp;
     }
 
-    const double penwidth = late_int(n, N_penwidth, DEFAULT_NODEPENWIDTH, MIN_NODEPENWIDTH);
+    const double penwidth = late_double(n, N_penwidth, DEFAULT_NODEPENWIDTH,
+                                        MIN_NODEPENWIDTH);
 
     size_t outp = peripheries;
     if (peripheries < 1)
@@ -2468,7 +2469,8 @@ static bool poly_inside(inside_t * inside_context, pointf p)
 	inside_context->s.box_URx = n_outline_width / 2;
 	inside_context->s.box_URy = n_outline_height / 2;
 
-	const double penwidth = late_int(n, N_penwidth, DEFAULT_NODEPENWIDTH, MIN_NODEPENWIDTH);
+	const double penwidth = late_double(n, N_penwidth, DEFAULT_NODEPENWIDTH,
+	                                    MIN_NODEPENWIDTH);
 	if (inside_context->s.last_poly->peripheries >= 1 && penwidth > 0) {
 	    /* index to outline, i.e., the outer-periphery with penwidth taken into account */
 	    inside_context->s.outp =
@@ -3157,7 +3159,8 @@ static void point_init(node_t * n)
     else
 	outp = peripheries;
     sides = 2;
-    const double penwidth = late_int(n, N_penwidth, DEFAULT_NODEPENWIDTH, MIN_NODEPENWIDTH);
+    const double penwidth = late_double(n, N_penwidth, DEFAULT_NODEPENWIDTH,
+                                        MIN_NODEPENWIDTH);
     if (peripheries >= 1 && penwidth > 0) {
         // allocate extra vertices representing the outline, i.e., the outermost
         // periphery with penwidth taken into account
@@ -3226,7 +3229,8 @@ static bool point_inside(inside_t * inside_context, pointf p)
 	size_t outp;
 	polygon_t *poly = ND_shape_info(n);
 	const size_t sides = 2;
-	const double penwidth = late_int(n, N_penwidth, DEFAULT_NODEPENWIDTH, MIN_NODEPENWIDTH);
+	const double penwidth = late_double(n, N_penwidth, DEFAULT_NODEPENWIDTH,
+	                                    MIN_NODEPENWIDTH);
 
 	if (poly->peripheries >= 1 && penwidth > 0) {
 	    /* index to outline, i.e., the outer-periphery with penwidth taken into account */
@@ -3797,7 +3801,8 @@ static bool record_inside(inside_t * inside_context, pointf p)
 	bbox = *bp;
 
     // adjust bbox to outline, i.e., the periphery with penwidth taken into account
-    const double penwidth = late_int(n, N_penwidth, DEFAULT_NODEPENWIDTH, MIN_NODEPENWIDTH);
+    const double penwidth = late_double(n, N_penwidth, DEFAULT_NODEPENWIDTH,
+                                        MIN_NODEPENWIDTH);
     const pointf extension = {penwidth / 2, penwidth / 2};
     bbox.LL = sub_pointf(bbox.LL, extension);
     bbox.UR = add_pointf(bbox.UR, extension);
@@ -4132,7 +4137,8 @@ static bool star_inside(inside_t * inside_context, pointf p)
 	vertex = inside_context->s.last_poly->vertices;
 	sides = inside_context->s.last_poly->sides;
 
-	const double penwidth = late_int(n, N_penwidth, DEFAULT_NODEPENWIDTH, MIN_NODEPENWIDTH);
+	const double penwidth = late_double(n, N_penwidth, DEFAULT_NODEPENWIDTH,
+	                                    MIN_NODEPENWIDTH);
 	if (inside_context->s.last_poly->peripheries >= 1 && penwidth > 0) {
 	    /* index to outline, i.e., the outer-periphery with penwidth taken into account */
 	    inside_context->s.outp = (inside_context->s.last_poly->peripheries + 1 - 1)
