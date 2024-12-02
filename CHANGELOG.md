@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   number of crossings have been avoided. #2621
 - A `free` of an invalid pointer has been fixed in the GD plugin. This was a
   regression in Graphviz 12.1.1.
+- A double-`free` when using rotated images was fixed in the GD plugin. This was
+  a regression in Graphviz 2.26.0.
 
 ## [12.2.1] – 2024-12-07
 
