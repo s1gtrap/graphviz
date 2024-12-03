@@ -319,9 +319,9 @@ static int vcmp(const void *x, const void *y, void *values) {
     double va = _vals[*a];
     double vb = _vals[*b];
 
-    if (va < vb) return -1; 
-    else if (va > vb) return 1; 
-    else return 0;
+    if (va < vb) return -1;
+    if (va > vb) return 1;
+    return 0;
 }
 
 /* delaunay_tri:
