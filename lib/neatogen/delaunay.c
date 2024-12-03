@@ -614,31 +614,17 @@ get_triangles (double *x, int n, int* tris)
 int* 
 delaunay_tri (double *x, double *y, int n, int* nedges)
 {
-    struct triangulateio in, out;
+    struct triangulateio out;
     int i;
 
-    in.pointlist = gv_calloc(2 * n, sizeof(REAL));
+    struct triangulateio in = {
+	.numberofpoints = n,
+	.pointlist = gv_calloc(2 * n, sizeof(REAL))
+    };
     for (i = 0; i < n; i++) {
 	in.pointlist[2 * i] = x[i];
 	in.pointlist[2 * i + 1] = y[i];
     }
-
-    in.pointattributelist = NULL;
-    in.pointmarkerlist = NULL;
-    in.numberofpoints = n;
-    in.numberofpointattributes = 0;
-    in.trianglearealist = NULL;
-    in.triangleattributelist = NULL;
-    in.numberoftriangleattributes = 0;
-    in.neighborlist = NULL;
-    in.segmentlist = NULL;
-    in.segmentmarkerlist = NULL;
-    in.holelist = NULL;
-    in.numberofholes = 0;
-    in.regionlist = NULL;
-    in.edgelist = NULL;
-    in.edgemarkerlist = NULL;
-    in.normlist = NULL;
 
     out.pointattributelist = NULL;
     out.pointmarkerlist = NULL;
