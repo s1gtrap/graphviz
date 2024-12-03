@@ -551,25 +551,18 @@ freeSurface (surface_t* s)
 int*
 get_triangles (double *x, int n, int* tris)
 {
-    struct triangulateio in, mid, vorout;
+    struct triangulateio mid, vorout;
     int i;
 
     if (n <= 2) return NULL;
 
-    in.numberofpoints = n;
-    in.numberofpointattributes = 0;
+    struct triangulateio in = {.numberofpoints = n};
     in.pointlist = gv_calloc(in.numberofpoints * 2, sizeof(REAL));
 
     for (i = 0; i < n; i++){
 	in.pointlist[i*2] = x[i*2];
 	in.pointlist[i*2 + 1] = x[i*2 + 1];
     }
-    in.pointattributelist = NULL;
-    in.pointmarkerlist = NULL;
-    in.numberofsegments = 0;
-    in.numberofholes = 0;
-    in.numberofregions = 0;
-    in.regionlist = NULL;
     mid.pointlist = NULL; // Not needed if -N switch used.
     mid.pointattributelist = NULL;
     mid.pointmarkerlist = NULL; /* Not needed if -N or -B switch used. */
