@@ -541,6 +541,7 @@ freeSurface (surface_t* s)
     free (s->edges);
     free (s->faces);
     free (s->neigh);
+    free(s);
 }
 #elif defined(HAVE_TRIANGLE)
 #define TRILIBRARY
