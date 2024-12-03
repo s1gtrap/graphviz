@@ -614,7 +614,6 @@ get_triangles (double *x, int n, int* tris)
 int* 
 delaunay_tri (double *x, double *y, int n, int* nedges)
 {
-    struct triangulateio out;
     int i;
 
     struct triangulateio in = {
@@ -626,22 +625,7 @@ delaunay_tri (double *x, double *y, int n, int* nedges)
 	in.pointlist[2 * i + 1] = y[i];
     }
 
-    out.pointattributelist = NULL;
-    out.pointmarkerlist = NULL;
-    out.numberofpoints = n;
-    out.numberofpointattributes = 0;
-    out.trianglearealist = NULL;
-    out.triangleattributelist = NULL;
-    out.numberoftriangleattributes = 0;
-    out.neighborlist = NULL;
-    out.segmentlist = NULL;
-    out.segmentmarkerlist = NULL;
-    out.holelist = NULL;
-    out.numberofholes = 0;
-    out.regionlist = NULL;
-    out.edgelist = NULL;
-    out.edgemarkerlist = NULL;
-    out.normlist = NULL;
+    struct triangleio out = {.numberofpoints = n};
 
     triangulate("zQNEeB", &in, &out, NULL);
 
