@@ -36,6 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - JPEG images without an `APP0` leading segment are supported for use in `src`
   fields and friends. Previously Graphviz was overly strict with the types of
   JPEGs it would recognize. #2619
+- The CMake build system now discovers and uses `pango_fc_font_lock_face` if
+  possible, for the Pango plugin to provide more information about used fonts.
 
 ### Fixed
 
