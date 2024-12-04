@@ -44,10 +44,7 @@ static std::vector<wchar_t> utf8_to_utf16(const char *s) {
   return utf16;
 }
 
-static Image* gdiplus_loadimage(GVJ_t * job, usershape_t *us)
-{
-    assert(job);
-    (void)job;
+static Image *gdiplus_loadimage(usershape_t *us) {
     assert(us);
     assert(us->name);
 
@@ -77,7 +74,8 @@ static Image* gdiplus_loadimage(GVJ_t * job, usershape_t *us)
 static void gdiplus_loadimage_gdiplus(GVJ_t * job, usershape_t *us, boxf b, bool)
 {
 	/* get the image from usershape details, then blit it to the context */
-	if (Image *image = gdiplus_loadimage(job, us)) {
+	if (Image *image = gdiplus_loadimage(us)) {
+		assert(job != NULL);
 		auto g = reinterpret_cast<Graphics*>(job->context);
 		g->DrawImage(image, RectF(b.LL.x, b.LL.y, b.UR.x - b.LL.x, b.UR.y - b.LL.y));
 	}
