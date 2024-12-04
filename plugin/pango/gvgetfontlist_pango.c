@@ -407,7 +407,6 @@ static availfonts_t gv_get_ps_fontlist(PangoFontMap *fontmap) {
 #ifdef DEBUG
     display_available_fonts(gv_af_p);
 #endif
-/* Free the Graphviz PS font definitions */
     return gv_af_p;
 }
 
