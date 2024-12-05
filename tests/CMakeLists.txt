@@ -1,4 +1,17 @@
-find_package(Boost REQUIRED)
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.30")
+  # is Boost available and new enough to ship its own config?
+  cmake_policy(SET CMP0167 NEW)
+  find_package(Boost CONFIG)
+
+  # if not, fallback to CMake’s Boost config
+  if(NOT Boost_FOUND)
+    cmake_policy(SET CMP0167 OLD)
+    find_package(Boost REQUIRED)
+  endif()
+else()
+  find_package(Boost REQUIRED)
+endif()
+
 find_package(Catch2 REQUIRED)
 find_package(FMT REQUIRED)
 find_package(RAPIDXML REQUIRED)
