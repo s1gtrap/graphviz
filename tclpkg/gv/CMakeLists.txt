@@ -311,6 +311,37 @@ if(ENABLE_SWIG)
     )
   endif()
 
+  if(ENABLE_RUBY)
+    swig_add_library(gv_ruby
+      LANGUAGE ruby
+      SOURCES gv.cpp gv.i gv_builtins.c gv_dummy_init.c
+    )
+    target_compile_definitions(gv_ruby PRIVATE DEMAND_LOADING=1)
+    set_property(
+      TARGET gv_ruby
+      PROPERTY SWIG_GENERATED_INCLUDE_DIRECTORIES ${Ruby_INCLUDE_DIRS}
+    )
+    set(RUBY_FLAGS "")
+    if(HAVE_CXX_WUNUSED_PARAMETER)
+      list(APPEND RUBY_FLAGS -Wno-unused-parameter)
+    endif()
+    if(HAVE_CXX_WSHADOW)
+      list(APPEND RUBY_FLAGS -Wno-shadow)
+    endif()
+    set_property(
+      TARGET gv_ruby
+      PROPERTY SWIG_GENERATED_COMPILE_OPTIONS "${RUBY_FLAGS}"
+    )
+    target_link_libraries(gv_ruby PRIVATE cdt cgraph gvc ${Ruby_LIBRARIES})
+
+    install(
+      TARGETS gv_ruby
+      RUNTIME DESTINATION ${BINARY_INSTALL_DIR}
+      LIBRARY DESTINATION ${LIBRARY_INSTALL_DIR}/graphviz/ruby
+      ARCHIVE DESTINATION ${LIBRARY_INSTALL_DIR}
+    )
+  endif()
+
   if(ENABLE_TCL)
     swig_add_library(gv_tcl
       LANGUAGE tcl
@@ -545,6 +576,28 @@ if(ENABLE_SWIG)
     else()
       install(
         FILES ${CMAKE_CURRENT_BINARY_DIR}/gv.3r
+        DESTINATION ${MAN_INSTALL_DIR}/man3
+      )
+    endif()
+  endif()
+
+  if(ENABLE_RUBY)
+    if(GZIP)
+      add_custom_target(
+        man-gv_ruby ALL DEPENDS gv.3ruby.gz COMMENT "gv_ruby man page"
+      )
+      add_custom_command(
+        OUTPUT gv.3ruby.gz
+        COMMAND ${GZIP} -9 --no-name --to-stdout gv.3ruby
+          >"${CMAKE_CURRENT_BINARY_DIR}/gv.3ruby.gz"
+        MAIN_DEPENDENCY gv.3ruby
+        COMMENT "compress gv_ruby man page")
+      install(
+        FILES ${CMAKE_CURRENT_BINARY_DIR}/gv.3ruby.gz
+        DESTINATION ${MAN_INSTALL_DIR}/man3)
+    else()
+      install(
+        FILES ${CMAKE_CURRENT_BINARY_DIR}/gv.3ruby
         DESTINATION ${MAN_INSTALL_DIR}/man3
       )
     endif()
