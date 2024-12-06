@@ -4807,6 +4807,30 @@ def test_2614():
     assert canonical.count('\\"') == 2, "quotes in string were not properly escaped"
 
 
+@pytest.mark.xfail(
+    strict=True, reason="https://gitlab.com/graphviz/graphviz/-/issues/2615"
+)
+def test_2615():
+    """
+    cluster→cluster edges should not be duplicated
+    https://gitlab.com/graphviz/graphviz/-/issues/2615
+    """
+
+    # locate our associated test case in this directory
+    input = Path(__file__).parent / "2615.dot"
+    assert input.exists(), "unexpectedly missing test case"
+
+    # lay this out
+    layout = dot("dot", input)
+
+    # find an inter-cluster edge
+    m = re.search(r'\bD\s*->\s*F\s*\[\s*pos\s*=\s*"(?P<position>[^"]*)"', layout)
+    assert m is not None, "could not locate D->F edge"
+
+    edge_count = len(re.findall(r"\be\b", m.group("position")))
+    assert edge_count == 1, "incorrect number of inter-cluster edges"
+
+
 def test_2619():
     """
     loading a JPEG with initial EXIF stream should be possible
