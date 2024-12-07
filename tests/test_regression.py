@@ -1572,6 +1572,20 @@ def test_1887():
     ), "empty label missing in output"
 
 
+def test_1896():
+    """
+    this graph should not crash Graphviz
+    https://gitlab.com/graphviz/graphviz/-/issues/1896
+    """
+
+    # locate our associated test case in this directory
+    input = Path(__file__).parent / "1896.dot"
+    assert input.exists(), "unexpectedly missing test case"
+
+    for _ in range(10):
+        dot("xdot1.2", input)
+
+
 def test_1898():
     """
     test a segfault from https://gitlab.com/graphviz/graphviz/-/issues/1898 has

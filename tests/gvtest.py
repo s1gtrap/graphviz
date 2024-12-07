@@ -115,6 +115,8 @@ def dot(
         "svg",
         "svg_inline",
         "xdot",
+        "xdot1.2",
+        "xdot1.4",
     )
 
     kwargs = {}
