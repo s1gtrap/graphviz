@@ -576,7 +576,7 @@ static void set_color_theme_color(colorschemaset * sc, char **colorstr)
     gvcolor_t cl;
     float av_perc;
 
-    av_perc = 1.0 / (float) (colorcnt-1);
+    av_perc = 1.0f / (float)(colorcnt - 1);
     for (size_t ind = 0; ind < colorcnt; ind++) {
         colorxlate(colorstr[ind], &cl, RGBA_DOUBLE);
         sc->s[ind].c.R = cl.u.RGBA[0];

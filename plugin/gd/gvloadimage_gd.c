@@ -96,8 +96,10 @@ static void gd_loadimage_gd(GVJ_t * job, usershape_t *us, boxf b, bool filled)
     gdImagePtr im2, im = job->context;
 
     if ((im2 = gd_loadimage(job, us))) {
-        if (job->rotation)
+        if (job->rotation) {
 	    im2 = gd_rotateimage(im2, job->rotation);
+	    us->data = im2;
+        }
         gdImageCopyResized(im, im2, ROUND(b.LL.x), ROUND(b.LL.y), 0, 0,
                 ROUND(b.UR.x - b.LL.x), ROUND(b.UR.y - b.LL.y), im2->sx, im2->sy);
     }
@@ -123,6 +125,7 @@ static void gd_loadimage_cairo(GVJ_t * job, usershape_t *us, boxf b, bool filled
 	unsigned char *data = gv_calloc((size_t)stride, (size_t)height);
 	surface = cairo_image_surface_create_for_data (data, CAIRO_FORMAT_ARGB32,
 							width, height, stride);
+	unsigned char *const orig_data = data;
 
 	if (im->trueColor) {
 	    if (im->saveAlphaFlag) {
@@ -169,7 +172,7 @@ static void gd_loadimage_cairo(GVJ_t * job, usershape_t *us, boxf b, bool filled
         cairo_restore(cr);
 
 	cairo_surface_destroy(surface);
-	free(data);
+	free(orig_data);
     }
 }
 #endif
