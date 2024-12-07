@@ -9,7 +9,6 @@
  *************************************************************************/
 
 #include <cgraph/cgraph.h>
-#include <cgraph/gv_ctype.h>
 #include <cgraph/list.h>
 #include <common/render.h>
 #include <common/utils.h>
@@ -19,6 +18,7 @@
 #include <stdlib.h>
 #include <util/agxbuf.h>
 #include <util/alloc.h>
+#include <util/gv_ctype.h>
 #include <util/prisize_t.h>
 
 DEFINE_LIST(node_stack, Agnode_t *)

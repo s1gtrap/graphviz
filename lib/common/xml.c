@@ -4,7 +4,6 @@
  * @ingroup common_utils
  */
 
-#include <cgraph/gv_ctype.h>
 #include <common/types.h>
 #include <common/utils.h>
 #include <inttypes.h>
@@ -13,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <util/exit.h>
+#include <util/gv_ctype.h>
 #include <util/unreachable.h>
 
 /* return true if *s points to &[A-Za-z]+;      (e.g. &Ccedil; )

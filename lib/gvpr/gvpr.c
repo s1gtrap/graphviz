@@ -18,7 +18,6 @@
 #include <assert.h>
 #include <ast/error.h>
 #include <cgraph/cgraph.h>
-#include <cgraph/gv_ctype.h>
 #include <cgraph/ingraphs.h>
 #include <cgraph/list.h>
 #include <common/globals.h>
@@ -36,6 +35,7 @@
 #include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/exit.h>
+#include <util/gv_ctype.h>
 #include <util/unreachable.h>
 
 #ifndef DFLT_GVPRPATH

@@ -25,13 +25,13 @@
 #include <getopt.h>
 
 #include <cgraph/cgraph.h>
-#include <cgraph/gv_ctype.h>
 #include <cgraph/ingraphs.h>
 #include <cgraph/strview.h>
 #include <cgraph/tokenize.h>
 #include <common/types.h>
 #include <common/utils.h>
 #include <util/exit.h>
+#include <util/gv_ctype.h>
 #include <util/streq.h>
 #include <util/unreachable.h>
 #include "openFile.h"

@@ -14,7 +14,6 @@
 
 #include <ast/ast.h>
 #include <ast/error.h>
-#include <cgraph/gv_ctype.h>
 #include <gvpr/actions.h>
 #include <gvpr/compile.h>
 #include <limits.h>
@@ -26,6 +25,7 @@
 #include <unistd.h>
 #include <util/agxbuf.h>
 #include <util/alloc.h>
+#include <util/gv_ctype.h>
 #include <util/strcasecmp.h>
 #include <util/unreachable.h>
 #include <util/unused.h>

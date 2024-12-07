@@ -14,12 +14,12 @@
  *************************************************************************/
 
 #include <cgraph/cghdr.h>
-#include <cgraph/gv_ctype.h>
 #include <cgraph/gv_math.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <util/agxbuf.h>
+#include <util/gv_ctype.h>
 #include <util/streq.h>
 
 static agerrlevel_t agerrno;             /* Last error level */

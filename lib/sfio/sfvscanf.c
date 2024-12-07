@@ -9,13 +9,13 @@
  *************************************************************************/
 
 #include <assert.h>
-#include <cgraph/gv_ctype.h>
 #include <inttypes.h>
 #include	<limits.h>
 #include	<sfio/sfhdr.h>
 #include	<stdbool.h>
 #include	<stddef.h>
 #include	<stdio.h>
+#include <util/gv_ctype.h>
 
 /*	The main engine for reading formatted data
 **

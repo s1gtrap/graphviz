@@ -15,7 +15,6 @@
 #endif
 
 #include <assert.h>
-#include <cgraph/gv_ctype.h>
 #include <cgraph/list.h>
 #include <gvc/gvconfig.h>
 #include <stdbool.h>
@@ -26,6 +25,7 @@
 #include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/exit.h>
+#include <util/gv_ctype.h>
 #include <util/gv_fopen.h>
 #include <util/startswith.h>
 
