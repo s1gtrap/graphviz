@@ -136,6 +136,11 @@ void agregister(Agraph_t * g, int objtype, void *obj);
 void agedgesetop(Agraph_t * g, Agedge_t * e, int insertion);
 void agdelnodeimage(Agraph_t * g, Agnode_t * node, void *ignored);
 void agdeledgeimage(Agraph_t * g, Agedge_t * edge, void *ignored);
+/// rename an object
+///
+/// @param obj Target to rename
+/// @param newname Name to assign
+/// @return 0 on success
 CGHDR_API int agrename(Agobj_t * obj, char *newname);
 void agrecclose(Agobj_t * obj);
 

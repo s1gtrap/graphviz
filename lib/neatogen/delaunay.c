@@ -319,9 +319,9 @@ static int vcmp(const void *x, const void *y, void *values) {
     double va = _vals[*a];
     double vb = _vals[*b];
 
-    if (va < vb) return -1; 
-    else if (va > vb) return 1; 
-    else return 0;
+    if (va < vb) return -1;
+    if (va > vb) return 1;
+    return 0;
 }
 
 /* delaunay_tri:
@@ -541,6 +541,7 @@ freeSurface (surface_t* s)
     free (s->edges);
     free (s->faces);
     free (s->neigh);
+    free(s);
 }
 #elif defined(HAVE_TRIANGLE)
 #define TRILIBRARY
@@ -551,25 +552,18 @@ freeSurface (surface_t* s)
 int*
 get_triangles (double *x, int n, int* tris)
 {
-    struct triangulateio in, mid, vorout;
+    struct triangulateio mid, vorout;
     int i;
 
     if (n <= 2) return NULL;
 
-    in.numberofpoints = n;
-    in.numberofpointattributes = 0;
+    struct triangulateio in = {.numberofpoints = n};
     in.pointlist = gv_calloc(in.numberofpoints * 2, sizeof(REAL));
 
     for (i = 0; i < n; i++){
 	in.pointlist[i*2] = x[i*2];
 	in.pointlist[i*2 + 1] = x[i*2 + 1];
     }
-    in.pointattributelist = NULL;
-    in.pointmarkerlist = NULL;
-    in.numberofsegments = 0;
-    in.numberofholes = 0;
-    in.numberofregions = 0;
-    in.regionlist = NULL;
     mid.pointlist = NULL; // Not needed if -N switch used.
     mid.pointattributelist = NULL;
     mid.pointmarkerlist = NULL; /* Not needed if -N or -B switch used. */
@@ -621,48 +615,18 @@ get_triangles (double *x, int n, int* tris)
 int* 
 delaunay_tri (double *x, double *y, int n, int* nedges)
 {
-    struct triangulateio in, out;
     int i;
 
-    in.pointlist = gv_calloc(2 * n, sizeof(REAL));
+    struct triangulateio in = {
+	.numberofpoints = n,
+	.pointlist = gv_calloc(2 * n, sizeof(REAL))
+    };
     for (i = 0; i < n; i++) {
 	in.pointlist[2 * i] = x[i];
 	in.pointlist[2 * i + 1] = y[i];
     }
 
-    in.pointattributelist = NULL;
-    in.pointmarkerlist = NULL;
-    in.numberofpoints = n;
-    in.numberofpointattributes = 0;
-    in.trianglearealist = NULL;
-    in.triangleattributelist = NULL;
-    in.numberoftriangleattributes = 0;
-    in.neighborlist = NULL;
-    in.segmentlist = NULL;
-    in.segmentmarkerlist = NULL;
-    in.holelist = NULL;
-    in.numberofholes = 0;
-    in.regionlist = NULL;
-    in.edgelist = NULL;
-    in.edgemarkerlist = NULL;
-    in.normlist = NULL;
-
-    out.pointattributelist = NULL;
-    out.pointmarkerlist = NULL;
-    out.numberofpoints = n;
-    out.numberofpointattributes = 0;
-    out.trianglearealist = NULL;
-    out.triangleattributelist = NULL;
-    out.numberoftriangleattributes = 0;
-    out.neighborlist = NULL;
-    out.segmentlist = NULL;
-    out.segmentmarkerlist = NULL;
-    out.holelist = NULL;
-    out.numberofholes = 0;
-    out.regionlist = NULL;
-    out.edgelist = NULL;
-    out.edgemarkerlist = NULL;
-    out.normlist = NULL;
+    struct triangleio out = {.numberofpoints = n};
 
     triangulate("zQNEeB", &in, &out, NULL);
 
