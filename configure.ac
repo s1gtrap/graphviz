@@ -362,11 +362,7 @@ AC_TYPE_SSIZE_T
 dnl -----------------------------------
 dnl Checks for header files
 
-# AC_HEADER_STDC
-AC_CHECK_HEADERS( \
-	sys/time.h sys/select.h \
-	sys/mman.h \
-	sys/ioctl.h sys/inotify.h)
+AC_CHECK_HEADERS([sys/time.h sys/select.h sys/mman.h sys/ioctl.h sys/inotify.h])
 
 dnl -----------------------------------
 dnl Checks for -lm library
@@ -377,8 +373,7 @@ AC_SUBST([MATH_LIBS])
 # -----------------------------------
 
 # Checks for library functions
-AC_CHECK_FUNCS([lrand48 drand48 srand48 setmode setenv \
-  memrchr select dl_iterate_phdr inotify_init1])
+AC_CHECK_FUNCS([lrand48 drand48 srand48 setmode setenv memrchr select dl_iterate_phdr inotify_init1])
 
 AC_REPLACE_FUNCS([strcasestr])
 
