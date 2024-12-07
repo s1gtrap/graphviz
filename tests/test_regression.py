@@ -414,6 +414,33 @@ def test_241(test_case: str):
     ), "splines setting caused warnings"
 
 
+@pytest.mark.xfail(
+    strict=True, reason="https://gitlab.com/graphviz/graphviz/-/issues/258"
+)
+def test_258():
+    """
+    cluster edges should not be duplicated
+    https://gitlab.com/graphviz/graphviz/-/issues/258
+    """
+
+    # locate our associated test case in this directory
+    input = Path(__file__).parent / "258.dot"
+    assert input.exists(), "unexpectedly missing test case"
+
+    # lay this out
+    layout = dot("dot", input)
+
+    # find an inter-cluster edge
+    m = re.search(
+        r'\bB\s*->\s*D\s*\[\s*constraint\s*=\s*none\s*,\s*pos\s*=\s*"(?P<position>[^"]*)"',
+        layout,
+    )
+    assert m is not None, "could not locate B->D edge"
+
+    edge_count = len(re.findall(r"\be\b", m.group("position")))
+    assert edge_count == 1, "incorrect number of inter-cluster edges"
+
+
 def test_358():
     """
     setting xdot version to 1.7 should enable font characteristics
