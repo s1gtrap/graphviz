@@ -11,7 +11,6 @@
  *************************************************************************/
 
 #include <common/render.h>
-#include <cgraph/gv_math.h>
 #include <cgraph/strview.h>
 #include <cgraph/tokenize.h>
 #include <common/htmltable.h>
@@ -27,6 +26,7 @@
 #include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/gv_ctype.h>
+#include <util/gv_math.h>
 #include <util/startswith.h>
 #include <util/strcasecmp.h>
 #include <util/streq.h>

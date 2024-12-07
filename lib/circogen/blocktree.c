@@ -8,10 +8,10 @@
  * Contributors: Details at https://graphviz.org
  *************************************************************************/
 
-#include <cgraph/gv_math.h>
 #include <circogen/blocktree.h>
 #include <stdbool.h>
 #include <util/agxbuf.h>
+#include <util/gv_math.h>
 
 static void addNode(block_t * bp, Agnode_t * n)
 {

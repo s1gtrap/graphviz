@@ -29,12 +29,12 @@
 
 #include <stdlib.h>
 #include <cgraph/cgraph.h>
-#include <cgraph/gv_math.h>
 #include <cgraph/ingraphs.h>
 #include <cgraph/list.h>
 #include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/exit.h>
+#include <util/gv_math.h>
 #include <util/unreachable.h>
 
 typedef struct {

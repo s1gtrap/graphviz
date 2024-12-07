@@ -31,7 +31,6 @@
 #include <assert.h>
 #include <common/render.h>
 #include <common/htmltable.h>
-#include <cgraph/gv_math.h>
 #include <common/pointset.h>
 #include <cdt/cdt.h>
 #include <float.h>
@@ -46,6 +45,7 @@
 #include <util/alloc.h>
 #include <util/bitarray.h>
 #include <util/exit.h>
+#include <util/gv_math.h>
 #include <util/prisize_t.h>
 #include <util/strcasecmp.h>
 #include <util/streq.h>

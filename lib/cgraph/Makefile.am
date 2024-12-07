@@ -10,7 +10,7 @@ endif
 
 pkginclude_HEADERS = cgraph.h
 noinst_HEADERS = cghdr.h \
-	gv_math.h ingraphs.h list.h node_set.h rdr.h \
+	ingraphs.h list.h node_set.h rdr.h \
 	strview.h tokenize.h
 noinst_LTLIBRARIES = libcgraph_C.la
 lib_LTLIBRARIES = libcgraph.la

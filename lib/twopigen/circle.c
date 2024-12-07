@@ -9,7 +9,6 @@
  *************************************************************************/
 
 #include    <assert.h>
-#include    <cgraph/gv_math.h>
 #include    <cgraph/list.h>
 #include    <twopigen/circle.h>
 #include    <inttypes.h>
@@ -21,6 +20,7 @@
 #include    <string.h>
 #include    <util/alloc.h>
 #include    <util/gv_ctype.h>
+#include    <util/gv_math.h>
 #include    <util/streq.h>
 #define DEF_RANKSEP 1.00
 #define UNSET 10.00
