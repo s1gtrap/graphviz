@@ -359,9 +359,8 @@ static availfonts_t gv_get_ps_fontlist(PangoFontMap *fontmap) {
 	    if (strcasecmp(gv_ps_fontdef->fontname, name) == 0) {
 		family_name = strview(name, '\0');
 		availfaces = get_faces(family);
-	    }
-	    if (family_name.data != NULL)
 		break;
+	    }
 	}
 	/* if a match is not found on the primary Graphviz font family,
 	   search for a match on the equivalent font family names */
@@ -408,7 +407,6 @@ static availfonts_t gv_get_ps_fontlist(PangoFontMap *fontmap) {
 #ifdef DEBUG
     display_available_fonts(gv_af_p);
 #endif
-/* Free the Graphviz PS font definitions */
     return gv_af_p;
 }
 

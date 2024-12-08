@@ -134,7 +134,20 @@ static bool pango_textlayout(textspan_t * span, char **fontpath)
 #ifdef HAVE_PANGO_FC_FONT_LOCK_FACE
 	    if (strcmp(fontclass, "PangoCairoFcFont") == 0) {
 	        PangoFcFont *fcfont = PANGO_FC_FONT(font);
+// `pango_fc_font_lock_face` arrived in Pango 1.4 and then was deprecated in
+// 1.44. Its replacement is `pango_font_get_hb_font`. However this replacement
+// does not seem to provide access to the underlying FreeType font information
+// we want. Since this code path is only enabled when `pango_fc_font_lock_face`
+// is available, suppress deprecation warnings and we will have to deal with the
+// loss of this informational output altogether when Pango finally removes it.
+#if __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 	        FT_Face face = pango_fc_font_lock_face(fcfont);
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 	        if (face) {
 		    agxbprint(&buf, "\"%s, %s\" ", face->family_name, face->style_name);
 
@@ -149,7 +162,14 @@ static bool pango_textlayout(textspan_t * span, char **fontpath)
 		    else
 			agxbput(&buf, "*no stream available*");
 		}
+#if __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 	        pango_fc_font_unlock_face(fcfont);
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 	    }
 	    else
 #endif
@@ -167,7 +187,7 @@ static bool pango_textlayout(textspan_t * span, char **fontpath)
     }
 
 #ifdef ENABLE_PANGO_MARKUP
-    if ((span->font) && (flags = span->font->flags)) {
+    if (span->font && (flags = span->font->flags)) {
 	agxbuf xb = {0};
 
 	agxbput(&xb,"<span");

@@ -95,7 +95,7 @@ def test_existence(binary: str):
         pytest.skip(f"{binary} is not built on Windows due to lacking Qt")
 
     # FIXME: Smyrna dependencies are not avaiable in other jobs
-    if binary == "smyrna" and is_cmake() and platform.system() != "Linux":
+    if binary == "smyrna" and platform.system() != "Linux":
         check_that_tool_does_not_exist(binary, os_id)
         pytest.skip("smyrna is not built on non-Linux due to lacking dependencies")
 
@@ -105,10 +105,6 @@ def test_existence(binary: str):
     if binary == "vimdot" and platform.system() == "Windows":
         check_that_tool_does_not_exist(binary, os_id)
         pytest.skip(f"{binary} is not installed on Windows")
-
-    if binary == "smyrna" and not is_cmake() and is_macos():
-        check_that_tool_does_not_exist(binary, os_id)
-        pytest.skip("https://gitlab.com/graphviz/graphviz/-/issues/2422")
 
     if binary == "vimdot" and not is_cmake() and is_macos():
         check_that_tool_does_not_exist(binary, os_id)
