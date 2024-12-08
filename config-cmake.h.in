@@ -12,6 +12,7 @@
 #cmakedefine HAVE_INOTIFY_INIT1
 #cmakedefine HAVE_LRAND48
 #cmakedefine HAVE_MEMRCHR
+#cmakedefine HAVE_PANGO_FC_FONT_LOCK_FACE
 #cmakedefine HAVE_SETENV
 #cmakedefine HAVE_SETMODE
 #cmakedefine HAVE_SRAND48
