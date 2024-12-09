@@ -6,6 +6,7 @@ else()
   list(APPEND CMAKE_INSTALL_RPATH "\$ORIGIN/..")
 endif()
 
+add_subdirectory(ascii)
 add_subdirectory(core)
 add_subdirectory(devil)
 add_subdirectory(dot_layout)

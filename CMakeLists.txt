@@ -218,6 +218,7 @@ if(ENABLE_LTDL)
   add_definitions(-DENABLE_LTDL)
 endif()
 
+find_package(AA)
 find_package(DevIL)
 find_package(Freetype)
 find_package(PANGOCAIRO)

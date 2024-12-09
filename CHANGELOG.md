@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for building the SWIG-generated Ruby language bindings has been
   integrated into the CMake build system. This is controllable by the
   `-DENABLE_RUBY={AUTO|ON|OFF}` option.
+- A new plugin for outputting ASCII art has been implemented, `-Tascii`. This
+  relies on [AA-lib](https://aa-project.sourceforge.net/aalib/) and is only
+  supported in the CMake build system. #2421
 
 ### Changed
 
