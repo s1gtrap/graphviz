@@ -571,17 +571,23 @@ else
         AC_SUBST([GUILE_CFLAGS])
         AC_SUBST([GUILE_LIBS])
       ], [
-        PKG_CHECK_MODULES([GUILE], [guile-2.0], [
+        PKG_CHECK_MODULES([GUILE], [guile-2.2], [
           use_guile="Yes"
           AC_SUBST([GUILE_CFLAGS])
           AC_SUBST([GUILE_LIBS])
         ], [
-          PKG_CHECK_MODULES([GUILE], [guile-1.8], [
+          PKG_CHECK_MODULES([GUILE], [guile-2.0], [
             use_guile="Yes"
             AC_SUBST([GUILE_CFLAGS])
             AC_SUBST([GUILE_LIBS])
           ], [
-            use_guile="No (Guile not available)"
+            PKG_CHECK_MODULES([GUILE], [guile-1.8], [
+              use_guile="Yes"
+              AC_SUBST([GUILE_CFLAGS])
+              AC_SUBST([GUILE_LIBS])
+            ], [
+              use_guile="No (Guile not available)"
+            ])
           ])
         ])
       ])
