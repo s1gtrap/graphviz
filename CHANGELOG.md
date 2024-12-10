@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased (13.0.0)]
 
+### Added
+
+- Support for building the SWIG-generated Ruby language bindings has been
+  integrated into the CMake build system. This is controllable by the
+  `-DENABLE_RUBY={AUTO|ON|OFF}` option.
+
 ### Changed
 
 - **Breaking**: `rank_t.cache_nc` is now a `int64_t`.

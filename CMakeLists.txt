@@ -52,6 +52,8 @@ set(ENABLE_PYTHON AUTO CACHE STRING "Build Python language bindings")
 set_property(CACHE ENABLE_PYTHON PROPERTY STRINGS AUTO ON OFF)
 set(ENABLE_R AUTO CACHE STRING "Build R language bindings")
 set_property(CACHE ENABLE_R PROPERTY STRINGS AUTO ON OFF)
+set(ENABLE_RUBY AUTO CACHE STRING "Build Ruby language bindings")
+set_property(CACHE ENABLE_RUBY PROPERTY STRINGS AUTO ON OFF)
 option(GRAPHVIZ_CLI "Build command line tools" ON)
 
 if(WIN32)
@@ -282,7 +284,7 @@ if(NOT ENABLE_SWIG STREQUAL "OFF")
   endif()
 
   find_package(SWIG
-    COMPONENTS csharp d go guile java javascript lua perl5 php7 python r
+    COMPONENTS csharp d go guile java javascript lua perl5 php7 python r ruby
   )
   if(ENABLE_SWIG STREQUAL "AUTO")
     if(SWIG_FOUND)
@@ -495,6 +497,24 @@ if(NOT ENABLE_R STREQUAL "OFF")
   else()
     message(STATUS "setting -DENABLE_R=OFF")
     set(ENABLE_R OFF)
+  endif()
+endif()
+
+if(NOT ENABLE_RUBY STREQUAL "OFF")
+  find_package(Ruby)
+  if(ENABLE_SWIG AND SWIG_ruby_FOUND AND Ruby_FOUND)
+    if(ENABLE_RUBY STREQUAL "AUTO")
+      message(STATUS "setting -DENABLE_RUBY=ON")
+      set(ENABLE_RUBY ON)
+    endif()
+  elseif(ENABLE_RUBY STREQUAL "ON")
+    message(
+      FATAL_ERROR "-DENABLE_SWIG=ON must be set and Ruby libraries must be \
+                   available to use -DENABLE_RUBY=ON"
+    )
+  else()
+    message(STATUS "setting -DENABLE_RUBY=OFF")
+    set(ENABLE_RUBY OFF)
   endif()
 endif()
 

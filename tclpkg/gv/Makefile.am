@@ -36,7 +36,6 @@ libgv_d_la_SOURCES = $(BASESOURCES) gv_dummy_init.c
 libgv_d_la_LIBADD = $(BASELIBS)
 libgv_d_la_LDFLAGS = -module -avoid-version
 libgv_d_la_CPPFLAGS = $(BASECPPFLAGS)
-# $(D_data): gv_d.cpp
 gv_d.cpp: gv.i
 	$(SWIG) -c++ -d -o gv_d.cpp $(srcdir)/gv.i
 
@@ -64,7 +63,6 @@ libgv_guile_la_LIBADD = $(BASELIBS) $(GUILE_LIBS)
 libgv_guile_la_LDFLAGS = -module -avoid-version
 libgv_guile_la_CPPFLAGS = $(BASECPPFLAGS) $(GUILE_CFLAGS)
 libgv_guile_la_CXXFLAGS = $(AM_CXXFLAGS) -Wno-unused-parameter
-# $(GUILE_data): gv_guile.cpp
 gv_guile.cpp: gv.i
 	$(SWIG) -c++ -guile -o $@ $(srcdir)/gv.i
 
@@ -97,7 +95,6 @@ libgv_lua_la_SOURCES = $(BASESOURCES) gv_dummy_init.c
 libgv_lua_la_LIBADD = $(BASELIBS) $(LUA_LIBS)
 libgv_lua_la_LDFLAGS = -module -avoid-version
 libgv_lua_la_CPPFLAGS = $(BASECPPFLAGS) $(LUA_INCLUDES)
-# $(LUA_data): gv_lua.cpp
 gv_lua.cpp: gv.i
 	$(SWIG) -c++ -lua -o $@ $(srcdir)/gv.i
 
@@ -151,7 +148,6 @@ libgv_R_la_LIBADD = $(BASELIBS) $(R_LIBS)
 libgv_R_la_LDFLAGS = -module -avoid-version
 libgv_R_la_CPPFLAGS = $(BASECPPFLAGS) $(R_CFLAGS)
 libgv_R_la_CXXFLAGS = $(AM_CXXFLAGS) -Wno-cast-function-type -Wno-unused-parameter
-# $(R_data): gv_R.cpp
 gv_R.cpp: gv.i
 	$(SWIG) -c++ -r -o $@ $(srcdir)/gv.i
 
@@ -163,7 +159,6 @@ libgv_ruby_la_LIBADD = $(BASELIBS) $(RUBY_LIBS)
 libgv_ruby_la_LDFLAGS = -module -avoid-version
 libgv_ruby_la_CPPFLAGS = $(BASECPPFLAGS) $(RUBY_CFLAGS)
 libgv_ruby_la_CXXFLAGS = $(AM_CXXFLAGS) -Wno-unused-parameter
-# $(RUBY_data): gv_ruby.cpp
 gv_ruby.cpp: gv.i
 	$(SWIG) -c++ -ruby -o $@ $(srcdir)/gv.i
 
@@ -174,7 +169,6 @@ libgv_tcl_la_SOURCES = $(BASESOURCES) gv_tcl_init.c
 libgv_tcl_la_LIBADD = $(top_builddir)/tclpkg/tclstubs/libtclstubs_C.la $(BASELIBS) $(TCL_LIBS)
 libgv_tcl_la_LDFLAGS = -module -avoid-version
 libgv_tcl_la_CPPFLAGS = $(BASECPPFLAGS) $(TCL_INCLUDES)
-# $(TCL_data): gv_tcl.cpp
 gv_tcl.cpp: gv.i
 	$(SWIG) -c++ -tcl -namespace -o $@ $(srcdir)/gv.i
 
