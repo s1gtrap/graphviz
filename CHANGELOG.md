@@ -24,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   regression in Graphviz 12.1.1.
 - A double-`free` when using rotated images was fixed in the GD plugin. This was
   a regression in Graphviz 2.26.0.
+- Guile 2.2 discovery has been restored in the Autotools build system. This was
+  a regression in Graphviz 12.2.0. #2624
 
 ## [12.2.1] – 2024-12-07
 
