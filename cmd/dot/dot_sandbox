@@ -53,9 +53,11 @@ class Bubblewrap(Sandbox):
     ¹ https://github.com/containers/bubblewrap
     """
 
+    @staticmethod
     def is_usable() -> bool:
         return shutil.which("bwrap") is not None
 
+    @staticmethod
     def _run(args: List[Union[Path, str]]) -> sp.CompletedProcess:
         prefix = ["bwrap", "--ro-bind", "/", "/", "--unshare-all", "--"]
         return sp.call(prefix + args)
