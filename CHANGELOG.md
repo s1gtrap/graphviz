@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Breaking**: The cdt field `Dt_t.data` is now a `Dtdata_t` instead of
   `Dtdata_t *`.
 - **Breaking**: `GVJ_t.imagedata` is now an `unsigned char *`.
+- The sandboxer implemented in Graphviz 12.2.1, `dot_sandbox`, supports macOS.
 
 ### Fixed
 
