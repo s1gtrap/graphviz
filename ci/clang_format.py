@@ -616,6 +616,7 @@ sources = subprocess.check_output(
     universal_newlines=True,
 )
 
+ret = 0
 for source in sources.split("\x00")[:-1]:
     print(f"checking {source}...")
 
@@ -647,4 +648,6 @@ for source in sources.split("\x00")[:-1]:
     )
     if diff:
         print(f"{source} incorrectly formatted:\n{''.join(diff)}", end="")
-        sys.exit(-1)
+        ret = -1
+
+sys.exit(ret)

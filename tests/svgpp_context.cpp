@@ -13,7 +13,7 @@ static std::string to_color_string(SvgppContext::color_t color) {
 }
 
 SvgppContext::SvgppContext(ISVGAnalyzer *svg_analyzer)
-    : m_svg_analyzer(svg_analyzer){};
+    : m_svg_analyzer(svg_analyzer) {};
 
 void SvgppContext::on_enter_element(svgpp::tag::element::svg) {
   m_svg_analyzer->on_enter_element_svg();
