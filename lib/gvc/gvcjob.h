@@ -276,8 +276,8 @@ extern "C" {
 	const char *output_filename;
 	FILE *output_file;
 	char *output_data;
-	unsigned int output_data_allocated;
-	unsigned int output_data_position;
+	size_t output_data_allocated;
+	size_t output_data_position;
 
 	const char *output_langname;
 	int output_lang;

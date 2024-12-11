@@ -700,7 +700,7 @@ char *renderdata(Agraph_t *g, const char *format) {
   if (!g)
     return nullptr;
   char *data;
-  unsigned int length;
+  size_t length;
   int err = gvRenderData(gvc, g, format, &data, &length);
   if (err)
     return nullptr;

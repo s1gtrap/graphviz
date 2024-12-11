@@ -1,4 +1,5 @@
 #include <cassert>
+#include <cstddef>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -51,7 +52,7 @@ GVLayout::~GVLayout() {
 
 GVRenderData GVLayout::render(const std::string &format) const {
   char *result = nullptr;
-  unsigned int length = 0;
+  size_t length = 0;
   const auto rc = gvRenderData(m_gvc->c_struct(), m_g->c_struct(),
                                format.c_str(), &result, &length);
   if (rc) {

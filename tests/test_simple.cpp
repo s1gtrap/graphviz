@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <string_view>
 
 #include <catch2/catch_all.hpp>
@@ -20,7 +21,7 @@ TEST_CASE("digraph without any nodes") {
   }
 
   char *result = nullptr;
-  unsigned length = 0;
+  size_t length = 0;
   {
     const auto rc = gvRenderData(gvc, g, "svg", &result, &length);
 

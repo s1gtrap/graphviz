@@ -47,7 +47,7 @@ TEST_CASE("take an input graph, compute its connected components, lay out each "
   pack_graph(ncc, cc, g, 0);
 
   char *result = nullptr;
-  unsigned length = 0;
+  size_t length = 0;
   {
     const auto rc = gvRenderData(gvc, g, "svg", &result, &length);
     REQUIRE(rc == 0);

@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Breaking**: `rank_t.cache_nc` is now a `int64_t`.
 - **Breaking**: The `agreadline` function has been removed. #2558
+- **Breaking**: `gvRenderData` takes its `length` parameter as a `size_t *`. The
+  `GVJ_t` fields `output_data_allocated` and `output_data_position` have type
+  `size_t`.
 
 ### Fixed
 
