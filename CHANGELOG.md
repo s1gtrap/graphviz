@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - **Breaking**: `rank_t.cache_nc` is now a `int64_t`.
+- **Breaking**: The `agreadline` function has been removed. #2558
 
 ### Fixed
 
