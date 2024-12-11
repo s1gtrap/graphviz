@@ -23,13 +23,13 @@
  *  watch out for interactions between leaves and clusters.
  */
 
-#include	<cgraph/gv_math.h>
 #include	<dotgen/dot.h>
 #include	<limits.h>
 #include	<stdbool.h>
 #include	<stddef.h>
 #include	<stdint.h>
 #include	<util/alloc.h>
+#include	<util/gv_math.h>
 
 static void dot1_rank(graph_t *g);
 static void dot2_rank(graph_t *g);

@@ -7,6 +7,7 @@ noinst_HEADERS = \
   exit.h \
   gv_ctype.h \
   gv_fopen.h \
+  gv_math.h \
   overflow.h \
   prisize_t.h \
   sort.h \
