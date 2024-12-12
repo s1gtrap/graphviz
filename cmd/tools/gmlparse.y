@@ -31,7 +31,7 @@ static gmlgraph* G;
 static gmlnode* N;
 static gmledge* E;
 static Dt_t* L;
-DEFINE_LIST(dts, Dt_t *)
+DEFINE_LIST_WITH_DTOR(dts, Dt_t *, dtclose)
 static dts_t liststk;
 
 static void free_attr(void *attr);
@@ -96,10 +96,6 @@ static Dtdisc_t graphDisc = {
 static void
 cleanup (void)
 {
-    while (!dts_is_empty(&liststk)) {
-	Dt_t *dt = dts_pop_back(&liststk);
-	dtclose(dt);
-    }
     dts_free(&liststk);
     if (L) {
 	dtclose (L);
