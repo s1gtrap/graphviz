@@ -5,38 +5,40 @@
 
 #include <stdio.h>
 #include <cgraph/cgraph.h>
+#include <cgraph/list.h>
 
 typedef struct {
-    Dtlink_t link;
     unsigned short kind;
     unsigned short sort;
     char* name;
     union {
 	char* value;
-	Dt_t* lp;
+	void *lp; ///< actually an `attrs_t *`
     }u;
 } gmlattr;
 
 void free_attr(void *attr);
 
+DEFINE_LIST_WITH_DTOR(attrs, gmlattr *, free_attr)
+
 typedef struct {
     Dtlink_t link;
     char* id;
-    Dt_t* attrlist;  
+    attrs_t attrlist;  
 } gmlnode;
 
 typedef struct {
     Dtlink_t link;
     char* source;
     char* target;
-    Dt_t* attrlist;  
+    attrs_t attrlist;  
 } gmledge;
 
 typedef struct gmlgraph {
     Dtlink_t link;
     struct gmlgraph* parent;
     int directed;
-    Dt_t* attrlist;  
+    attrs_t attrlist;  
     Dt_t* nodelist;  
     Dt_t* edgelist;  
     Dt_t* graphlist;  
