@@ -55,8 +55,7 @@ void free_edge(gmledge *p) {
     free (p);
 }
 
-void free_graph(void *graph) {
-    gmlgraph *p = graph;
+void free_graph(gmlgraph *p) {
     if (!p) return;
     nodes_free(&p->nodelist);
     edges_free(&p->edgelist);

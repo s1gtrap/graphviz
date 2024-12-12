@@ -49,7 +49,7 @@ typedef struct gmlgraph {
     void *graphlist; ///< actually a `graphs_t *`
 } gmlgraph;
 
-void free_graph(void *graph);
+void free_graph(gmlgraph *p);
 
 DEFINE_LIST_WITH_DTOR(graphs, gmlgraph *, free_graph)
 
