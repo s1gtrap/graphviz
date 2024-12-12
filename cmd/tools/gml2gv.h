@@ -31,7 +31,6 @@ void free_node(gmlnode *p);
 DEFINE_LIST_WITH_DTOR(nodes, gmlnode *, free_node)
 
 typedef struct {
-    Dtlink_t link;
     char* source;
     char* target;
     attrs_t attrlist;  
@@ -39,13 +38,15 @@ typedef struct {
 
 void free_edge(void *edge);
 
+DEFINE_LIST_WITH_DTOR(edges, gmledge *, free_edge)
+
 typedef struct gmlgraph {
     Dtlink_t link;
     struct gmlgraph* parent;
     int directed;
     attrs_t attrlist;  
     nodes_t nodelist;
-    Dt_t* edgelist;  
+    edges_t edgelist;
     Dt_t* graphlist;  
 } gmlgraph;
 
