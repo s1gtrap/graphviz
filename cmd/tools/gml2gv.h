@@ -17,7 +17,7 @@ typedef struct {
     }u;
 } gmlattr;
 
-void free_attr(void *attr);
+void free_attr(gmlattr *p);
 
 DEFINE_LIST_WITH_DTOR(attrs, gmlattr *, free_attr)
 

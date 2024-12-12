@@ -344,8 +344,7 @@ alistitem : NAME INTEGER { $$ = mkAttr ($1, 0, INTEGER, $2, 0); }
 
 %%
 
-void free_attr(void *attr) {
-    gmlattr *p = attr;
+void free_attr(gmlattr *p) {
     if (!p) return;
     if (p->kind == LIST && p->u.lp)
 	free_attrs(p->u.lp);
