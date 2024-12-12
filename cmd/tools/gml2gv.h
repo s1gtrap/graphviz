@@ -50,6 +50,8 @@ typedef struct gmlgraph {
     Dt_t* graphlist;  
 } gmlgraph;
 
+void free_graph(void *graph);
+
 extern int gmllex(void);
 extern void gmllexeof(void);
 extern void gmlerror(const char *);
