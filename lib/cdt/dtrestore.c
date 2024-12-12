@@ -50,7 +50,7 @@ int dtrestore(Dt_t* dt, Dtlink_t* list)
 	else
 	{	if(dt->data->type&(DT_OSET|DT_OBAG))
 			dt->data->here = list;
-		else /*if(dt->data->type&(DT_LIST|DT_STACK|DT_QUEUE))*/
+		else /*if(dt->data->type&(DT_LIST|DT_STACK))*/
 		{	dt->data->here = NULL;
 			dt->data->head = list;
 		}

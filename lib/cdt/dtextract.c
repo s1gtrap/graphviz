@@ -17,7 +17,7 @@ Dtlink_t* dtextract(Dt_t* dt)
 		for(ends = (s = dt->data->htab) + dt->data->ntab; s < ends; ++s)
 			*s = NULL;
 	}
-	else /*if(dt->data->type&(DT_LIST|DT_STACK|DT_QUEUE))*/
+	else /*if(dt->data->type&(DT_LIST|DT_STACK))*/
 	{	list = dt->data->head;
 		dt->data->head = NULL;
 	}

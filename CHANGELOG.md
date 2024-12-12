@@ -27,6 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Breaking**: The cgraph macros `agnew` and `agnnew` have been removed.
 - **Breaking**: The cgraph functions `agalloc`, `agrealloc`, and `agfree` have
   been removed.
+- **Breaking**: The cdt queue types, `DT_QUEUE`, `Dtqueue`, `_Dtqueue` have been
+  removed.
 
 ### Fixed
 

@@ -47,7 +47,6 @@ Dt_t*       dtview(Dt_t* dt, Dt_t* view);
 Dtmethod_t* Dtset;
 Dtmethod_t* Dtoset;
 Dtmethod_t* Dtobag;
-Dtmethod_t* Dtqueue;
 .Ce
 .Ss "DISCIPLINE"
 .Cs
@@ -88,7 +87,7 @@ unsigned int dtstrhash(void *str, int n);
 .SH DESCRIPTION
 .PP
 \fICdt\fP manages run-time dictionaries using standard container data types:
-unordered set/multiset, ordered set/multiset, list, stack, and queue.
+unordered set/multiset, ordered set/multiset, list, and stack.
 .PP
 .Ss "DICTIONARY TYPES"
 .PP
@@ -128,8 +127,6 @@ This deletes all objects in \f5dt\fP without closing \f5dt\fP.
 .Ss "  Dtmethod_t dtmethod(Dt_t* dt, const Dtmethod_t* meth)"
 If \f5meth\fP is \f5NULL\fP, \f5dtmethod()\fP returns the current method.
 Otherwise, it changes the storage method of \f5dt\fP to \f5meth\fP.
-Object order remains the same during a
-method switch for \f5Dtqueue\fP.
 Switching to and from \f5Dtset\fP and \f5Dtoset/Dtobag\fP may cause
 objects to be rehashed, reordered, or removed as the case requires.
 \f5dtmethod()\fP returns the previous method or \f5NULL\fP on error.
@@ -168,11 +165,6 @@ Objects are ordered by comparisons.
 Objects are unordered.
 \f5Dtset\fP keeps unique objects.
 This method uses a hash table with chaining to manage the objects.
-.PP
-.Ss "  Dtqueue"
-Objects are kept in a queue, i.e., in order of insertion.
-Thus, the first object inserted is at queue head
-and will be the first to be deleted.
 .PP
 .Ss "DISCIPLINE"
 .PP
@@ -243,8 +235,6 @@ The new object or a matching object as noted will be returned on success
 while \f5NULL\fP is returned on error.
 .PP
 .Ss "  void* dtdelete(Dt_t* dt, void* obj)"
-If \f5obj\fP is \f5NULL\fP, method \f5Dtqueue\fP
-deletes queue head while other methods do nothing.
 If \f5obj\fP is not \f5NULL\fP, there are two cases.
 If the method in use is not \f5Dtobag\fP,
 the first object matching \f5obj\fP is deleted.
@@ -272,7 +262,6 @@ from some dictionary accessible from \f5dt\fP via a viewpath (see \f5dtview()\fP
 \f5dtnext()\fP returns the object following \f5obj\fP.
 Objects are ordered based on the storage method in use.
 For \f5Dtoset\fP and \f5Dtobag\fP, objects are ordered by object comparisons.
-For \f5Dtqueue\fP, objects are ordered in order of insertion.
 For \f5Dtset\fP,
 objects are ordered by some internal order (more below).
 Thus, objects in a dictionary or a viewpath can be walked using
@@ -367,8 +356,7 @@ It returns \f50\fP on success and \f5-1\fP on error.
 \f5Dtstat_t\fP contains the below fields:
 .Tp
 \f5int dt_type\fP:
-This is one of \f5DT_SET\fP, \f5DT_OSET\fP, \f5DT_OBAG\fP,
-and \f5DT_QUEUE\fP.
+This is one of \f5DT_SET\fP, \f5DT_OSET\fP, and \f5DT_OBAG\fP.
 .Tp
 \f5int dt_size\fP:
 This contains the number of objects in the dictionary.
@@ -404,7 +392,6 @@ otherwise, \f5str\fP is a null-terminated string.
 \f5Dtset\fP are based on hash tables with
 move-to-front collision chains.
 \f5Dtoset\fP and \f5Dtobag\fP are based on top-down splay trees.
-\f5Dtqueue\fP is based on doubly linked list.
 .PP
 .SH AUTHOR
 Kiem-Phong Vo, kpv@research.att.com

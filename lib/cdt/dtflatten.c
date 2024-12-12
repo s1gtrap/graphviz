@@ -28,8 +28,6 @@ Dtlink_t* dtflatten(Dt_t* dt)
 			}
 		}
 	}
-	else if(dt->data->type&DT_QUEUE)
-		list = dt->data->head;
 	else if((r = dt->data->here) ) /*if(dt->data->type&(DT_OSET|DT_OBAG))*/
 	{	while((t = r->left) )
 			RROTATE(r,t);

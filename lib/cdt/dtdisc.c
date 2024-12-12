@@ -28,33 +28,27 @@ Dtdisc_t *dtdisc(Dt_t *dt, Dtdisc_t *disc) {
 
 	dt->disc = disc;
 
-	if(dt->data->type&DT_QUEUE)
-		goto done;
-	else /*if(dt->data->type&(DT_SET|DT_OSET|DT_OBAG))*/
-	{
-		r = dtflatten(dt);
-		dt->data->type &= ~DT_FLATTEN;
-		dt->data->here = NULL;
-		dt->data->size = 0;
+	r = dtflatten(dt);
+	dt->data->type &= ~DT_FLATTEN;
+	dt->data->here = NULL;
+	dt->data->size = 0;
 
-		if(dt->data->type&DT_SET)
-		{	Dtlink_t	**s, **ends;
-			ends = (s = dt->data->htab) + dt->data->ntab;
-			while(s < ends)
-				*s++ = NULL;
-		}
-
-		/* reinsert them */
-		while(r)
-		{	t = r->right;
-			k = _DTOBJ(r,disc->link);
-			k = _DTKEY(k, disc->key, disc->size);
-			r->hash = dtstrhash(k, disc->size);
-			(void)searchf(dt, r, DT_RENEW);
-			r = t;
-		}
+	if(dt->data->type&DT_SET)
+	{	Dtlink_t	**s, **ends;
+		ends = (s = dt->data->htab) + dt->data->ntab;
+		while(s < ends)
+			*s++ = NULL;
 	}
 
-done:
+	/* reinsert them */
+	while(r)
+	{	t = r->right;
+		k = _DTOBJ(r,disc->link);
+		k = _DTKEY(k, disc->key, disc->size);
+		r->hash = dtstrhash(k, disc->size);
+		(void)searchf(dt, r, DT_RENEW);
+		r = t;
+	}
+
 	return old;
 }

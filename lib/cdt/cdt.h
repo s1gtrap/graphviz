@@ -4,7 +4,7 @@
  * @ingroup public_apis
  *
  * **CDT** manages run-time dictionaries using standard container data types:
- * unordered set/multiset, ordered set/multiset, list, stack, and queue.
+ * unordered set/multiset, ordered set/multiset, list, and stack.
  *
  * [man 3 cdt](https://graphviz.org/pdf/cdt.3.pdf)
  *
@@ -124,7 +124,6 @@ struct _dtstat_s
 #define DT_SET		0000001	/* set with unique elements		*/
 #define DT_OSET		0000004	/* ordered set (self-adjusting tree)	*/
 #define DT_OBAG		0000010	/* ordered multiset			*/
-#define DT_QUEUE	0000100	/* queue: insert at top, delete at tail	*/
 #define DT_METHODS	0000377	/* all currently supported methods	*/
 
 /* types of search */
@@ -144,11 +143,9 @@ struct _dtstat_s
 CDT_API extern Dtmethod_t* 	Dtset; ///< set with unique elements
 CDT_API extern Dtmethod_t* 	Dtoset; ///< ordered set (self-adjusting tree)
 CDT_API extern Dtmethod_t* 	Dtobag; ///< ordered multiset
-CDT_API extern Dtmethod_t*	Dtqueue; ///< queue: insert at top, delete at tail
 
 CDT_API extern Dtmethod_t*	Dttree;
 CDT_API extern Dtmethod_t	_Dttree;
-CDT_API extern Dtmethod_t	_Dtqueue;
 
 CDT_API Dt_t*		dtopen(Dtdisc_t*, Dtmethod_t*);
 CDT_API int		dtclose(Dt_t*);

@@ -17,9 +17,7 @@ void* dtrenew(Dt_t* dt, void* obj)
 	if(!(e = dt->data->here) || _DTOBJ(e,disc->link) != obj)
 		return NULL;
 
-	if(dt->data->type&DT_QUEUE)
-		return obj;
-	else if(dt->data->type&(DT_OSET|DT_OBAG) )
+	if(dt->data->type&(DT_OSET|DT_OBAG) )
 	{	if(!e->right )	/* make left child the new root */
 			dt->data->here = e->left;
 		else		/* make right child the new root */
