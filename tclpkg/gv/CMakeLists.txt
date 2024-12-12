@@ -155,23 +155,20 @@ if(ENABLE_SWIG)
       PROPERTY SWIG_GENERATED_INCLUDE_DIRECTORIES
         ${JAVASCRIPTCORE_INCLUDE_DIRS}
     )
-    if(HAVE_CXX_WSIGN_COMPARE AND HAVE_CXX_WUNUSED_PARAMETER)
-      set_property(
-        TARGET gv_javascript
-        PROPERTY SWIG_GENERATED_COMPILE_OPTIONS
-          -Wno-sign-compare -Wno-unused-parameter
-      )
-    elseif(HAVE_CXX_WSIGN_COMPARE)
-      set_property(
-        TARGET gv_javascript
-        PROPERTY SWIG_GENERATED_COMPILE_OPTIONS -Wno-sign-compare
-      )
-    elseif(HAVE_CXX_WUNUSED_PARAMETER)
-      set_property(
-        TARGET gv_javascript
-        PROPERTY SWIG_GENERATED_COMPILE_OPTIONS -Wno-unused-parameter
-      )
+    set(JS_FLAGS "")
+    if(HAVE_CXX_WSHADOW)
+      list(APPEND JS_FLAGS -Wno-shadow)
     endif()
+    if(HAVE_CXX_WSIGN_COMPARE)
+      list(APPEND JS_FLAGS -Wno-sign-compare)
+    endif()
+    if(HAVE_CXX_WUNUSED_PARAMETER)
+      list(APPEND JS_FLAGS -Wno-unused-parameter)
+    endif()
+    set_property(
+      TARGET gv_javascript
+      PROPERTY SWIG_GENERATED_COMPILE_OPTIONS "${JS_FLAGS}"
+    )
     target_link_libraries(gv_javascript
       PRIVATE cdt cgraph gvc ${JAVASCRIPTCORE_LIBRARIES}
     )
