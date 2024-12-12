@@ -141,7 +141,6 @@ CDT_API extern Dtmethod_t* 	Dtoset; ///< ordered set (self-adjusting tree)
 CDT_API extern Dtmethod_t* 	Dtobag; ///< ordered multiset
 
 CDT_API extern Dtmethod_t*	Dttree;
-CDT_API extern Dtmethod_t	_Dttree;
 
 CDT_API Dt_t*		dtopen(Dtdisc_t*, Dtmethod_t*);
 CDT_API int		dtclose(Dt_t*);

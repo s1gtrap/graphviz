@@ -304,5 +304,5 @@ static Dtmethod_t	_Dtobag =  { dttree, DT_OBAG };
 Dtmethod_t* Dtoset = &_Dtoset;
 Dtmethod_t* Dtobag = &_Dtobag;
 
-Dtmethod_t		_Dttree = { dttree, DT_OSET };
+static Dtmethod_t _Dttree = { dttree, DT_OSET };
 Dtmethod_t* Dttree = &_Dttree;
