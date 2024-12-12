@@ -16,20 +16,20 @@ static void dthtab(Dt_t* dt)
 	int n;
 
 	/* compute new table size */
-	if((n = dt->data->ntab) == 0)
+	if ((n = dt->data.ntab) == 0)
 		n = HSLOT;
-	while(dt->data->size > HLOAD(n))
+	while (dt->data.size > HLOAD(n))
 		n = HRESIZE(n);
-	if(n == dt->data->ntab)
+	if (n == dt->data.ntab)
 		return;
 
 	/* allocate new table */
-	olds = dt->data->ntab == 0 ? NULL : dt->data->htab;
+	olds = dt->data.ntab == 0 ? NULL : dt->data.htab;
 	if (!(s = realloc(olds, n * sizeof(Dtlink_t*))))
 		return;
-	olds = s + dt->data->ntab;
-	dt->data->htab = s;
-	dt->data->ntab = n;
+	olds = s + dt->data.ntab;
+	dt->data.htab = s;
+	dt->data.ntab = n;
 
 	/* rehash elements */
 	for(hs = s+n-1; hs >= olds; --hs)
@@ -68,10 +68,10 @@ static void* dthash(Dt_t* dt, void* obj, int type)
 	{	if(type&(DT_NEXT|DT_PREV))
 			goto end_walk;
 
-		if(dt->data->size <= 0 || !(type&(DT_CLEAR|DT_FIRST|DT_LAST)) )
+		if (dt->data.size <= 0 || !(type & (DT_CLEAR|DT_FIRST|DT_LAST)) )
 			return NULL;
 
-		ends = (s = dt->data->htab) + dt->data->ntab;
+		ends = (s = dt->data.htab) + dt->data.ntab;
 		if(type&DT_CLEAR)
 		{	/* clean out all objects */
 			for(; s < ends; ++s)
@@ -88,9 +88,9 @@ static void* dthash(Dt_t* dt, void* obj, int type)
 					t = r;
 				}
 			}
-			dt->data->here = NULL;
-			dt->data->size = 0;
-			dt->data->loop = 0;
+			dt->data.here = NULL;
+			dt->data.size = 0;
+			dt->data.loop = 0;
 			return NULL;
 		}
 		else	/* computing the first/last object */
@@ -101,8 +101,8 @@ static void* dthash(Dt_t* dt, void* obj, int type)
 				for(; t->right; t = t->right)
 					;
 
-			dt->data->loop += 1;
-			dt->data->here = t;
+			++dt->data.loop;
+			dt->data.here = t;
 			return t ? _DTOBJ(t,lk) : NULL;
 		}
 	}
@@ -120,17 +120,17 @@ static void* dthash(Dt_t* dt, void* obj, int type)
 		goto do_search;
 	}
 	else /*if(type&(DT_DELETE|DT_DETACH|DT_NEXT|DT_PREV))*/
-	{	if((t = dt->data->here) && _DTOBJ(t,lk) == obj)
+	{	if ((t = dt->data.here) && _DTOBJ(t, lk) == obj)
 		{	hsh = t->hash;
-			s = dt->data->htab + HINDEX(dt->data->ntab,hsh);
+			s = dt->data.htab + HINDEX(dt->data.ntab, hsh);
 			p = NULL;
 		}
 		else
 		{	key = _DTKEY(obj,ky,sz);
 			hsh = dtstrhash(key, sz);
 		do_search:
-			t = dt->data->ntab <= 0 ? NULL :
-			 	*(s = dt->data->htab + HINDEX(dt->data->ntab,hsh));
+			t = dt->data.ntab <= 0 ? NULL :
+			 	*(s = dt->data.htab + HINDEX(dt->data.ntab, hsh));
 			for(p = NULL; t; p = t, t = t->right)
 			{	if(hsh == t->hash)
 				{	k = _DTOBJ(t,lk); k = _DTKEY(k,ky,sz);
@@ -144,18 +144,18 @@ static void* dthash(Dt_t* dt, void* obj, int type)
 	if(type&(DT_MATCH|DT_SEARCH|DT_VSEARCH))
 	{	if(!t)
 			return NULL;
-		if(p && (dt->data->type&DT_SET) && dt->data->loop <= 0)
+		if (p && (dt->data.type & DT_SET) && dt->data.loop <= 0)
 		{	/* move-to-front heuristic */
 			p->right = t->right;
 			t->right = *s;
 			*s = t;
 		}
-		dt->data->here = t;
+		dt->data.here = t;
 		return _DTOBJ(t,lk);
 	}
 	else if(type&DT_INSERT)
-	{	if(t && (dt->data->type&DT_SET) )
-		{	dt->data->here = t;
+	{	if (t && (dt->data.type & DT_SET))
+		{	dt->data.here = t;
 			return _DTOBJ(t,lk);
 		}
 
@@ -177,17 +177,17 @@ static void* dthash(Dt_t* dt, void* obj, int type)
 
 		/* insert object */
 	do_insert:
-		if((dt->data->size += 1) > HLOAD(dt->data->ntab) && dt->data->loop <= 0 )
+		if (++dt->data.size > HLOAD(dt->data.ntab) && dt->data.loop <= 0 )
 			dthtab(dt);
-		if(dt->data->ntab == 0)
-		{	dt->data->size -= 1;
+		if (dt->data.ntab == 0)
+		{	--dt->data.size;
 			if(disc->freef && (type&DT_INSERT))
 				disc->freef(obj);
 			if(disc->link < 0)
 				free(r);
 			return NULL;
 		}
-		s = dt->data->htab + HINDEX(dt->data->ntab,hsh);
+		s = dt->data.htab + HINDEX(dt->data.ntab, hsh);
 		if(t)
 		{	r->right = t->right;
 			t->right = r;
@@ -196,12 +196,12 @@ static void* dthash(Dt_t* dt, void* obj, int type)
 		{	r->right = *s;
 			*s = r;
 		}
-		dt->data->here = r;
+		dt->data.here = r;
 		return obj;
 	}
 	else if(type&DT_NEXT)
 	{	if(t && !(p = t->right) )
-		{	for(ends = dt->data->htab+dt->data->ntab, s += 1; s < ends; ++s)
+		{	for (ends = dt->data.htab + dt->data.ntab, s += 1; s < ends; ++s)
 				if((p = *s) )
 					break;
 		}
@@ -215,7 +215,7 @@ static void* dthash(Dt_t* dt, void* obj, int type)
 			}
 			else
 			{	p = NULL;
-				for(s -= 1, ends = dt->data->htab; s >= ends; --s)
+				for (s -= 1, ends = dt->data.htab; s >= ends; --s)
 				{	if((p = *s) )
 					{	while(p->right)
 							p = p->right;
@@ -225,16 +225,16 @@ static void* dthash(Dt_t* dt, void* obj, int type)
 			}
 		}
 	done_adj:
-		if(!(dt->data->here = p) )
+		if (!(dt->data.here = p))
 		{ end_walk:
-			if((dt->data->loop -= 1) < 0)
-				dt->data->loop = 0;
-			if(dt->data->size > HLOAD(dt->data->ntab) && dt->data->loop <= 0)
+			if (--dt->data.loop < 0)
+				dt->data.loop = 0;
+			if (dt->data.size > HLOAD(dt->data.ntab) && dt->data.loop <= 0)
 				dthtab(dt);
 			return NULL;
 		}
 		else
-		{	dt->data->type |= DT_WALK;
+		{	dt->data.type |= DT_WALK;
 			return _DTOBJ(p,lk);
 		}
 	}
@@ -263,8 +263,8 @@ static void* dthash(Dt_t* dt, void* obj, int type)
 			p->right = t->right;
 		}
 		obj = _DTOBJ(t,lk);
-		dt->data->size -= 1;
-		dt->data->here = p;
+		--dt->data.size;
+		dt->data.here = p;
 		if(disc->freef && (type&DT_DELETE))
 			disc->freef(obj);
 		if(disc->link < 0)

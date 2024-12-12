@@ -18,9 +18,8 @@ int dtclose(Dt_t* dt)
 	if(dtsize(dt) > 0)
 		return -1;
 
-	if(dt->data->ntab > 0)
-		free(dt->data->htab);
-	free(dt->data);
+	if (dt->data.ntab > 0)
+		free(dt->data.htab);
 
 	free(dt);
 

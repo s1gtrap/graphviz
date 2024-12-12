@@ -14,23 +14,23 @@ int dtrestore(Dt_t* dt, Dtlink_t* list)
 	int		type;
 	Dtsearch_f	searchf = dt->meth->searchf;
 
-	type = dt->data->type&DT_FLATTEN;
+	type = dt->data.type & DT_FLATTEN;
 	if(!list) /* restoring a flattened dictionary */
 	{	if(!type)
 			return -1;
-		list = dt->data->here;
+		list = dt->data.here;
 	}
 	else	/* restoring an extracted list of elements */
-	{	if(dt->data->size != 0)
+	{	if (dt->data.size != 0)
 			return -1;
 		type = 0;
 	}
-	dt->data->type &= ~DT_FLATTEN;
+	dt->data.type &= ~DT_FLATTEN;
 
-	if(dt->data->type&DT_SET)
-	{	dt->data->here = NULL;
+	if (dt->data.type & DT_SET)
+	{	dt->data.here = NULL;
 		if(type) /* restoring a flattened dictionary */
-		{	for(ends = (s = dt->data->htab) + dt->data->ntab; s < ends; ++s)
+		{	for (ends = (s = dt->data.htab) + dt->data.ntab; s < ends; ++s)
 			{	if((t = *s) )
 				{	*s = list;
 					list = t->right;
@@ -39,7 +39,7 @@ int dtrestore(Dt_t* dt, Dtlink_t* list)
 			}
 		}
 		else	/* restoring an extracted list of elements */
-		{	dt->data->size = 0;
+		{	dt->data.size = 0;
 			while(list)
 			{	t = list->right;
 				searchf(dt, list, DT_RENEW);
@@ -48,14 +48,14 @@ int dtrestore(Dt_t* dt, Dtlink_t* list)
 		}
 	}
 	else
-	{	if(dt->data->type&(DT_OSET|DT_OBAG))
-			dt->data->here = list;
-		else /*if(dt->data->type&(DT_LIST|DT_STACK))*/
-		{	dt->data->here = NULL;
-			dt->data->head = list;
+	{	if (dt->data.type & (DT_OSET|DT_OBAG))
+			dt->data.here = list;
+		else // if (dt->data.type & (DT_LIST|DT_STACK))
+		{	dt->data.here = NULL;
+			dt->data.head = list;
 		}
 		if(!type)
-			dt->data->size = -1;
+			--dt->data.size;
 	}
 
 	return 0;

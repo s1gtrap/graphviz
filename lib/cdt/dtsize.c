@@ -13,10 +13,10 @@ int dtsize(Dt_t* dt)
 {
 	UNFLATTEN(dt);
 
-	if(dt->data->size < 0) /* !(dt->data->type&(DT_SET|DT_BAG)) */
-	{	if(dt->data->type&(DT_OSET|DT_OBAG))
-			dt->data->size = treecount(dt->data->here);
+	if (dt->data.size < 0) // !(dt->data.type & (DT_SET|DT_BAG))
+	{	if (dt->data.type & (DT_OSET|DT_OBAG))
+			dt->data.size = treecount(dt->data.here);
 	}
 
-	return dt->data->size;
+	return dt->data.size;
 }

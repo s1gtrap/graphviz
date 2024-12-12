@@ -29,13 +29,13 @@ Dtdisc_t *dtdisc(Dt_t *dt, Dtdisc_t *disc) {
 	dt->disc = disc;
 
 	r = dtflatten(dt);
-	dt->data->type &= ~DT_FLATTEN;
-	dt->data->here = NULL;
-	dt->data->size = 0;
+	dt->data.type &= ~DT_FLATTEN;
+	dt->data.here = NULL;
+	dt->data.size = 0;
 
-	if(dt->data->type&DT_SET)
+	if (dt->data.type & DT_SET)
 	{	Dtlink_t	**s, **ends;
-		ends = (s = dt->data->htab) + dt->data->ntab;
+		ends = (s = dt->data.htab) + dt->data.ntab;
 		while(s < ends)
 			*s++ = NULL;
 	}

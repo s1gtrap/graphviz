@@ -21,7 +21,7 @@ static void* dttree(Dt_t* dt, void* obj, int type)
 	UNFLATTEN(dt);
 	disc = dt->disc; _DTDSC(disc,ky,sz,lk,cmpf);
 
-	root = dt->data->here;
+	root = dt->data.here;
 	if(!obj)
 	{	if(!root || !(type&(DT_CLEAR|DT_FIRST|DT_LAST)) )
 			return NULL;
@@ -39,8 +39,8 @@ static void* dttree(Dt_t* dt, void* obj, int type)
 				} while((root = t) );
 			}
 
-			dt->data->size = 0;
-			dt->data->here = NULL;
+			dt->data.size = 0;
+			dt->data.here = NULL;
 			return NULL;
 		}
 		else /* computing largest/smallest element */
@@ -53,7 +53,7 @@ static void* dttree(Dt_t* dt, void* obj, int type)
 					RROTATE(root,t);
 			}
 
-			dt->data->here = root;
+			dt->data.here = root;
 			return _DTOBJ(root,lk);
 		}
 	}
@@ -69,7 +69,7 @@ static void* dttree(Dt_t* dt, void* obj, int type)
 			if(_DTCMP(key, k, cmpf, sz) != 0)
 				break;
 			if(o == obj)
-			{	root = dt->data->here;
+			{	root = dt->data.here;
 				l->right = root->left;
 				r->left  = root->right;
 				goto dt_delete;
@@ -177,7 +177,7 @@ static void* dttree(Dt_t* dt, void* obj, int type)
 					RROTATE(root,t);
 				}
 			}
-			dt->data->here = root;
+			dt->data.here = root;
 			return _DTOBJ(root,lk);
 		}
 		else if(type&DT_NEXT)
@@ -214,8 +214,8 @@ static void* dttree(Dt_t* dt, void* obj, int type)
 				disc->freef(obj);
 			if(disc->link < 0)
 				free(root);
-			if((dt->data->size -= 1) < 0)
-				dt->data->size = -1;
+			if (--dt->data.size < 0)
+				--dt->data.size;
 			goto no_root;
 		}
 		else if(type&DT_INSERT)
@@ -239,7 +239,7 @@ static void* dttree(Dt_t* dt, void* obj, int type)
 			{	me->left = NULL;
 				me->right = link.left;
 				link.left = me;
-				dt->data->size += 1;
+				++dt->data.size;
 			}
 			goto has_root;
 		}
@@ -258,7 +258,7 @@ static void* dttree(Dt_t* dt, void* obj, int type)
 			while((t = r->left) )
 				r = t;
 			r->left = link.right;
-			dt->data->here = link.left;
+			dt->data.here = link.left;
 			return (type&DT_DELETE) ? obj : NULL;
 		}
 		else if(type&DT_INSERT)
@@ -278,15 +278,15 @@ static void* dttree(Dt_t* dt, void* obj, int type)
 				}
 			}
 			if(root)
-			{	if(dt->data->size >= 0)
-					dt->data->size += 1;
+			{	if (dt->data.size >= 0)
+					++dt->data.size;
 				goto has_root;
 			}
 			else	goto no_root;
 		}
 		else if(type&DT_RENEW)
 		{	root = me;
-			dt->data->size += 1;
+			++dt->data.size;
 			goto has_root;
 		}
 		else /*if(type&DT_DELETE)*/

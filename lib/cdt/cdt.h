@@ -99,7 +99,7 @@ struct dtdisc_s_
 struct dt_s_
 {	Dtsearch_f	searchf;/* search function			*/
 	Dtdisc_t*	disc;	/* method to manipulate objs		*/
-	Dtdata_t*	data;	/* sharable data			*/
+	Dtdata_t data; ///< sharable data
 	Dtmethod_t*	meth;	/* dictionary method			*/
 	int		nview;	/* number of parent view dictionaries	*/
 	Dt_t*		view;	/* next on viewpath			*/
@@ -174,7 +174,7 @@ CDT_API unsigned int dtstrhash(void*, int);
 
 #define dtlink(d,e)	(((Dtlink_t*)(e))->right)
 #define dtobj(d,e)	_DTOBJ((e), _DT(d)->disc->link)
-#define dtfinger(d)	(_DT(d)->data->here ? dtobj((d),_DT(d)->data->here):(void*)(0))
+#define dtfinger(d)	(_DT(d)->data.here ? dtobj((d), _DT(d)->data.here) : NULL)
 
 #define dtfirst(d)	(*(_DT(d)->searchf))((d),(void*)(0),DT_FIRST)
 #define dtnext(d,o)	(*(_DT(d)->searchf))((d),(void*)(o),DT_NEXT)

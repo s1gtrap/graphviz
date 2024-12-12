@@ -60,7 +60,7 @@ static void* dtvsearch(Dt_t* dt, void* obj, int type)
 	if(!(type & (DT_NEXT|DT_PREV)) )
 		return NULL;
 
-	if(!dt->walk || obj != _DTOBJ(dt->walk->data->here, dt->walk->disc->link) )
+	if(!dt->walk || obj != _DTOBJ(dt->walk->data.here, dt->walk->disc->link) )
 	{	for(d = dt; d; d = d->view)
 			if ((o = d->meth->searchf(d, obj, DT_SEARCH)))
 				break;

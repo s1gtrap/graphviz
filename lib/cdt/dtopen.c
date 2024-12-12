@@ -9,7 +9,6 @@
 Dt_t* dtopen(Dtdisc_t* disc, Dtmethod_t* meth)
 {
 	Dt_t*		dt;
-	Dtdata_t*	data;
 
 	if(!disc || !meth)
 		return NULL;
@@ -27,19 +26,8 @@ Dt_t* dtopen(Dtdisc_t* disc, Dtmethod_t* meth)
 	dt->view = dt->walk = NULL;
 	dt->user = NULL;
 
-	/* allocate sharable data */
-	if (!(data = malloc(sizeof(Dtdata_t))))
-	{
-		free(dt);
-		return NULL;
-	}
+	dt->data = (Dtdata_t){.type = meth->type};
 
-	data->type = meth->type;
-	data->here = NULL;
-	data->htab = NULL;
-	data->ntab = data->size = data->loop = 0;
-
-	dt->data = data;
 	dt->searchf = meth->searchf;
 	dt->meth = meth;
 

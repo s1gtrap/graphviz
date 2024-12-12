@@ -17,13 +17,13 @@ static void dttstat(Dtstat_t *ds, Dtlink_t *root, size_t depth, size_t *level) {
 		level[depth] += 1;
 }
 
-static void dthstat(Dtdata_t *data, Dtstat_t *ds, size_t *count) {
+static void dthstat(Dtdata_t data, Dtstat_t *ds, size_t *count) {
 	Dtlink_t*	t;
 	int		h;
 
-	for(h = data->ntab-1; h >= 0; --h)
+	for (h = data.ntab - 1; h >= 0; --h)
 	{	size_t n = 0;
-		for(t = data->htab[h]; t; t = t->right)
+		for (t = data.htab[h]; t; t = t->right)
 			n += 1;
 		if(count)
 			count[n] += 1;
@@ -45,12 +45,12 @@ int dtstat(Dt_t* dt, Dtstat_t* ds, int all)
 	ds->dt_n = ds->dt_max = 0;
 	ds->dt_count = NULL;
 	ds->dt_size = dtsize(dt);
-	ds->dt_meth = dt->data->type&DT_METHODS;
+	ds->dt_meth = dt->data.type & DT_METHODS;
 
 	if(!all)
 		return 0;
 
-	if(dt->data->type&DT_SET)
+	if (dt->data.type & DT_SET)
 	{	dthstat(dt->data,ds,NULL);
 		if(ds->dt_max+1 > Size)
 		{	if(Size > 0)
@@ -63,9 +63,9 @@ int dtstat(Dt_t* dt, Dtstat_t* ds, int all)
 			Count[i] = 0;
 		dthstat(dt->data,ds,Count);
 	}
-	else if(dt->data->type&(DT_OSET|DT_OBAG))
-	{	if(dt->data->here)
-		{	dttstat(ds,dt->data->here,0,NULL);
+	else if (dt->data.type & (DT_OSET|DT_OBAG))
+	{	if (dt->data.here)
+		{	dttstat(ds, dt->data.here, 0, NULL);
 			if(ds->dt_n+1 > Size)
 			{	if(Size > 0)
 					free(Count);
@@ -76,7 +76,7 @@ int dtstat(Dt_t* dt, Dtstat_t* ds, int all)
 
 			for (size_t i = 0; i <= ds->dt_n; ++i)
 				Count[i] = 0;
-			dttstat(ds,dt->data->here,0,Count);
+			dttstat(ds, dt->data.here, 0, Count);
 			for(size_t i = 0; i <= ds->dt_n; ++i)
 				if(Count[i] > ds->dt_max)
 					ds->dt_max = Count[i];
