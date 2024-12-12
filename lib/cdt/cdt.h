@@ -40,7 +40,6 @@ extern "C" {
 
 typedef struct _dtlink_s	Dtlink_t;
 typedef struct _dtdisc_s	Dtdisc_t;
-typedef struct _dtmethod_s	Dtmethod_t;
 typedef struct _dt_s		Dt_t;
 typedef struct _dt_s		Dict_t;	/* for libdict compatibility */
 typedef struct _dtstat_s	Dtstat_t;
@@ -64,10 +63,10 @@ typedef struct
 } Dthold_t;
 
 /* method to manipulate dictionary structure */
-struct _dtmethod_s
+typedef struct
 {	Dtsearch_f	searchf; /* search function	*/
 	int		type;	/* type of operation	*/
-};
+} Dtmethod_t;
 
 /* stuff that may be in shared memory */
 typedef struct
