@@ -37,6 +37,8 @@ typedef struct {
     attrs_t attrlist;  
 } gmledge;
 
+void free_edge(void *edge);
+
 typedef struct gmlgraph {
     Dtlink_t link;
     struct gmlgraph* parent;

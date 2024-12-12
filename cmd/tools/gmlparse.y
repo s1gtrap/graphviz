@@ -49,7 +49,7 @@ void free_node(gmlnode *p) {
     free (p);
 }
 
-static void free_edge(void *edge) {
+void free_edge(void *edge) {
     gmledge *p = edge;
     if (!p) return;
     attrs_free(&p->attrlist);
