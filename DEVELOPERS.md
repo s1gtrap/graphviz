@@ -230,7 +230,9 @@ profiler like Linux Perf.
 #### [Linux Perf](https://perf.wiki.kernel.org/index.php/Main_Page)
 
 https://www.markhansen.co.nz/profiling-graphviz/ gives a good introduction. If
-you need more, an alternative step-by-step follows.
+you need more, an alternative step-by-step based on
+[Brendan Gregg’s flame graph guide](https://www.brendangregg.com/FlameGraphs/cpuflamegraphs.html)
+follows.
 
 First, compile Graphviz with debugging symbols enabled (`-ggdb` in the `CFLAGS`
 and `CXXFLAGS` lists in the commands described above). Without this, `perf` will
@@ -239,29 +241,25 @@ struggle to give you helpful information.
 Record a trace of Graphviz:
 
 ```sh
-perf record -g --call-graph=dwarf --freq=max --events=cycles:u \
-  dot -Tsvg test.dot
+perf record -F 99 -a -g -- dot -Tsvg -o /dev/null test.dot
 ```
 
-Some things to keep in mind:
-
-* `--freq=max`: this will give you the most accurate profile, but can sometimes
-  exceed the I/O capacity of your system. `perf record` will tell you when this
-  occurs, but then it will also often corrupt the profile data it is writing.
-  This will later cause `perf report` to lock up or crash. To work around this,
-  you will need to reduce the frequency.
-* `--events=cycles:u`: this will record user-level cycles. This is often what
-  you are interested in, but there are many other events you can read about in
-  the `perf` man page. `--events=duration_time` may be a more intuitive metric.
-
-Now, examine the trace you recorded:
+Compress stack lines in the trace:
 
 ```sh
-perf report -g --children
+# using stackcollapse-perf.pl from https://github.com/brendangregg/FlameGraph
+perf script | stackcollapse-perf.pl > out.perf-folded
 ```
 
-The reporting interface relies on a series of terse keyboard shortcuts. So hit
-`?` if you are stuck.
+Generate a [flame graph](https://www.brendangregg.com/flamegraphs.html):
+
+```sh
+# using flamegraph.pl from https://github.com/brendangregg/FlameGraph
+flamegraph.pl out.perf-folded > perf.svg
+```
+
+Now open perf.svg in your favorite SVG viewer. Generally a web browser like
+Firefox is recommended to handle the interactivity of the SVG.
 
 ## Processing contributors’ Merge Requests
 
