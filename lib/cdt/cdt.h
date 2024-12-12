@@ -41,7 +41,6 @@ extern "C" {
 typedef struct _dtlink_s	Dtlink_t;
 typedef struct _dtdisc_s	Dtdisc_t;
 typedef struct _dtmethod_s	Dtmethod_t;
-typedef struct _dtdata_s	Dtdata_t;
 typedef struct _dt_s		Dt_t;
 typedef struct _dt_s		Dict_t;	/* for libdict compatibility */
 typedef struct _dtstat_s	Dtstat_t;
@@ -71,7 +70,7 @@ struct _dtmethod_s
 };
 
 /* stuff that may be in shared memory */
-struct _dtdata_s
+typedef struct
 {	int		type;	/* type of dictionary			*/
 	Dtlink_t*	here;	/* finger to last search element	*/
 	union
@@ -81,7 +80,7 @@ struct _dtdata_s
 	int		ntab;	/* number of hash slots			*/
 	int		size;	/* number of objects			*/
 	int		loop;	/* number of nested loops		*/
-};
+} Dtdata_t;
 
 /* structure to hold methods that manipulate an object */
 struct _dtdisc_s
