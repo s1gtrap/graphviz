@@ -299,10 +299,10 @@ static void* dttree(Dt_t* dt, void* obj, int type)
 }
 
 /* make this method available */
-static Dtmethod_t	_Dtoset =  { dttree, DT_OSET };
-static Dtmethod_t	_Dtobag =  { dttree, DT_OBAG };
-Dtmethod_t* Dtoset = &_Dtoset;
-Dtmethod_t* Dtobag = &_Dtobag;
+static Dtmethod_t	Dtoset_ =  { dttree, DT_OSET };
+static Dtmethod_t	Dtobag_ =  { dttree, DT_OBAG };
+Dtmethod_t* Dtoset = &Dtoset_;
+Dtmethod_t* Dtobag = &Dtobag_;
 
-static Dtmethod_t _Dttree = { dttree, DT_OSET };
-Dtmethod_t* Dttree = &_Dttree;
+static Dtmethod_t Dttree_ = { dttree, DT_OSET };
+Dtmethod_t* Dttree = &Dttree_;
