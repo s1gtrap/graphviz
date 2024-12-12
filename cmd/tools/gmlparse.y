@@ -194,7 +194,6 @@ static gmlattr *mkAttr(char* name, unsigned short sort, unsigned short kind,
 	}
 	gp->u.lp = list;
     }
-/* fprintf (stderr, "[%x] %hu %hu \"%s\" \"%s\" \n", gp, sort, kind, (name?name:""),  (str?str:"")); */
     return gp;
 }
 
