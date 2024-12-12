@@ -235,6 +235,33 @@ def test_146():
     ), "alpha=0 color set to something non-transparent"
 
 
+@pytest.mark.xfail(
+    strict=True, reason="https://gitlab.com/graphviz/graphviz/-/issues/162"
+)
+def test_162():
+    """
+    `minlen=0` should not duplicate edges
+    https://gitlab.com/graphviz/graphviz/-/issues/162
+    """
+
+    # locate our associated test case in this directory
+    input = Path(__file__).parent / "162.dot"
+    assert input.exists(), "unexpectedly missing test case"
+
+    # lay this out
+    layout = dot("dot", input)
+
+    # find an inter-cluster edge
+    m = re.search(
+        r'\bC\s*->\s*D\s*\[\s*minlen\s*=\s*0\s*,\s*pos\s*=\s*"(?P<position>[^"]*)"',
+        layout,
+    )
+    assert m is not None, "could not locate C->D edge"
+
+    edge_count = len(re.findall(r"\be\b", m.group("position")))
+    assert edge_count == 1, "incorrect number of inter-cluster edges"
+
+
 def test_165():
     """
     dot should be able to produce properly escaped xdot output
@@ -385,6 +412,33 @@ def test_241(test_case: str):
     assert (
         "Something is probably seriously wrong" not in proc.stderr
     ), "splines setting caused warnings"
+
+
+@pytest.mark.xfail(
+    strict=True, reason="https://gitlab.com/graphviz/graphviz/-/issues/258"
+)
+def test_258():
+    """
+    cluster edges should not be duplicated
+    https://gitlab.com/graphviz/graphviz/-/issues/258
+    """
+
+    # locate our associated test case in this directory
+    input = Path(__file__).parent / "258.dot"
+    assert input.exists(), "unexpectedly missing test case"
+
+    # lay this out
+    layout = dot("dot", input)
+
+    # find an inter-cluster edge
+    m = re.search(
+        r'\bB\s*->\s*D\s*\[\s*constraint\s*=\s*none\s*,\s*pos\s*=\s*"(?P<position>[^"]*)"',
+        layout,
+    )
+    assert m is not None, "could not locate B->D edge"
+
+    edge_count = len(re.findall(r"\be\b", m.group("position")))
+    assert edge_count == 1, "incorrect number of inter-cluster edges"
 
 
 def test_358():
