@@ -39,7 +39,6 @@ extern "C" {
 #endif
 
 typedef struct _dtlink_s	Dtlink_t;
-typedef struct _dthold_s	Dthold_t;
 typedef struct _dtdisc_s	Dtdisc_t;
 typedef struct _dtmethod_s	Dtmethod_t;
 typedef struct _dtdata_s	Dtdata_t;
@@ -60,10 +59,10 @@ struct _dtlink_s
 };
 
 /* private structure to hold an object */
-struct _dthold_s
+typedef struct
 {	Dtlink_t	hdr;	/* header		*/
 	void*		obj;	/* user object		*/
-};
+} Dthold_t;
 
 /* method to manipulate dictionary structure */
 struct _dtmethod_s
