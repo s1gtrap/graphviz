@@ -26,7 +26,7 @@ typedef struct {
     attrs_t attrlist;  
 } gmlnode;
 
-void free_node(void *node);
+void free_node(gmlnode *p);
 
 DEFINE_LIST_WITH_DTOR(nodes, gmlnode *, free_node)
 
