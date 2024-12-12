@@ -4948,6 +4948,73 @@ def test_2619():
     subprocess.check_call(["dot", "-Tpdf", "-o", os.devnull, "2619.dot"], cwd=cwd)
 
 
+@pytest.mark.parametrize(
+    "images",
+    (
+        pytest.param(
+            "2619_1",
+            marks=pytest.mark.xfail(
+                platform.system() == "Windows"
+                and not is_mingw()
+                and not is_ndebug_defined(),
+                strict=True,
+                reason="https://gitlab.com/graphviz/graphviz/-/issues/2619",
+            ),
+        ),
+        "2619_2",
+    ),
+)
+@pytest.mark.parametrize("output", ("pdf", "png"))
+@pytest.mark.parametrize("source", ("2619_1.dot", "2619_2.dot"))
+def test_2619_1(images: str, output: str, source: str, tmp_path: Path):
+    """
+    output files for this graph should be non-empty
+    https://gitlab.com/graphviz/graphviz/-/issues/2619
+    """
+
+    # locate our associated test case in this directory
+    input = Path(__file__).parent / source
+    assert input.exists(), "unexpectedly missing test case"
+
+    # copy it to a temporary path, replacing image references for our variant
+    content = input.read_bytes()
+    specialized = re.sub(
+        rb"\b2619_(\d)1\.jpg\b", images.encode("utf-8") + rb"_\1.jpg", content
+    )
+    destination = tmp_path / "2619.dot"
+    destination.write_bytes(specialized)
+
+    # copy images to the expected directory structure
+    media = tmp_path / "data/media/media/schoenfeld-liberman.ged"
+    media.mkdir(parents=True)
+    for i in (1, 2, 3):
+        src = Path(__file__).parent / f"{images}_{i}.jpg"
+        shutil.copy(src, media / f"2619_{i}.jpg")
+
+    # render this
+    dot_result = subprocess.check_output(
+        ["dot", f"-T{output}", destination], cwd=tmp_path
+    )
+
+    assert dot_result.strip() != b"", "an empty file was rendered"
+
+    # render it with exact position information
+    positioned = subprocess.check_output(
+        ["dot", "-Tdot", destination], cwd=tmp_path, universal_newlines=True
+    )
+
+    # use this to render with neato
+    neato_result = subprocess.run(
+        ["neato", "-n2", f"-T{output}"],
+        stdout=subprocess.PIPE,
+        input=positioned.encode("utf-8"),
+        cwd=tmp_path,
+        check=True,
+    )
+
+    assert neato_result.stdout.strip() != b"", "an empty file was rendered"
+
+
 def test_2620():
     """
     arrows in this graph should not be truncated
