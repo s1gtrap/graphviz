@@ -187,8 +187,6 @@ CDT_API unsigned int dtstrhash(void*, int);
 #define dtdetach(d,o)	(*(_DT(d)->searchf))((d),(void*)(o),DT_DETACH)
 #define dtclear(d)	(*(_DT(d)->searchf))((d),(void*)(0),DT_CLEAR)
 
-#define DT_PRIME	17109811 /* 2#00000001 00000101 00010011 00110011 */
-
 /**
  * @dir lib/cdt
  * @brief container data types, API cdt.h

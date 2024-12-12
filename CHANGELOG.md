@@ -35,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Breaking**: The cdt aliases `struct _dtlink_s`, `struct _dtdisc_s`, and
   `struct _dt_s` have been renamed to `struct dtlink_s_`, `struct dtdisc_s_`,
   and `struct dt_s_` respectively.
+- **Breaking**: The cdt macro `DT_PRIME` has been removed.
 
 ### Fixed
 

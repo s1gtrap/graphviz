@@ -3,6 +3,8 @@
 #include	<limits.h>
 #include	<string.h>
 
+#define DT_PRIME	17109811 /* 2#00000001 00000101 00010011 00110011 */
+
 /* Hashing a string into an unsigned integer.
 ** The basic method is to continuously accumulate bytes and multiply
 ** with some given prime. The length n of the string is added last.
