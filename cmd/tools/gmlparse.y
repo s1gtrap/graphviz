@@ -43,7 +43,7 @@ static dts_t liststk;
 
 static char *sortToStr(unsigned short sort);
 
-static void free_node(void *node) {
+void free_node(void *node) {
     gmlnode *p = node;
     if (!p) return;
     attrs_free(&p->attrlist);

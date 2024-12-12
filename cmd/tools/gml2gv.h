@@ -27,6 +27,8 @@ typedef struct {
     attrs_t attrlist;  
 } gmlnode;
 
+void free_node(void *node);
+
 typedef struct {
     Dtlink_t link;
     char* source;
