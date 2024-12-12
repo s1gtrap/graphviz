@@ -60,8 +60,7 @@ static void free_edge(void *edge) {
 static void free_graph(void *graph) {
     gmlgraph *p = graph;
     if (!p) return;
-    if (p->nodelist)
-	dtclose (p->nodelist);
+    nodes_free(&p->nodelist);
     if (p->edgelist)
 	dtclose (p->edgelist);
     attrs_free(&p->attrlist);
@@ -69,13 +68,6 @@ static void free_graph(void *graph) {
 	dtclose (p->graphlist);
     free (p);
 }
-
-static Dtdisc_t nodeDisc = {
-    .key = offsetof(gmlnode, attrlist),
-    .size = sizeof(Dt_t *),
-    .link = offsetof(gmlnode, link),
-    .freef = free_node,
-};
 
 static Dtdisc_t edgeDisc = {
     .key = offsetof(gmledge, attrlist),
@@ -146,7 +138,6 @@ pushG (void)
 {
     gmlgraph* g = gv_alloc(sizeof(gmlgraph));
 
-    g->nodelist = dtopen(&nodeDisc, Dtqueue);
     g->edgelist = dtopen(&edgeDisc, Dtqueue);
     g->graphlist = dtopen(&graphDisc, Dtqueue);
     g->parent = G;
@@ -264,7 +255,7 @@ glist  : glist glistitem
        | glistitem
        ;
 
-glistitem : node { dtinsert (G->nodelist, $1); }
+glistitem : node { nodes_append(&G->nodelist, $1); }
           | edge { dtinsert (G->edgelist, $1); }
           | hdr body 
           | DIRECTED INTEGER { 
@@ -654,7 +645,6 @@ static Agraph_t *mkGraph(gmlgraph *graph, Agraph_t *parent, char *name,
     Agnode_t* n;
     Agnode_t* h;
     Agedge_t* e;
-    gmlnode*  np;
     gmledge*  ep;
     gmlgraph* gp;
 
@@ -669,7 +659,8 @@ static Agraph_t *mkGraph(gmlgraph *graph, Agraph_t *parent, char *name,
     if (!parent && L) {
 	addAttrs ((Agobj_t*)g, L, xb, unk);
     } 
-    for (np = dtfirst(graph->nodelist); np; np = dtnext(graph->nodelist, np)) {
+    for (size_t i = 0; i < nodes_size(&graph->nodelist); ++i) {
+	gmlnode *const np = nodes_get(&graph->nodelist, i);
 	if (!np->id) {
 	   fprintf (stderr, "node without an id attribute"); 
 	   graphviz_exit (1);
