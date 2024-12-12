@@ -36,7 +36,7 @@ typedef struct {
     attrs_t attrlist;  
 } gmledge;
 
-void free_edge(void *edge);
+void free_edge(gmledge *p);
 
 DEFINE_LIST_WITH_DTOR(edges, gmledge *, free_edge)
 
