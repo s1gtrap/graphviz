@@ -42,7 +42,6 @@ typedef struct _dtlink_s	Dtlink_t;
 typedef struct _dtdisc_s	Dtdisc_t;
 typedef struct _dt_s		Dt_t;
 typedef struct _dt_s		Dict_t;	/* for libdict compatibility */
-typedef struct _dtstat_s	Dtstat_t;
 typedef void*			(*Dtsearch_f)(Dt_t*,void*,int);
 typedef void* 		(*Dtmake_f)(void*,Dtdisc_t*);
 typedef void 			(*Dtfree_f)(void *);
@@ -109,13 +108,13 @@ struct _dt_s
 };
 
 /* structure to get status of a dictionary */
-struct _dtstat_s
+typedef struct
 {	int	dt_meth;	/* method type				*/
 	int	dt_size;	/* number of elements			*/
 	size_t dt_n; // number of chains or levels
 	size_t dt_max; // max size of a chain or a level
 	size_t* dt_count; // counts of chains or levels by size
-};
+} Dtstat_t;
 
 /* supported storage methods */
 #define DT_SET		0000001	/* set with unique elements		*/

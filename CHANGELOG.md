@@ -30,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Breaking**: The cdt queue types, `DT_QUEUE`, `Dtqueue`, `_Dtqueue` have been
   removed.
 - **Breaking**: The cdt aliases `struct _dthold_s`, `struct _dtdata_s`,
-  `struct _dtmethod_s` have been removed.
+  `struct _dtmethod_s`, `struct _dtstat_s` have been removed.
 
 ### Fixed
 
