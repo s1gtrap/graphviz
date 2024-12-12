@@ -32,6 +32,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Breaking**: The cdt aliases `struct _dthold_s`, `struct _dtdata_s`,
   `struct _dtmethod_s`, `struct _dtstat_s` have been removed.
 - **Breaking**: The cdt type `_Dttree` has been removed.
+- **Breaking**: The cdt aliases `struct _dtlink_s`, `struct _dtdisc_s`, and
+  `struct _dt_s` have been renamed to `struct dtlink_s_`, `struct dtdisc_s_`,
+  and `struct dt_s_` respectively.
 
 ### Fixed
 

@@ -38,16 +38,16 @@ extern "C" {
 #define CDT_API /* nothing */
 #endif
 
-typedef struct _dtlink_s	Dtlink_t;
-typedef struct _dtdisc_s	Dtdisc_t;
-typedef struct _dt_s		Dt_t;
-typedef struct _dt_s		Dict_t;	/* for libdict compatibility */
+typedef struct dtlink_s_	Dtlink_t;
+typedef struct dtdisc_s_	Dtdisc_t;
+typedef struct dt_s_		Dt_t;
+typedef struct dt_s_		Dict_t;	/* for libdict compatibility */
 typedef void*			(*Dtsearch_f)(Dt_t*,void*,int);
 typedef void* 		(*Dtmake_f)(void*,Dtdisc_t*);
 typedef void 			(*Dtfree_f)(void *);
 typedef int			(*Dtcompar_f)(void *,void *);
 
-struct _dtlink_s
+struct dtlink_s_
 {	Dtlink_t*	right;	/* right child		*/
 	union
 	{ unsigned int	_hash;	/* hash value		*/
@@ -81,7 +81,7 @@ typedef struct
 } Dtdata_t;
 
 /* structure to hold methods that manipulate an object */
-struct _dtdisc_s
+struct dtdisc_s_
 {	int		key;	/* where the key begins in an object	*/
 	int		size;	/* key size and type			*/
 	int		link;	/* offset to Dtlink_t field		*/
@@ -96,7 +96,7 @@ struct _dtdisc_s
 	  (dc)->comparf = (cmpf) )
 
 /* the dictionary structure itself */
-struct _dt_s
+struct dt_s_
 {	Dtsearch_f	searchf;/* search function			*/
 	Dtdisc_t*	disc;	/* method to manipulate objs		*/
 	Dtdata_t*	data;	/* sharable data			*/
