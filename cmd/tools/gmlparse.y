@@ -61,17 +61,10 @@ void free_graph(void *graph) {
     nodes_free(&p->nodelist);
     edges_free(&p->edgelist);
     attrs_free(&p->attrlist);
-    if (p->graphlist)
-	dtclose (p->graphlist);
+    graphs_free(p->graphlist);
+    free(p->graphlist);
     free (p);
 }
-
-static Dtdisc_t graphDisc = {
-    .key = offsetof(gmlgraph, nodelist),
-    .size = sizeof(Dt_t *),
-    .link = offsetof(gmlgraph, link),
-    .freef = free_graph,
-};
 
 static void
 cleanup (void)
@@ -128,12 +121,12 @@ pushG (void)
 {
     gmlgraph* g = gv_alloc(sizeof(gmlgraph));
 
-    g->graphlist = dtopen(&graphDisc, Dtqueue);
+    g->graphlist = gv_alloc(sizeof(graphs_t));
     g->parent = G;
     g->directed = -1;
 
     if (G)
-	dtinsert (G->graphlist, g);
+	graphs_append(G->graphlist, g);
 
     G = g;
 }
@@ -634,7 +627,6 @@ static Agraph_t *mkGraph(gmlgraph *graph, Agraph_t *parent, char *name,
     Agnode_t* n;
     Agnode_t* h;
     Agedge_t* e;
-    gmlgraph* gp;
 
     if (parent) {
 	g = agsubg (parent, NULL, 1);
@@ -672,7 +664,8 @@ static Agraph_t *mkGraph(gmlgraph *graph, Agraph_t *parent, char *name,
 	e = agedge (g, n, h, NULL, 1);
 	addAttrs((Agobj_t*)e, &ep->attrlist, xb, unk);
     }
-    for (gp = dtfirst(graph->graphlist); gp; gp = dtnext(graph->graphlist, gp)) {
+    for (size_t i = 0; i < graphs_size(graph->graphlist); ++i) {
+	gmlgraph *const gp = graphs_get(graph->graphlist, i);
 	mkGraph (gp, g, NULL, xb, unk);
     }
 

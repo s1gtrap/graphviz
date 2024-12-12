@@ -41,16 +41,17 @@ void free_edge(gmledge *p);
 DEFINE_LIST_WITH_DTOR(edges, gmledge *, free_edge)
 
 typedef struct gmlgraph {
-    Dtlink_t link;
     struct gmlgraph* parent;
     int directed;
     attrs_t attrlist;  
     nodes_t nodelist;
     edges_t edgelist;
-    Dt_t* graphlist;  
+    void *graphlist; ///< actually a `graphs_t *`
 } gmlgraph;
 
 void free_graph(void *graph);
+
+DEFINE_LIST_WITH_DTOR(graphs, gmlgraph *, free_graph)
 
 extern int gmllex(void);
 extern void gmllexeof(void);
