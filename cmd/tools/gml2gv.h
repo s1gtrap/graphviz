@@ -17,6 +17,8 @@ typedef struct {
     }u;
 } gmlattr;
 
+void free_attr(void *attr);
+
 typedef struct {
     Dtlink_t link;
     char* id;

@@ -34,7 +34,6 @@ static Dt_t* L;
 DEFINE_LIST_WITH_DTOR(dts, Dt_t *, dtclose)
 static dts_t liststk;
 
-static void free_attr(void *attr);
 static char *sortToStr(unsigned short sort);
 
 static void free_node(void *node) {
@@ -352,7 +351,7 @@ alistitem : NAME INTEGER { $$ = mkAttr ($1, 0, INTEGER, $2, 0); }
 
 %%
 
-static void free_attr(void *attr) {
+void free_attr(void *attr) {
     gmlattr *p = attr;
     if (!p) return;
     if (p->kind == LIST && p->u.lp)
