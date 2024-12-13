@@ -771,10 +771,9 @@ in a static struct.
 \subsection{Disciplines}
 \label{subsec:disciplines}
 A graph has an associated set of methods (``disciplines'')
-for file I/O, memory management and graph object ID assignment.
+for file I/O and graph object ID assignment.
 \begin{verbatim}
   typedef struct {   
-    Agmemdisc_t                     *mem;
     Agiddisc_t                      *id;
     Agiodisc_t                      *io;
   } Agdisc_t;
@@ -789,7 +788,6 @@ discipline for that task.
 
 The default disciplines are also accessible by name.
 \begin{verbatim}
-  Agmemdisc_t AgMemDisc;
   Agiddisc_t  AgIdDisc;
   Agiodisc_t  AgIoDisc;
   Agdisc_t    AgDefaultDisc;
@@ -799,53 +797,6 @@ specific disciplines must be non-NULL.
 
 Cgraph copies the three individual pointers. Thus, these three structures must remain
 allocated for the life of the graph, though the \verb"Agdisc_t" may be temporary.
-
-\subsubsection{Memory management}
-The memory management discipline allows calling alternative versions
-of malloc, particularly, Vo's Vmalloc, which offers memory allocation
-in arenas or pools.  The benefit is that Cgraph can allocate a graph
-and its objects within a shared pool,
-to provide fine-grained tracking of its memory resources
-and the option of freeing the entire graph and associated objects
-by closing the area in constant time, if finalization of individual
-graph objects isn't needed.\footnote{This could be fixed.}
-
-%Other functions allow access to a graph's heap for memory allocation.
-%(It probably only makes sense to use this feature in combination with
-%an optional arena-based memory manager, as described above.)
-
-\begin{verbatim}
-  typedef struct Agmemdisc_s {
-    void *(*open)(void);
-    void *(*alloc)(void *state, size_t req);
-    void *(*resize)(void *state, void *ptr, size_t old, 
-                    size_t req);
-    void (*free)(void *state, void *ptr);
-    void (*close)(void *state);
-  } Agmemdisc_t;
-\end{verbatim}
-
-When a graph is created, but before any memory is allocated, Cgraph calls the 
-discipline's \verb"open" function. The application should then perform any necessary
-initializations of its memory system, and return a pointer to any state data structure
-necessary for subsequent memory allocation. When the graph is closed, Cgraph will 
-call the discipline's \verb"close" function, passing it the associated state, so the application
-can finalize and free any resources involved.
-
-The other three discipline functions \verb"alloc", \verb"resize" and \verb"free" should have semantics
-roughly identical to the standard C library functions \verb"malloc", \verb"realloc" and \verb"free".
-The main difference is that any new memory returned by \verb"alloc" and \verb"resize" should be zeroed out,
-and that \verb"resize" is passed the old buffer size in addition to the requested new size. In addition,
-they all take the memory state as the first argument.
-
-To simplify the use of the memory discipline, Cgraph provides three wrapper functions that hide the
-task of obtaining the memory state. These are the same functions Cgraph uses to handle memory for a graph.
-\begin{verbatim}
-  void *agalloc(Agraph_t *g, size_t size);
-  void *agrealloc(Agraph_t *g, void *ptr, size_t oldsize, 
-                   size_t size);
-  void agfree(Agraph_t *g, void *ptr);
-\end{verbatim}
 
 \subsubsection{I/O management}
 The I/O discipline is probably the most frequently used of the three, as the I/O requirements of
@@ -1058,7 +1009,7 @@ libgraph, and the corresponding value or procedure in Cgraph, if any.
 \verb"aginit" &  not necessary\footnote{The Cgraph library has a function called \texttt{aginit}, but it has a different signature and semantics.} \\ \hline
 \verb"agopen(name,type)" &  \verb"agopen(name,type,NULL)"\\ \hline
 \verb"agread(filep)" &  \verb"agread(filep,NULL)"\\ \hline
-\verb"agread_usergets(filep,gets)" &  \verb"Agmemdisc_t mem = AgMemDisc;" \\
+\verb"agread_usergets(filep,gets)" \\
                             &  \verb"Agiddisc_t id = AgIdDisc;" \\
                             &  \verb"Agiodisc_t io = AgIoDisc;" \\
                             &  \verb"io.afread = gets;"\footnote{Note that the order of the parameters differs from the \texttt{gets} used in libgraph.} \\
