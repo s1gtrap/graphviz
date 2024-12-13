@@ -254,7 +254,7 @@ static void cairogen_end_page(GVJ_t * job)
 	    fprintf(stderr, "ERROR: cairo surface has zero area, this may indicate some problem during rendering shapes.\n");
  - jce */
 	}
-	job->imagedata = (char *)(cairo_image_surface_get_data(surface));
+	job->imagedata = cairo_image_surface_get_data(surface);
 	break;
        	/* formatting will be done by gvdevice_format() */
     }

@@ -32,7 +32,7 @@ static void gdiplus_format(GVJ_t *job)
 		job->height,					/* height in pixels */
 		job->width * BYTES_PER_PIXEL,	/* bytes per row: exactly width # of pixels */
 		PixelFormat32bppPARGB,			/* pixel format: corresponds to CAIRO_FORMAT_ARGB32 */
-		(BYTE*)job->imagedata);				/* pixel data from job */
+		job->imagedata);				/* pixel data from job */
 	SaveBitmapToStream(bitmap, stream, job->device.id);
 
 	/* blast the streamed buffer back to the gvdevice */

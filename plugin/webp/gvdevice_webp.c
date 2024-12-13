@@ -87,8 +87,7 @@ static void webp_format(GVJ_t * job)
 	return;
     }
 
-    if (!WebPPictureImportBGRA(&picture,
-		(const uint8_t * const)job->imagedata, stride)) {
+    if (!WebPPictureImportBGRA(&picture, job->imagedata, stride)) {
 	fprintf(stderr, "Error! Cannot import picture\n");
 	goto Error;
     }

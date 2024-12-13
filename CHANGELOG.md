@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Breaking**: The cdt macro `DT_PRIME` has been removed.
 - **Breaking**: The cdt field `Dt_t.data` is now a `Dtdata_t` instead of
   `Dtdata_t *`.
+- **Breaking**: `GVJ_t.imagedata` is now an `unsigned char *`.
 
 ### Fixed
 

@@ -53,7 +53,7 @@ static void gd_format(GVJ_t * job)
 {
     gdImagePtr im;
     unsigned int x, y;
-    const unsigned char *data = (unsigned char *)job->imagedata;
+    const unsigned char *data = job->imagedata;
     unsigned int width = job->width;
     unsigned int height = job->height;
     gd_context_t gd_context;
