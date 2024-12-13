@@ -47,7 +47,6 @@
 
 #define AGDISC(g,d)			((g)->clos->disc.d)
 #define AGCLOS(g,d)			((g)->clos->state.d)
-#define AGNEW(g,t)			((t*)(agalloc(g,sizeof(t))))
 
 	/* functional definitions */
 typedef Agobj_t *(*agobjsearchfn_t) (Agraph_t * g, Agobj_t * obj);

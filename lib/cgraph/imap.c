@@ -102,10 +102,9 @@ bool aginternalmaplookup(Agraph_t *g, int objtype, char *str, IDTYPE *result) {
 void aginternalmapinsert(Agraph_t * g, int objtype, char *str,
              IDTYPE id)
 {
-    IMapEntry_t *ent;
     Dict_t *d_name_to_id, *d_id_to_name;
 
-    ent = AGNEW(g, IMapEntry_t);
+    IMapEntry_t *ent = agalloc(g, sizeof(IMapEntry_t));
     ent->id = id;
     ent->str = agstrdup(g, str);
 
