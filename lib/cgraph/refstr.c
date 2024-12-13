@@ -17,6 +17,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <util/alloc.h>
 
 /*
  * reference counted strings.
@@ -111,7 +112,7 @@ static char *agstrdup_internal(Agraph_t *g, const char *s, bool is_html) {
     else {
 	sz = sizeof(refstr_t) + strlen(s);
 	if (g)
-	    r = agalloc(g, sz);
+	    r = gv_calloc(sz, sizeof(char));
 	else {
 	    r = malloc(sz);
 	    if (sz > 0 && r == NULL) {

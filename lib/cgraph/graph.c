@@ -147,7 +147,7 @@ int agclose(Agraph_t * g)
 
     if (par) {
 	agdelsubg(par, g);
-	agfree(par, g);
+	free(g);
     } else {
 	void *clos;
 	while (g->clos->cb)

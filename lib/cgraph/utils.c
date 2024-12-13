@@ -14,14 +14,14 @@
  *************************************************************************/
 
 #include <cgraph/cghdr.h>
-#include <stddef.h>
+#include <stdlib.h>
 
 static Agraph_t *Ag_dictop_G;
 
 void agdictobjfree(void *p) {
     Agraph_t *g = Ag_dictop_G;
     if (g)
-	agfree(g, p);
+	free(p);
     else
 	free(p);
 }

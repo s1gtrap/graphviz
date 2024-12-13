@@ -144,7 +144,6 @@ EXCLUDE = (
     "lib/cgraph/ingraphs.c",
     "lib/cgraph/ingraphs.h",
     "lib/cgraph/io.c",
-    "lib/cgraph/mem.c",
     "lib/cgraph/node.c",
     "lib/cgraph/obj.c",
     "lib/cgraph/rec.c",

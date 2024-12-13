@@ -15,8 +15,9 @@
  *************************************************************************/
 
 #include	<cgraph/cghdr.h>
-#include	<stddef.h>
 #include	<stdbool.h>
+#include	<stdlib.h>
+#include	<util/alloc.h>
 #include	<util/streq.h>
 #include	<util/unreachable.h>
 
@@ -83,8 +84,7 @@ static Dict_t *agdictof(Agraph_t * g, int kind)
 
 static Agsym_t *agnewsym(Agraph_t * g, const char *name, const char *value,
                          int id, int kind) {
-    Agsym_t *sym;
-    sym = agalloc(g, sizeof(Agsym_t));
+    Agsym_t *sym = gv_alloc(sizeof(Agsym_t));
     sym->kind = (unsigned char) kind;
     sym->name = agstrdup(g, name);
     sym->defval = agstrdup(g, value);
@@ -195,7 +195,7 @@ static Agrec_t *agmakeattrs(Agraph_t * context, void *obj)
 	sz = topdictsize(obj);
 	if (sz < MINATTR)
 	    sz = MINATTR;
-	rec->str = agalloc(agraphof(obj), (size_t) sz * sizeof(char *));
+	rec->str = gv_calloc((size_t)sz, sizeof(char *));
 	/* doesn't call agxset() so no obj-modified callbacks occur */
 	for (sym = dtfirst(datadict); sym; sym = dtnext(datadict, sym))
 	    rec->str[sym->id] = agstrdup(agraphof(obj), sym->defval);
@@ -214,7 +214,7 @@ static void freeattr(Agobj_t * obj, Agattr_t * attr)
     sz = topdictsize(obj);
     for (i = 0; i < sz; i++)
 	agstrfree(g, attr->str[i]);
-    agfree(g, attr->str);
+    free(attr->str);
 }
 
 static void freesym(void *obj) {
@@ -223,7 +223,7 @@ static void freesym(void *obj) {
     sym = obj;
     agstrfree(Ag_G_global, sym->name);
     agstrfree(Ag_G_global, sym->defval);
-    agfree(Ag_G_global, sym);
+    free(sym);
 }
 
 Agattr_t *agattrrec(void *obj)
@@ -237,11 +237,8 @@ static void addattr(Agraph_t * g, Agobj_t * obj, Agsym_t * sym)
     Agattr_t *attr = agattrrec(obj);
     assert(attr != NULL);
     if (sym->id >= MINATTR)
-	attr->str = agrealloc(g, attr->str,
-						     (size_t) sym->id *
-						     sizeof(char *),
-						     ((size_t) sym->id +
-						      1) * sizeof(char *));
+	attr->str = gv_recalloc(attr->str, (size_t)sym->id, (size_t)sym->id + 1,
+	                        sizeof(char *));
     attr->str[sym->id] = agstrdup(g, sym->defval);
 }
 

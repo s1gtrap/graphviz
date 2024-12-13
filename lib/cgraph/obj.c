@@ -13,7 +13,8 @@
  *************************************************************************/
 
 #include <cgraph/cghdr.h>
-#include <stddef.h>
+#include <stdlib.h>
+#include <util/alloc.h>
 #include <util/unreachable.h>
 
 int agdelete(Agraph_t * g, void *obj)
@@ -200,7 +201,7 @@ Agraph_t *agraphof(void *obj)
 /* to manage disciplines */
 void agpushdisc(Agraph_t * g, Agcbdisc_t * cbd, void *state)
 {
-    Agcbstack_t *stack_ent = agalloc(g, sizeof(Agcbstack_t));
+    Agcbstack_t *stack_ent = gv_alloc(sizeof(Agcbstack_t));
     stack_ent->f = cbd;
     stack_ent->state = state;
     stack_ent->prev = g->clos->cb;
@@ -222,7 +223,7 @@ int agpopdisc(Agraph_t * g, Agcbdisc_t * cbd)
 		stack_ent->prev = stack_ent->prev->prev;
 	}
 	if (stack_ent) {
-	    agfree(g, stack_ent);
+	    free(stack_ent);
 	    return SUCCESS;
 	}
     }

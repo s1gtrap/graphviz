@@ -71,11 +71,9 @@ Agnode_t *agprvnode(Agraph_t * g, Agnode_t * n)
 /* internal node constructor */
 static Agnode_t *newnode(Agraph_t * g, IDTYPE id, uint64_t seq)
 {
-    Agnode_t *n;
-
     assert((seq & SEQ_MASK) == seq && "sequence ID overflow");
 
-    n = agalloc(g, sizeof(Agnode_t));
+    Agnode_t *n = gv_alloc(sizeof(Agnode_t));
     AGTYPE(n) = AGNODE;
     AGID(n) = id;
     AGSEQ(n) = seq & SEQ_MASK;
@@ -97,7 +95,7 @@ static void installnode(Agraph_t * g, Agnode_t * n)
     assert(node_set_size(g->n_id) == (size_t)dtsize(g->n_seq));
     osize = node_set_size(g->n_id);
     if (g == agroot(g)) sn = &(n->mainsub);
-    else sn = agalloc(g, sizeof(Agsubnode_t));
+    else sn = gv_alloc(sizeof(Agsubnode_t));
     sn->node = n;
     node_set_add(g->n_id, sn);
     dtinsert(g->n_seq, sn);
@@ -213,7 +211,7 @@ int agdelnode(Agraph_t * g, Agnode_t * n)
     }
     if (agapply(g, (Agobj_t *)n, (agobjfn_t)agdelnodeimage, NULL, false) == SUCCESS) {
 	if (g == agroot(g))
-	    agfree(g, n);
+	    free(n);
 	return SUCCESS;
     } else
 	return FAILURE;
@@ -307,7 +305,7 @@ static int agsubnodeseqcmpf(void *arg0, void *arg1) {
 static void free_subnode(void *subnode) {
    Agsubnode_t *sn = subnode;
    if (!AGSNMAIN(sn)) 
-	agfree (sn->node->root, sn);
+	free(sn);
 }
 
 Dtdisc_t Ag_subnode_seq_disc = {

@@ -114,12 +114,6 @@ int			*agpopdisc(Agraph_t *g);
 void		agpushdisc(Agraph_t *g, Agcbdisc_t *disc);
 int			agcallbacks(Agraph_t * g, int flag);
 .P1
-.SS "MEMORY"
-.P0
-void		*agalloc(Agraph_t *g, size_t request);
-void		*agrealloc(Agraph_t *g, void *ptr, size_t oldsize, size_t newsize);
-void		agfree(Agraph_t *g, void *ptr);
-.P1
 .SS "STRINGS"
 .P0
 char		*agstrdup(Agraph_t *, char *);

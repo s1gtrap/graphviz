@@ -788,10 +788,6 @@ CGRAPH_API int agcountuniqedges(Agraph_t *g, Agnode_t *n, int in, int out);
 
 /// @defgroup cgmem memory
 /// @{
-CGRAPH_API void *agalloc(Agraph_t *g, size_t size);
-CGRAPH_API void *agrealloc(Agraph_t *g, void *ptr, size_t oldsize, size_t size);
-CGRAPH_API void agfree(Agraph_t *g, void *ptr);
-
 /* an engineering compromise is a joy forever */
 CGRAPH_API void aginternalmapclearlocalnames(Agraph_t *g);
 /// @}

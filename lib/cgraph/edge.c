@@ -16,8 +16,9 @@
 #include <assert.h>
 #include <cgraph/cghdr.h>
 #include <cgraph/node_set.h>
-#include <stddef.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <util/alloc.h>
 
 /* return first outedge of <n> */
 Agedge_t *agfstout(Agraph_t * g, Agnode_t * n)
@@ -194,12 +195,11 @@ static void subedge(Agraph_t * g, Agedge_t * e)
 static Agedge_t *newedge(Agraph_t * g, Agnode_t * t, Agnode_t * h,
              IDTYPE id)
 {
-    Agedgepair_t *e2;
     Agedge_t *in, *out;
 
     (void)agsubnode(g, t, 1);
     (void)agsubnode(g, h, 1);
-    e2 = agalloc(g, sizeof(Agedgepair_t));
+    Agedgepair_t *e2 = gv_alloc(sizeof(Agedgepair_t));
     in = &(e2->in);
     out = &(e2->out);
     uint64_t seq = agnextseq(g, AGEDGE);
@@ -346,7 +346,7 @@ int agdeledge(Agraph_t * g, Agedge_t * e)
     }
     if (agapply(g, (Agobj_t *)e, (agobjfn_t)agdeledgeimage, NULL, false) == SUCCESS) {
 	if (g == agroot(g))
-		agfree(g, e);
+		free(e);
 	return SUCCESS;
     } else
 	return FAILURE;

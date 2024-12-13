@@ -34,7 +34,6 @@ add_library(cgraph
   imap.c
   ingraphs.c
   io.c
-  mem.c
   node.c
   node_induce.c
   obj.c

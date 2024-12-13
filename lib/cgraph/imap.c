@@ -14,7 +14,8 @@
 
 #include <cgraph/cghdr.h>
 #include <stdbool.h>
-#include <stddef.h>
+#include <stdlib.h>
+#include <util/alloc.h>
 
 typedef struct IMapEntry_s {
     Dtlink_t namedict_link;
@@ -104,7 +105,7 @@ void aginternalmapinsert(Agraph_t * g, int objtype, char *str,
 {
     Dict_t *d_name_to_id, *d_id_to_name;
 
-    IMapEntry_t *ent = agalloc(g, sizeof(IMapEntry_t));
+    IMapEntry_t *ent = gv_alloc(sizeof(IMapEntry_t));
     ent->id = id;
     ent->str = agstrdup(g, str);
 
@@ -155,7 +156,7 @@ int aginternalmapdelete(Agraph_t * g, int objtype, IDTYPE id)
 	dtdelete(g->clos->lookup_by_name[objtype], isym);
 	dtdelete(g->clos->lookup_by_id[objtype], isym);
 	agstrfree(g, isym->str);
-	agfree(g, isym);
+	free(isym);
 	return true;
     }
     return false;
