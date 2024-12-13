@@ -29,7 +29,6 @@
 
 #include <common/types.h>
 #include <common/usershape.h>
-#include <cgraph/strview.h>
 #include <common/utils.h>
 #include <gvc/gvplugin_loadimage.h>
 #include <gvc/gvplugin.h>
@@ -38,6 +37,7 @@
 #include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/gv_ctype.h>
+#include <util/strview.h>
 
 extern char *Gvimagepath;
 extern char *HTTPServerEnVar;

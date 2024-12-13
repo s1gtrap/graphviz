@@ -11,7 +11,7 @@ endif
 pkginclude_HEADERS = cgraph.h
 noinst_HEADERS = cghdr.h \
 	ingraphs.h list.h node_set.h rdr.h \
-	strview.h tokenize.h
+	tokenize.h
 noinst_LTLIBRARIES = libcgraph_C.la
 lib_LTLIBRARIES = libcgraph.la
 pkgconfig_DATA = libcgraph.pc

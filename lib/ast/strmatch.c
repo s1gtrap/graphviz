@@ -44,11 +44,11 @@
  */
 
 #include <ast/ast.h>
-#include <cgraph/strview.h>
 #include <ctype.h>
 #include <stddef.h>
 #include <string.h>
 #include <util/gv_ctype.h>
+#include <util/strview.h>
 
 #ifdef _DEBUG_MATCH
 #include <ast/error.h>

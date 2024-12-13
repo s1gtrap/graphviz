@@ -30,11 +30,11 @@
 
 #include	<common/const.h>
 #include <cgraph/list.h>
-#include <cgraph/strview.h>
 #include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/startswith.h>
 #include <util/strcasecmp.h>
+#include <util/strview.h>
 
 /*
  * Define an apis array of name strings using an enumerated api_t as index.

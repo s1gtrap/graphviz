@@ -19,13 +19,13 @@
 #include <gvc/gvplugin_render.h>
 #include <gvc/gvplugin_device.h>
 #include <gvc/gvio.h>
-#include <cgraph/strview.h>
 #include <common/utils.h>
 #include <common/color.h>
 #include <common/colorprocs.h>
 
 #include <common/const.h>
 #include <util/agxbuf.h>
+#include <util/strview.h>
 
 /* Number of points to split splines into */
 #define BEZIERSUBDIVISION 6

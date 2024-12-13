@@ -9,7 +9,6 @@
  *************************************************************************/
 
 #include "config.h"
-#include <cgraph/strview.h>
 #include "gd_psfontResolve.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -19,6 +18,7 @@
 #include <gd.h>
 #include <common/const.h>
 #include <util/strcasecmp.h>
+#include <util/strview.h>
 
 #ifdef HAVE_GD_FREETYPE
 

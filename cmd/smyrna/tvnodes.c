@@ -12,11 +12,11 @@
 #include "tvnodes.h"
 #include "viewport.h"
 #include "topviewfuncs.h"
-#include <cgraph/strview.h>
 #include <cgraph/tokenize.h>
 #include <stdbool.h>
 #include <string.h>
 #include <util/alloc.h>
+#include <util/strview.h>
 
 typedef struct {
     GType type;
