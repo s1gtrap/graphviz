@@ -36,6 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   a regression in Graphviz 2.26.0.
 - Guile 2.2 discovery has been restored in the Autotools build system. This was
   a regression in Graphviz 12.2.0. #2624
+- Legacy information about memory disciplines has been removed from the cgraph
+  man page.
 
 ## [12.2.1] – 2024-12-07
 
