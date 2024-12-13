@@ -14,9 +14,9 @@
  *************************************************************************/
 
 #include <cgraph/cghdr.h>
-#include <stddef.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <util/alloc.h>
 
 /*
@@ -36,7 +36,7 @@ static Dtdisc_t Refstrdisc = {
     -1,				/* size */
     0,				/* link offset */
     NULL,
-    agdictobjfree,
+    free,
     NULL,
 };
 
