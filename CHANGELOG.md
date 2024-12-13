@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `size_t`.
 - The `GRAPHVIZ_CLI` variable in the CMake build system now additionally
   controls whether the utilities `diffimg` and `prune` are built.
-- **Breaking**: The cgraph macro `agnew` has been removed.
+- **Breaking**: The cgraph macros `agnew` and `agnnew` have been removed.
 
 ### Fixed
 

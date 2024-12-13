@@ -794,8 +794,6 @@ CGRAPH_API void agfree(Agraph_t *g, void *ptr);
 
 /* an engineering compromise is a joy forever */
 CGRAPH_API void aginternalmapclearlocalnames(Agraph_t *g);
-
-#define agnnew(g, n, t) ((t *)agalloc(g, (n) * sizeof(t)))
 /// @}
 
 /// @cond
