@@ -30,8 +30,6 @@ struct Exccdisc_s			/* excc() discipline		*/
   agxbuf *text; // text output buffer
   char*		id;		/* symbol prefix		*/
   uint64_t	flags;		/* EXCC_* flags			*/
-  int		(*ccf)(Excc_t*, Exnode_t*, Exid_t*, Exref_t*, Exnode_t*, Exccdisc_t*);
-          /* program generator function	*/
 };
 
 struct Excc_s				/* excc() state			*/
@@ -315,10 +313,7 @@ static void gen(Excc_t *cc, Exnode_t *exnode) {
 		agxbputc(cc->ccdisc->text, '}');
 		return;
 	case ID:
-		if (cc->ccdisc->ccf)
-			cc->ccdisc->ccf(cc, exnode, exnode->data.variable.symbol, exnode->data.variable.reference, exnode->data.variable.index, cc->ccdisc);
-		else
-			agxbput(cc->ccdisc->text, exnode->data.variable.symbol->name);
+		agxbput(cc->ccdisc->text, exnode->data.variable.symbol->name);
 		return;
 	case INC:
 		agxbprint(cc->ccdisc->text, "%s++", x->data.variable.symbol->name);
