@@ -28,7 +28,6 @@ typedef struct Exccdisc_s Exccdisc_t;
 struct Exccdisc_s			/* excc() discipline		*/
 {
   agxbuf *text; // text output buffer
-  char*		id;		/* symbol prefix		*/
 };
 
 struct Excc_s				/* excc() state			*/
@@ -638,10 +637,8 @@ static void gen(Excc_t *cc, Exnode_t *exnode) {
 
 static Excc_t *exccopen(Expr_t *ex, Exccdisc_t *disc) {
 	Excc_t*	cc;
-	char*			id;
 
-	if (!(id = disc->id))
-		id = "";
+	char *const id = "";
 	if (!(cc = calloc(1, sizeof(Excc_t) + strlen(id) + 2)))
 		return 0;
 	cc->expr = ex;
