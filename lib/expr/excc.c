@@ -29,7 +29,6 @@ struct Exccdisc_s			/* excc() discipline		*/
 {
   agxbuf *text; // text output buffer
   char*		id;		/* symbol prefix		*/
-  uint64_t	flags;		/* EXCC_* flags			*/
 };
 
 struct Excc_s				/* excc() state			*/
