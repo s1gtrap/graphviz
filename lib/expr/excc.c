@@ -638,22 +638,6 @@ static Excc_t *exccopen(Expr_t *ex, agxbuf *xb) {
 }
 
 /*
- * close C program generator context
- */
-
-static int exccclose(Excc_t *cc) {
-	int	r = 0;
-
-	if (!cc)
-		r = -1;
-	else
-	{
-		free(cc);
-	}
-	return r;
-}
-
-/*
  * dump an expression tree to a buffer
  */
 
@@ -673,5 +657,6 @@ int exdump(Expr_t *ex, Exnode_t *node, agxbuf *xb) {
 				gen(cc, sym->value->data.procedure.body);
 			}
 	agxbputc(xb, '\n');
-	return exccclose(cc);
+	free(cc);
+	return 0;
 }
