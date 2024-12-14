@@ -22,16 +22,14 @@
 #include <util/agxbuf.h>
 #include <util/exit.h>
 
-typedef struct Excc_s Excc_t;
-
-struct Excc_s				/* excc() state			*/
-{
+/// excc() state
+typedef struct {
 	Expr_t*		expr;		/* exopen() state		*/
 	Exdisc_t*	disc;		/* exopen() discipline		*/
 	char*		id;		/* prefix + _			*/
 	int		tmp;		/* temp var index		*/
 	agxbuf *text; ///< result of dumping
-};
+} Excc_t;
 
 static const char	quote[] = "\"";
 
