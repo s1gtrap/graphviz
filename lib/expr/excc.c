@@ -26,7 +26,6 @@
 typedef struct {
 	Expr_t*		expr;		/* exopen() state		*/
 	Exdisc_t*	disc;		/* exopen() discipline		*/
-	char*		id;		/* prefix + _			*/
 	int		tmp;		/* temp var index		*/
 	agxbuf *text; ///< result of dumping
 } Excc_t;
@@ -312,8 +311,8 @@ static void gen(Excc_t *cc, Exnode_t *exnode) {
 	case ITERATOR:
 		if (exnode->op == DYNAMIC)
 		{
-			agxbprint(cc->text, "{ Exassoc_t* %stmp_%d;", cc->id, ++cc->tmp);
-			agxbprint(cc->text, "for (%stmp_%d = (Exassoc_t*)dtfirst(%s); %stmp_%d && (%s = %stmp_%d->name); %stmp_%d = (Exassoc_t*)dtnext(%s, %stmp_%d)) {", cc->id, cc->tmp, exnode->data.generate.array->data.variable.symbol->name, cc->id, cc->tmp, exnode->data.generate.index->name, cc->id, cc->tmp, cc->id, cc->tmp, exnode->data.generate.array->data.variable.symbol->name, cc->id, cc->tmp);
+			agxbprint(cc->text, "{ Exassoc_t* tmp_%d;", ++cc->tmp);
+			agxbprint(cc->text, "for (tmp_%d = (Exassoc_t*)dtfirst(%s); tmp_%d && (%s = tmp_%d->name); tmp_%d = (Exassoc_t*)dtnext(%s, tmp_%d)) {", cc->tmp, exnode->data.generate.array->data.variable.symbol->name, cc->tmp, exnode->data.generate.index->name, cc->tmp, cc->tmp, exnode->data.generate.array->data.variable.symbol->name, cc->tmp);
 			gen(cc, exnode->data.generate.statement);
 			agxbput(cc->text, "} }");
 		}
@@ -352,7 +351,7 @@ static void gen(Excc_t *cc, Exnode_t *exnode) {
 		return;
 	case SWITCH: {
 		long t = x->type;
-		agxbprint(cc->text, "{ %s %stmp_%d = ", extype(t), cc->id, ++cc->tmp);
+		agxbprint(cc->text, "{ %s tmp_%d = ", extype(t), ++cc->tmp);
 		gen(cc, x);
 		agxbputc(cc->text, ';');
 		x = exnode->data.operand.right;
@@ -378,10 +377,10 @@ static void gen(Excc_t *cc, Exnode_t *exnode) {
 					}
 					if (t == STRING) {
 						char *quoted = fmtesq(v->string, quote);
-						agxbprint(cc->text, "strmatch(%stmp_%d, \"%s\")", cc->id, cc->tmp, quoted);
+						agxbprint(cc->text, "strmatch(tmp_%d, \"%s\")", cc->tmp, quoted);
 						free(quoted);
 					} else {
-						agxbprint(cc->text, "%stmp_%d == ", cc->id, cc->tmp);
+						agxbprint(cc->text, "tmp_%d == ", cc->tmp);
 						switch (t)
 						{
 						case INTEGER:
@@ -449,7 +448,7 @@ static void gen(Excc_t *cc, Exnode_t *exnode) {
 				case WHILE:
 					break;
 				default:
-					agxbprint(cc->text, "_%svalue=", cc->id);
+					agxbput(cc->text, "_value=");
 					break;
 				}
 			gen(cc, exnode->data.operand.left);
@@ -468,7 +467,7 @@ static void gen(Excc_t *cc, Exnode_t *exnode) {
 			case WHILE:
 				break;
 			default:
-				agxbprint(cc->text, "_%svalue=", cc->id);
+				agxbput(cc->text, "_%svalue=");
 				break;
 			}
 			gen(cc, exnode);
@@ -630,12 +629,10 @@ static void gen(Excc_t *cc, Exnode_t *exnode) {
 static Excc_t *exccopen(Expr_t *ex, agxbuf *xb) {
 	Excc_t*	cc;
 
-	char *const id = "";
-	if (!(cc = calloc(1, sizeof(Excc_t) + strlen(id) + 2)))
+	if (!(cc = calloc(1, sizeof(Excc_t))))
 		return 0;
 	cc->expr = ex;
 	cc->disc = ex->disc;
-	cc->id = (char*)(cc + 1);
 	cc->text = xb;
 	return cc;
 }
