@@ -4,7 +4,7 @@
  * @ingroup public_apis
  *
  * **CDT** manages run-time dictionaries using standard container data types:
- * unordered set/multiset, ordered set/multiset, list, stack, and queue.
+ * unordered set/multiset, ordered set/multiset, list, and stack.
  *
  * [man 3 cdt](https://graphviz.org/pdf/cdt.3.pdf)
  *
@@ -38,20 +38,16 @@ extern "C" {
 #define CDT_API /* nothing */
 #endif
 
-typedef struct _dtlink_s	Dtlink_t;
-typedef struct _dthold_s	Dthold_t;
-typedef struct _dtdisc_s	Dtdisc_t;
-typedef struct _dtmethod_s	Dtmethod_t;
-typedef struct _dtdata_s	Dtdata_t;
-typedef struct _dt_s		Dt_t;
-typedef struct _dt_s		Dict_t;	/* for libdict compatibility */
-typedef struct _dtstat_s	Dtstat_t;
+typedef struct dtlink_s_	Dtlink_t;
+typedef struct dtdisc_s_	Dtdisc_t;
+typedef struct dt_s_		Dt_t;
+typedef struct dt_s_		Dict_t;	/* for libdict compatibility */
 typedef void*			(*Dtsearch_f)(Dt_t*,void*,int);
 typedef void* 		(*Dtmake_f)(void*,Dtdisc_t*);
 typedef void 			(*Dtfree_f)(void *);
 typedef int			(*Dtcompar_f)(void *,void *);
 
-struct _dtlink_s
+struct dtlink_s_
 {	Dtlink_t*	right;	/* right child		*/
 	union
 	{ unsigned int	_hash;	/* hash value		*/
@@ -60,19 +56,19 @@ struct _dtlink_s
 };
 
 /* private structure to hold an object */
-struct _dthold_s
+typedef struct
 {	Dtlink_t	hdr;	/* header		*/
 	void*		obj;	/* user object		*/
-};
+} Dthold_t;
 
 /* method to manipulate dictionary structure */
-struct _dtmethod_s
+typedef struct
 {	Dtsearch_f	searchf; /* search function	*/
 	int		type;	/* type of operation	*/
-};
+} Dtmethod_t;
 
 /* stuff that may be in shared memory */
-struct _dtdata_s
+typedef struct
 {	int		type;	/* type of dictionary			*/
 	Dtlink_t*	here;	/* finger to last search element	*/
 	union
@@ -82,10 +78,10 @@ struct _dtdata_s
 	int		ntab;	/* number of hash slots			*/
 	int		size;	/* number of objects			*/
 	int		loop;	/* number of nested loops		*/
-};
+} Dtdata_t;
 
 /* structure to hold methods that manipulate an object */
-struct _dtdisc_s
+struct dtdisc_s_
 {	int		key;	/* where the key begins in an object	*/
 	int		size;	/* key size and type			*/
 	int		link;	/* offset to Dtlink_t field		*/
@@ -100,10 +96,10 @@ struct _dtdisc_s
 	  (dc)->comparf = (cmpf) )
 
 /* the dictionary structure itself */
-struct _dt_s
+struct dt_s_
 {	Dtsearch_f	searchf;/* search function			*/
 	Dtdisc_t*	disc;	/* method to manipulate objs		*/
-	Dtdata_t*	data;	/* sharable data			*/
+	Dtdata_t data; ///< sharable data
 	Dtmethod_t*	meth;	/* dictionary method			*/
 	int		nview;	/* number of parent view dictionaries	*/
 	Dt_t*		view;	/* next on viewpath			*/
@@ -112,19 +108,18 @@ struct _dt_s
 };
 
 /* structure to get status of a dictionary */
-struct _dtstat_s
+typedef struct
 {	int	dt_meth;	/* method type				*/
 	int	dt_size;	/* number of elements			*/
 	size_t dt_n; // number of chains or levels
 	size_t dt_max; // max size of a chain or a level
 	size_t* dt_count; // counts of chains or levels by size
-};
+} Dtstat_t;
 
 /* supported storage methods */
 #define DT_SET		0000001	/* set with unique elements		*/
 #define DT_OSET		0000004	/* ordered set (self-adjusting tree)	*/
 #define DT_OBAG		0000010	/* ordered multiset			*/
-#define DT_QUEUE	0000100	/* queue: insert at top, delete at tail	*/
 #define DT_METHODS	0000377	/* all currently supported methods	*/
 
 /* types of search */
@@ -144,11 +139,8 @@ struct _dtstat_s
 CDT_API extern Dtmethod_t* 	Dtset; ///< set with unique elements
 CDT_API extern Dtmethod_t* 	Dtoset; ///< ordered set (self-adjusting tree)
 CDT_API extern Dtmethod_t* 	Dtobag; ///< ordered multiset
-CDT_API extern Dtmethod_t*	Dtqueue; ///< queue: insert at top, delete at tail
 
 CDT_API extern Dtmethod_t*	Dttree;
-CDT_API extern Dtmethod_t	_Dttree;
-CDT_API extern Dtmethod_t	_Dtqueue;
 
 CDT_API Dt_t*		dtopen(Dtdisc_t*, Dtmethod_t*);
 CDT_API int		dtclose(Dt_t*);
@@ -182,7 +174,7 @@ CDT_API unsigned int dtstrhash(void*, int);
 
 #define dtlink(d,e)	(((Dtlink_t*)(e))->right)
 #define dtobj(d,e)	_DTOBJ((e), _DT(d)->disc->link)
-#define dtfinger(d)	(_DT(d)->data->here ? dtobj((d),_DT(d)->data->here):(void*)(0))
+#define dtfinger(d)	(_DT(d)->data.here ? dtobj((d), _DT(d)->data.here) : NULL)
 
 #define dtfirst(d)	(*(_DT(d)->searchf))((d),(void*)(0),DT_FIRST)
 #define dtnext(d,o)	(*(_DT(d)->searchf))((d),(void*)(o),DT_NEXT)
@@ -194,8 +186,6 @@ CDT_API unsigned int dtstrhash(void*, int);
 #define dtdelete(d,o)	(*(_DT(d)->searchf))((d),(void*)(o),DT_DELETE)
 #define dtdetach(d,o)	(*(_DT(d)->searchf))((d),(void*)(o),DT_DETACH)
 #define dtclear(d)	(*(_DT(d)->searchf))((d),(void*)(0),DT_CLEAR)
-
-#define DT_PRIME	17109811 /* 2#00000001 00000101 00010011 00110011 */
 
 /**
  * @dir lib/cdt

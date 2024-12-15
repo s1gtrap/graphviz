@@ -11,7 +11,6 @@ add_library(cdt
   dtextract.c
   dtflatten.c
   dthash.c
-  dtlist.c
   dtmethod.c
   dtopen.c
   dtrenew.c

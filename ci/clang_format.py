@@ -123,7 +123,6 @@ EXCLUDE = (
     "lib/cdt/dtflatten.c",
     "lib/cdt/dthash.c",
     "lib/cdt/dthdr.h",
-    "lib/cdt/dtlist.c",
     "lib/cdt/dtmethod.c",
     "lib/cdt/dtopen.c",
     "lib/cdt/dtrenew.c",

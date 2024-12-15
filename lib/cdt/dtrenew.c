@@ -14,16 +14,14 @@ void* dtrenew(Dt_t* dt, void* obj)
 
 	UNFLATTEN(dt);
 
-	if(!(e = dt->data->here) || _DTOBJ(e,disc->link) != obj)
+	if (!(e = dt->data.here) || _DTOBJ(e,disc->link) != obj)
 		return NULL;
 
-	if(dt->data->type&DT_QUEUE)
-		return obj;
-	else if(dt->data->type&(DT_OSET|DT_OBAG) )
+	if (dt->data.type & (DT_OSET|DT_OBAG))
 	{	if(!e->right )	/* make left child the new root */
-			dt->data->here = e->left;
+			dt->data.here = e->left;
 		else		/* make right child the new root */
-		{	dt->data->here = e->right;
+		{	dt->data.here = e->right;
 
 			/* merge left subtree to right subtree */
 			if(e->left)
@@ -33,8 +31,8 @@ void* dtrenew(Dt_t* dt, void* obj)
 			}
 		}
 	}
-	else /*if(dt->data->type&(DT_SET|DT_BAG))*/
-	{	s = dt->data->htab + HINDEX(dt->data->ntab,e->hash);
+	else // if (dt.data->type & (DT_SET|DT_BAG))
+	{	s = dt->data.htab + HINDEX(dt->data.ntab, e->hash);
 		if((t = *s) == e)
 			*s = e->right;
 		else
@@ -44,9 +42,9 @@ void* dtrenew(Dt_t* dt, void* obj)
 		}
 		key = _DTKEY(obj,disc->key,disc->size);
 		e->hash = dtstrhash(key, disc->size);
-		dt->data->here = NULL;
+		dt->data.here = NULL;
 	}
 
-	dt->data->size -= 1;
+	--dt->data.size;
 	return dt->meth->searchf(dt, e, DT_RENEW) ? obj : NULL;
 }
