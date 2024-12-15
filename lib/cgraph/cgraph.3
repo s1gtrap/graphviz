@@ -34,7 +34,6 @@ Agcbdisc_t;
 .P1
 .SS "GLOBALS"
 .P0
-Agmemdisc_t AgMemDisc;
 Agiddisc_t  AgIdDisc;
 Agiodisc_t  AgIoDisc;
 Agdisc_t    AgDefaultDisc;
@@ -115,12 +114,6 @@ int			*agpopdisc(Agraph_t *g);
 void		agpushdisc(Agraph_t *g, Agcbdisc_t *disc);
 int			agcallbacks(Agraph_t * g, int flag);
 .P1
-.SS "MEMORY"
-.P0
-void		*agalloc(Agraph_t *g, size_t request);
-void		*agrealloc(Agraph_t *g, void *ptr, size_t oldsize, size_t newsize);
-void		agfree(Agraph_t *g, void *ptr);
-.P1
 .SS "STRINGS"
 .P0
 char		*agstrdup(Agraph_t *, char *);
@@ -180,7 +173,7 @@ Objects may be named by unique strings or by integer IDs.
 \fBAgstrictdirected\fP, and \fBAgstrictundirected\fP.
 A strict graph cannot have multi-edges or self-arcs.)
 The final argument points to a discpline structure which can be used
-to tailor I/O, memory allocation, and ID allocation. Typically, a NULL
+to tailor I/O and ID allocation. Typically, a NULL
 value will be used to indicate the default discipline \fBAgDefaultDisc\fP.
 \fBagclose\fP deletes a graph, freeing its associated storage.
 \fBagread\fP, \fBagwrite\fP, and \fBagconcat\fP perform file I/O 
@@ -407,12 +400,11 @@ The lock can be subsequently released or reset by a call to \fBaggetrec\fP.
 .SH "DISCIPLINES"
 (This section is not intended for casual users.)
 Programmer-defined disciplines customize certain resources-
-ID namespace, memory, and I/O - needed by Libcgraph.
+ID namespace and I/O - needed by Libcgraph.
 A discipline struct (or NULL) is passed at graph creation time.
 .PP
 .P0
 struct Agdisc_s {            /* user's discipline */
-    Agmemdisc_t            *mem;
     Agiddisc_t            *id;
     Agiodisc_t            *io;
 } ;
@@ -502,37 +494,6 @@ an application may need to use a totally different type of character source. The
 state or stream information is provided by the \fIchan\fP argument to \fBagread\fP or \fBagwrite\fP.
 The discipline function \fIfread\fP and \fIputstr\fP provide the corresponding functions for
 read and writing.
-
-.SH "MEMORY DISCIPLINE"
-Memory management in Libcgraph is handled on a per graph basis using the memory discipline.
-.P0
-struct Agmemdisc_s {    /* memory allocator */
-    void    *(*open)(Agdisc_t*);        /* independent of other resources */
-    void    *(*alloc)(void *state, size_t req);
-    void    *(*resize)(void *state, void *ptr, size_t old, size_t req);
-    void    (*free)(void *state, void *ptr);
-    void    (*close)(void *state);
-} ;
-.P1
-.PP
-The \fBopen\fP function is used to initialize the memory subsystem,
-returning state information that is passed to the calls to  
-\fBalloc\fP, \fBresize\fP, and \fBfree\fP.
-The semantics of these should be comparable to the standard C library functions
-\fBmalloc\fP, \fBrealloc\fP, and \fBfree\fP, except that new space created by \fBagalloc\fP 
-and \fBagrealloc\fP should be zeroed out.
-The \fBclose\fP function is used to terminate the memory subsystem, freeing any additional
-open resources.
-For actual allocation, the library uses the functions
-\fBagalloc\fP, \fBagrealloc\fP, and \fBagfree\fP, which provide simple wrappers for
-the underlying discipline functions \fBalloc\fP, \fBresize\fP, and \fBfree\fP.
-.PP
-When Libcgraph is compiled with Vmalloc (which is not the default),
-each graph has its own heap.
-Programmers may allocate application-dependent data within the
-same heap as the rest of the graph.  The advantage is that
-a graph can be deleted by atomically freeing its entire heap
-without scanning each individual node and edge.
 
 .SH "CALLBACKS"
 .PP

@@ -14,17 +14,9 @@
  *************************************************************************/
 
 #include <cgraph/cghdr.h>
-#include <stddef.h>
+#include <stdlib.h>
 
 static Agraph_t *Ag_dictop_G;
-
-void agdictobjfree(void *p) {
-    Agraph_t *g = Ag_dictop_G;
-    if (g)
-	agfree(g, p);
-    else
-	free(p);
-}
 
 Dict_t *agdtopen(Agraph_t * g, Dtdisc_t * disc, Dtmethod_t * method)
 {

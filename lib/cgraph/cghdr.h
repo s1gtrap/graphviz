@@ -47,7 +47,6 @@
 
 #define AGDISC(g,d)			((g)->clos->disc.d)
 #define AGCLOS(g,d)			((g)->clos->state.d)
-#define AGNEW(g,t)			((t*)(agalloc(g,sizeof(t))))
 
 	/* functional definitions */
 typedef Agobj_t *(*agobjsearchfn_t) (Agraph_t * g, Agobj_t * obj);
@@ -86,7 +85,6 @@ Dict_t *agdtopen(Agraph_t * g, Dtdisc_t * disc, Dtmethod_t * method);
 void agdtdisc(Agraph_t * g, Dict_t * dict, Dtdisc_t * disc);
 int agdtdelete(Agraph_t * g, Dict_t * dict, void *obj);
 int agdtclose(Agraph_t * g, Dict_t * dict);
-void agdictobjfree(void *p);
 
 /** @addtogroup cgraph_attr
  *  @{

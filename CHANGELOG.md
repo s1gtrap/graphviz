@@ -24,6 +24,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `size_t`.
 - The `GRAPHVIZ_CLI` variable in the CMake build system now additionally
   controls whether the utilities `diffimg` and `prune` are built.
+- **Breaking**: The cgraph macros `agnew` and `agnnew` have been removed.
+- **Breaking**: The cgraph functions `agalloc`, `agrealloc`, and `agfree` have
+  been removed.
 
 ### Fixed
 
@@ -35,6 +38,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   a regression in Graphviz 2.26.0.
 - Guile 2.2 discovery has been restored in the Autotools build system. This was
   a regression in Graphviz 12.2.0. #2624
+- Legacy information about memory disciplines has been removed from the cgraph
+  man page.
 
 ## [12.2.1] – 2024-12-07
 

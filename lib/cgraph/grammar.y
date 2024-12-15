@@ -39,7 +39,7 @@ struct aagextra_s {
 #include <stdbool.h>
 #include <stdio.h>
 #include <cghdr.h>
-#include <stddef.h>
+#include <stdlib.h>
 #include <util/alloc.h>
 #include <util/streq.h>
 #include <util/unreachable.h>
@@ -215,7 +215,7 @@ qatom	:  T_qatom {$$ = $1;}
 
 static item *newitem(int tag, void *p0, char *p1)
 {
-	item	*rv = agalloc(G,sizeof(item));
+	item *rv = gv_alloc(sizeof(item));
 	rv->tag = tag;
 	rv->u.name = p0;
 	rv->str = p1;
@@ -235,8 +235,7 @@ static item *cons_subg(Agraph_t *subg)
 	{ return newitem(T_subgraph,subg,NULL); }
 
 static gstack_t *push(gstack_t *s, Agraph_t *subg) {
-	gstack_t *rv;
-	rv = agalloc(G,sizeof(gstack_t));
+	gstack_t *rv = gv_alloc(sizeof(gstack_t));
 	rv->down = s;
 	rv->g = subg;
 	return rv;
@@ -246,7 +245,7 @@ static gstack_t *pop(gstack_t *s)
 {
 	gstack_t *rv;
 	rv = s->down;
-	agfree(G,s);
+	free(s);
 	return rv;
 }
 
@@ -258,7 +257,7 @@ static void delete_items(item *ilist)
 		pn = p->next;
 		if (p->tag == T_list) delete_items(p->u.list);
 		if (p->tag == T_atom) agstrfree(G,p->str);
-		agfree(G,p);
+		free(p);
 	}
 }
 

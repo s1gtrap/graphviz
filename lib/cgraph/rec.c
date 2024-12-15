@@ -15,8 +15,9 @@
 
 #include	<cgraph/cghdr.h>
 #include	<stdbool.h>
-#include	<stddef.h>
+#include	<stdlib.h>
 #include	<util/streq.h>
+#include	<util/alloc.h>
 #include	<util/unreachable.h>
 
 /*
@@ -95,7 +96,7 @@ void *agbindrec(void *arg_obj, const char *recname, unsigned int recsize,
     g = agraphof(obj);
     Agrec_t *rec = aggetrec(obj, recname, 0);
     if (rec == NULL && recsize > 0) {
-	rec = agalloc(g, recsize);
+	rec = gv_calloc(recsize, sizeof(char));
 	rec->name = agstrdup(g, recname);
 	objputrec(obj, rec);
     }
@@ -155,7 +156,7 @@ int agdelrec(void *arg_obj, const char *name)
 	UNREACHABLE();
     }
     agstrfree(g, rec->name);
-    agfree(g, rec);
+    free(rec);
 
     return SUCCESS;
 }
@@ -233,7 +234,7 @@ void agrecclose(Agobj_t * obj)
 	do {
 	    nrec = rec->next;
 	    agstrfree(g, rec->name);
-	    agfree(g, rec);
+	    free(rec);
 	    rec = nrec;
 	} while (rec != obj->data);
     }

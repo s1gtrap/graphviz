@@ -17,6 +17,7 @@
 #include <cgraph/cghdr.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <util/alloc.h>
 
 static Agraph_t *agfindsubg_by_id(Agraph_t * g, IDTYPE id)
 {
@@ -35,7 +36,7 @@ static Agraph_t *localsubg(Agraph_t * g, IDTYPE id)
     if (subg)
 	return subg;
 
-    subg = agalloc(g, sizeof(Agraph_t));
+    subg = gv_alloc(sizeof(Agraph_t));
     subg->clos = g->clos;
     subg->desc = g->desc;
     subg->desc.maingraph = false;
