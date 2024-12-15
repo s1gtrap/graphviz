@@ -229,7 +229,7 @@ extern int excomp(Expr_t *p, const char *name, int line, FILE *fp,
                   char *prefix);
 
 extern char*		excontext(Expr_t*, char*, int);
-extern int		exdump(Expr_t*, Exnode_t*, agxbuf*);
+extern void exdump(Expr_t *, Exnode_t *, agxbuf *);
 #ifdef __GNUC__
 __attribute__((format(printf, 1, 2)))
 #endif

@@ -626,7 +626,7 @@ static void gen(Excc_t *cc, Exnode_t *exnode) {
  * dump an expression tree to a buffer
  */
 
-int exdump(Expr_t *ex, Exnode_t *node, agxbuf *xb) {
+void exdump(Expr_t *ex, Exnode_t *node, agxbuf *xb) {
 	Exid_t*		sym;
 
 	Excc_t cc = {.expr = ex, .disc = ex->disc, .text = xb};
@@ -640,5 +640,4 @@ int exdump(Expr_t *ex, Exnode_t *node, agxbuf *xb) {
 				gen(&cc, sym->value->data.procedure.body);
 			}
 	agxbputc(xb, '\n');
-	return 0;
 }
