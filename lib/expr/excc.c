@@ -627,13 +627,11 @@ static void gen(Excc_t *cc, Exnode_t *exnode) {
  */
 
 void exdump(Expr_t *ex, Exnode_t *node, agxbuf *xb) {
-	Exid_t*		sym;
-
 	Excc_t cc = {.expr = ex, .disc = ex->disc, .text = xb};
 	if (node)
 		gen(&cc, node);
 	else
-		for (sym = dtfirst(ex->symbols); sym; sym = dtnext(ex->symbols, sym))
+		for (Exid_t *sym = dtfirst(ex->symbols); sym; sym = dtnext(ex->symbols, sym))
 			if (sym->lex == PROCEDURE && sym->value)
 			{
 				agxbprint(xb, "%s:\n", sym->name);
