@@ -51,7 +51,6 @@ extern int edgecmd(ClientData clientData, Tcl_Interp * interp, int argc, const c
 extern int myiodisc_afread(void* channel, char *ubuf, int n);
 extern int myiodisc_memiofread(void *chan, char *buf, int bufsize);
 extern Agiddisc_t myiddisc;
-extern Agraph_t *agread_usergets (ictx_t *ictx, FILE * fp, int (*usergets)(void *chan, char *buf, int bufsize));
 extern Agraph_t *cmd2g(const char *cmd);
 extern Agnode_t *cmd2n(const char *cmd);
 extern Agedge_t *cmd2e(const char *cmd);
