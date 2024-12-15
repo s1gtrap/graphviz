@@ -18,8 +18,7 @@ check_function_exists( lrand48          HAVE_LRAND48         )
 check_function_exists( memrchr          HAVE_MEMRCHR         )
 if(PANGOCAIRO_FOUND AND
    ${PANGOCAIRO_VERSION} VERSION_GREATER_EQUAL 1.4 AND
-   NOT CYGWIN AND
-   NOT WIN32)
+   ${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   message(STATUS "Pangocairo >= 1.4, so have pango_fc_font_lock_face")
   set(HAVE_PANGO_FC_FONT_LOCK_FACE 1)
 else()
