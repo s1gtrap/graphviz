@@ -623,40 +623,22 @@ static void gen(Excc_t *cc, Exnode_t *exnode) {
 }
 
 /*
- * open C program generator context
- */
-
-static Excc_t *exccopen(Expr_t *ex, agxbuf *xb) {
-	Excc_t*	cc;
-
-	if (!(cc = calloc(1, sizeof(Excc_t))))
-		return 0;
-	cc->expr = ex;
-	cc->disc = ex->disc;
-	cc->text = xb;
-	return cc;
-}
-
-/*
  * dump an expression tree to a buffer
  */
 
 int exdump(Expr_t *ex, Exnode_t *node, agxbuf *xb) {
-	Excc_t*		cc;
 	Exid_t*		sym;
 
-	if (!(cc = exccopen(ex, xb)))
-		return -1;
+	Excc_t cc = {.expr = ex, .disc = ex->disc, .text = xb};
 	if (node)
-		gen(cc, node);
+		gen(&cc, node);
 	else
 		for (sym = dtfirst(ex->symbols); sym; sym = dtnext(ex->symbols, sym))
 			if (sym->lex == PROCEDURE && sym->value)
 			{
 				agxbprint(xb, "%s:\n", sym->name);
-				gen(cc, sym->value->data.procedure.body);
+				gen(&cc, sym->value->data.procedure.body);
 			}
 	agxbputc(xb, '\n');
-	free(cc);
 	return 0;
 }
