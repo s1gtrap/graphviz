@@ -34,6 +34,8 @@ qt5-qmake \
 qt5-default \
 # for libmingle
 libann-dev \
+# Plugin library ascii
+libaa1-dev \
 # Plugin library devil
 libdevil-dev \
 # Plugin library gd
