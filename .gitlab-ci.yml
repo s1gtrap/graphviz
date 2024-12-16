@@ -1437,8 +1437,8 @@ lint_python:
     - source /opt/virtualenv/bin/activate
     - python3 -m pip install --requirement requirements.txt
     - python3 -m pip install --requirement doc/infosrc/requirements.txt
-    - git ls-files -z -- '**.py' | xargs -0 -- python3 -m pylint --rcfile=.pylintrc --disable=fixme
-    - git ls-files -z -- '**.py' | xargs -0 -- python3 -m black --check
-    - git ls-files -z -- '**.py' | xargs -0 -- python3 -m isort --profile=black --check
+    - git ls-files -z -- cmd/dot/dot_sandbox '**.py' | xargs -0 -- python3 -m pylint --rcfile=.pylintrc --disable=fixme
+    - git ls-files -z -- cmd/dot/dot_sandbox '**.py' | xargs -0 -- python3 -m black --check
+    - git ls-files -z -- cmd/dot/dot_sandbox '**.py' | xargs -0 -- python3 -m isort --profile=black --check
   except:
     - tags

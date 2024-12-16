@@ -296,6 +296,8 @@ def has_sandbox() -> bool:
     """
     if shutil.which("bwrap"):
         return True
+    if platform.system() == "Darwin":
+        return True
     return False
 
 
