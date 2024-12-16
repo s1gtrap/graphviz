@@ -25,12 +25,12 @@
 
 %code requires {
 #include <cgraph/list.h>
-#include <cgraph/strview.h>
 #include <common/htmllex.h>
 #include <common/htmltable.h>
 #include <common/textspan.h>
 #include <gvc/gvcext.h>
 #include <util/agxbuf.h>
+#include <util/strview.h>
 }
 
 %code provides {

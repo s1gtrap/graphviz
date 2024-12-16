@@ -16,8 +16,8 @@
 #include <gdk/gdkkeysyms.h>
 #include <gdk/gdk.h>
 #include "viewport.h"
-#include <cgraph/strview.h>
 #include <util/alloc.h>
+#include <util/strview.h>
 
 GladeXML *xml;			//global libglade vars
 

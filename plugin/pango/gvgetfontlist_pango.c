@@ -14,12 +14,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <cgraph/strview.h>
 #include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/gv_ctype.h>
 #include <util/prisize_t.h>
 #include <util/strcasecmp.h>
+#include <util/strview.h>
 
 /* FIXME - the following declaration should be removed
  * when configure is coordinated with flags passed to the

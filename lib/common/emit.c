@@ -26,7 +26,6 @@
 #include <common/geomprocs.h>
 #include <common/render.h>
 #include <cgraph/list.h>
-#include <cgraph/strview.h>
 #include <cgraph/tokenize.h>
 #include <common/htmltable.h>
 #include <gvc/gvc.h>
@@ -37,6 +36,7 @@
 #include <util/gv_ctype.h>
 #include <util/gv_math.h>
 #include <util/streq.h>
+#include <util/strview.h>
 #include <util/unreachable.h>
 #include <util/unused.h>
 #include <xdot/xdot.h>

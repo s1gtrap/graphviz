@@ -11,14 +11,12 @@
  *************************************************************************/
 
 #include <common/render.h>
-#include <cgraph/strview.h>
 #include <cgraph/tokenize.h>
 #include <common/htmltable.h>
 #include <common/entities.h>
 #include <limits.h>
 #include <math.h>
 #include <gvc/gvc.h>
-#include <cgraph/strview.h>
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -30,6 +28,7 @@
 #include <util/startswith.h>
 #include <util/strcasecmp.h>
 #include <util/streq.h>
+#include <util/strview.h>
 
 int late_int(void *obj, attrsym_t *attr, int defaultValue, int minimum) {
     if (attr == NULL)

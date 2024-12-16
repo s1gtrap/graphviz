@@ -20,13 +20,13 @@
 #include "frmobjectui.h"
 #include <assert.h>
 #include "gvprpipe.h"
-#include <cgraph/strview.h>
 #include <stdint.h>
 #include <string.h>
 #include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/strcasecmp.h>
 #include <util/startswith.h>
+#include <util/strview.h>
 #include <util/unreachable.h>
 
 static int sel_node;

@@ -28,9 +28,9 @@
 ///   // prints “foo”, “ bar”, “baz”
 
 #include <assert.h>
-#include <cgraph/strview.h>
 #include <stddef.h>
 #include <string.h>
+#include <util/strview.h>
 
 /// state for an in-progress string tokenization
 typedef struct {
