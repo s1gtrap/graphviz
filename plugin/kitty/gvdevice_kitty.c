@@ -113,7 +113,7 @@ static void kitty_write(unsigned char *data, size_t data_size, unsigned width,
 }
 
 static void kitty_format(GVJ_t *job) {
-  unsigned char *imagedata = (unsigned char *)job->imagedata;
+  unsigned char *imagedata = job->imagedata;
   size_t imagedata_size = job->width * job->height * 4;
   fix_colors(imagedata, imagedata_size);
 
@@ -141,7 +141,7 @@ static int zlib_compress(unsigned char *source, uLong source_len,
 }
 
 static void zkitty_format(GVJ_t *job) {
-  unsigned char *imagedata = (unsigned char *)job->imagedata;
+  unsigned char *imagedata = job->imagedata;
   const uLong imagedata_size = job->width * job->height * 4;
   fix_colors(imagedata, imagedata_size);
 

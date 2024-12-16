@@ -59,7 +59,7 @@ static const unsigned BPP = 4;
 
 static void process(GVJ_t *job, int color_depth) {
 
-  unsigned char *data = (unsigned char *)job->imagedata;
+  unsigned char *data = job->imagedata;
 
   assert(color_depth == 3 || color_depth == 24);
 
@@ -149,7 +149,7 @@ static void processNup(GVJ_t *job, unsigned y_stride, unsigned x_stride,
     }
   }
 
-  unsigned char *data = (unsigned char *)job->imagedata;
+  unsigned char *data = job->imagedata;
 
   for (unsigned y = 0; y < job->height; y += y_stride) {
     for (unsigned x = 0; x < job->width; x += x_stride) {

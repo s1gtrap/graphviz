@@ -294,7 +294,7 @@ extern "C" {
 
 	void *context;		/* gd or cairo surface */
 	bool external_context;	/* context belongs to caller */
-	char *imagedata;	/* location of imagedata */
+	unsigned char *imagedata; ///< location of imagedata
 
         int flags;		/* emit_graph flags */
 

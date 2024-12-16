@@ -14,9 +14,7 @@
 #include <IL/il.h>
 #include <IL/ilu.h>
 
-static void
-Y_inv ( unsigned int width, unsigned int height, char *data)
-{
+static void Y_inv(unsigned width, unsigned height, unsigned char *data) {
         unsigned int x, y, *a, *b, t;
 
 	a = (unsigned int*)data;

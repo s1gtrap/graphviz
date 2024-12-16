@@ -28,9 +28,7 @@ typedef enum {
 /* 
  * Does an in-place conversion of a CAIRO ARGB32 image to GDK RGBA
  */
-static void
-argb2rgba ( unsigned int width, unsigned int height, char *data)
-{
+static void argb2rgba(unsigned width, unsigned height, unsigned char *data) {
 /* define indexes to color bytes in each format */
 #define Ba 0
 #define Ga 1
@@ -47,7 +45,7 @@ argb2rgba ( unsigned int width, unsigned int height, char *data)
     for (y = 0; y < height; y++) {
         for (x = 0; x < width; x++) {
             /* swap red and blue */
-            char r = data[Ra];
+            unsigned char r = data[Ra];
             data[Bb] = data[Ba];
 	    data[Rb] = r;
             data += 4;
@@ -92,7 +90,7 @@ static void gdk_format(GVJ_t * job)
     assert(job->height <= (unsigned)INT_MAX && "height out of range");
 
     pixbuf = gdk_pixbuf_new_from_data(
-                (unsigned char*)(job->imagedata), // data
+                job->imagedata,         // data
                 GDK_COLORSPACE_RGB,     // colorspace
                 TRUE,                   // has_alpha
                 8,                      // bits_per_sample
