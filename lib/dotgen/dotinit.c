@@ -15,8 +15,8 @@
 #include <pack/pack.h>
 #include <dotgen/aspect.h>
 #include <stdbool.h>
-#include <stddef.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <util/agxbuf.h>
 #include <util/alloc.h>
 #include <util/streq.h>
@@ -153,6 +153,8 @@ dot_cleanup_graph(graph_t * g)
     for (subg = agfstsubg(g); subg; subg = agnxtsubg(subg)) {
 	dot_cleanup_graph(subg);
     }
+    free(GD_drawing(g));
+    GD_drawing(g) = NULL;
     if (! agbindrec(g, "Agraphinfo_t", 0, true)) return;
     free (GD_clust(g));
     free (GD_rankleader(g));
