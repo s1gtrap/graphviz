@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <util/alloc.h>
+#include <util/unused.h>
 
 /// a description of where a buffer is located
 typedef enum {
@@ -303,7 +304,7 @@ static inline void agxbclear(agxbuf *xb) {
  * agxbput. If you want to retrieve and disassociate the buffer, use agxbdisown
  * instead.
  */
-static inline char *agxbuse(agxbuf *xb) {
+static inline WUR char *agxbuse(agxbuf *xb) {
   if (!agxbuf_is_inline(xb) || agxblen(xb) != sizeof(xb->u.store)) {
     (void)agxbputc(xb, '\0');
   } else {

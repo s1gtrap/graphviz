@@ -24,3 +24,21 @@
 #else
 #define UNUSED /* nothing */
 #endif
+
+/// annotate that a function’s return value should not be ignored
+///
+/// e.g.
+///
+///   WUR int foo(void) {
+///     return 42;
+///   }
+///   void bar(void) {
+///     foo(); // ← this line will generate a compiler warning
+///   }
+#ifdef __GNUC__ // Clang and GCC
+#define WUR __attribute__((warn_unused_result))
+#elif defined(_MSC_VER) // MSVC
+#define WUR _Check_return_
+#else
+#define WUR /* nothing */
+#endif
