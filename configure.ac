@@ -289,7 +289,7 @@ then
   # Enable specific warning flags not included by -Wall or -Wextra
   CFLAGS="${CFLAGS} -Wmissing-include-dirs -Wswitch-default -Wfloat-equal -Wundef -Wshadow -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wconversion -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs"
 
-  # Enable additional C99 warnings
+  # Enable additional C warnings
   save_CFLAGS="${CFLAGS}"
   CFLAGS=""
   AX_CHECK_COMPILE_FLAG([-Wtrampolines],
