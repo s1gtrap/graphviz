@@ -146,7 +146,7 @@ static int glexpose_drawgraph(ViewInfo * vi)
 }
 
 /*
-	main gl expose ,any time sreen needs to be redrawn, this function is called by gltemplate
+	main gl expose ,any time screen needs to be redrawn, this function is called by gltemplate
 	,all drawings are initialized in this function
 	params:ViewInfo	, global view variable defined in viewport.c
 	return value:0 if something goes wrong with GL 1 , otherwise
