@@ -18,4 +18,4 @@
 ///
 /// @param v Global view variable defined in viewport.c
 /// @return 0 if something goes wrong with GL, 1 otherwise
-    int glexpose_main(ViewInfo * v);
+int glexpose_main(ViewInfo *vi);
