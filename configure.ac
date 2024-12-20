@@ -265,7 +265,6 @@ fi
 dnl -----------------------------------
 dnl checks for compilers
 
-AM_PROG_CC_C_O
 AC_PROG_CC_C99
 if test "$ac_cv_prog_cc_c99" = "no"; then
   AC_MSG_ERROR([C compiler does not support C99])
