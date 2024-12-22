@@ -64,7 +64,7 @@ static void process(GVJ_t *job) {
   }
 
   // draw the image
-  const unsigned char *const data = (unsigned char *)job->imagedata;
+  const unsigned char *const data = job->imagedata;
   for (unsigned y = 0; y < job->height; ++y) {
     for (unsigned x = 0; x < job->width; ++x) {
 
