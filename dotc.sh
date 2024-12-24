@@ -10,10 +10,12 @@ clang dotc.c \
   -L./lib/pathplan/.libs \
   -L./lib/util/.libs \
   -L./lib/xdot/.libs \
+  -L./plugin/dot_layout/.libs \
   -lcdt_C \
   -lcgraph_C \
   -lexpat \
   -lgvc_C \
+  -lgvplugin_dot_layout_C \
   -lpathplan_C \
   -lutil_C \
   -lxdot_C \
