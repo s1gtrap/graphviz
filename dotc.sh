@@ -12,6 +12,7 @@ clang dotc.c \
   -L./lib/xdot/.libs \
   -lcdt_C \
   -lcgraph_C \
+  -lexpat \
   -lgvc_C \
   -lpathplan_C \
   -lutil_C \
