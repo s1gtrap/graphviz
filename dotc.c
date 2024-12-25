@@ -3,8 +3,10 @@
 #include <stdio.h>
 
 int main(int argc, char **argv) {
-  Agraph_t *G = agread(stdin, NULL);
   GVC_t *gvc = gvContext();
+
+  Agraph_t *G = agread(stdin, NULL);
+  // Agraph_t *G = agmemread("digraph { A -> B }");
 
   extern gvplugin_library_t gvplugin_core_LTX_library;
   gvAddLibrary(gvc, &gvplugin_core_LTX_library);
