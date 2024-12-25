@@ -152,7 +152,7 @@ endif()
 set(_cmake_import_check_xcframework_for_freetype /dev/null)
 
 find_package(ANN)
-find_package(CAIRO)
+# find_package(CAIRO)
 
 if(NOT WITH_EXPAT STREQUAL "OFF")
   find_package(EXPAT)
@@ -221,13 +221,13 @@ endif()
 find_package(AA)
 find_package(DevIL)
 find_package(Freetype)
-find_package(PANGOCAIRO)
+# find_package(PANGOCAIRO)
 find_package(PkgConfig)
 if(PkgConfig_FOUND)
   pkg_check_modules(GDK gdk-3.0)
   pkg_check_modules(GDK_PIXBUF gdk-pixbuf-2.0)
   pkg_check_modules(LASI lasi)
-  pkg_check_modules(POPPLER poppler-glib)
+  # pkg_check_modules(POPPLER poppler-glib)
   pkg_check_modules(RSVG librsvg-2.0)
   pkg_check_modules(WEBP libwebp)
   pkg_check_modules(X11 x11)
@@ -301,7 +301,7 @@ if(NOT ENABLE_SWIG STREQUAL "OFF")
 endif()
 
 if(NOT ENABLE_SHARP STREQUAL "OFF")
-  # Opt in to new default naming conventions for C#. This silences -Wdev
+  # Opt in to new default naming conventions for C #. This silences -Wdev
   # warnings. See `cmake --help-policy CMP0122`.
   if(POLICY CMP0122)
     cmake_policy(SET CMP0122 NEW)

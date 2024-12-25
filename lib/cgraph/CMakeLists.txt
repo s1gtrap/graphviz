@@ -12,7 +12,7 @@ if(WIN32 AND NOT MINGW)
   add_definitions(-DYY_NO_UNISTD_H)
 endif()
 
-add_library(cgraph
+add_library(cgraph STATIC
   # Header files
   cghdr.h
   cgraph.h
