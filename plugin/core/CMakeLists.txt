@@ -1,4 +1,4 @@
-add_library(gvplugin_core
+add_library(gvplugin_core STATIC
   # Header files
   core_loadimage_xdot.h
   ps.h

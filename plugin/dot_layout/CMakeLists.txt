@@ -1,4 +1,4 @@
-add_library(gvplugin_dot_layout
+add_library(gvplugin_dot_layout STATIC
   # Source files
   gvplugin_dot_layout.c
   gvlayout_dot_layout.c

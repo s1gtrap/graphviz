@@ -1,6 +1,6 @@
 add_definitions(-DGVC_EXPORTS -DGVLIBDIR="${LIBRARY_INSTALL_DIR}/graphviz")
 
-add_library(gvc
+add_library(gvc STATIC
   # Header files
   gvc.h
   gvcext.h

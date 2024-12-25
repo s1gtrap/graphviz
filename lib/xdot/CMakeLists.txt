@@ -1,6 +1,6 @@
 add_definitions(-DEXPORT_XDOT)
 
-add_library(xdot
+add_library(xdot STATIC
   # Header files
   xdot.h
 
