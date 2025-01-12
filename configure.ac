@@ -313,7 +313,7 @@ if test "${GCC}" != "yes" ; then
             ;;
 	*-apple-darwin* )
 	    CFLAGS="${CFLAGS} -fno-common"
-	    LDFLAGS="${LDFLAGS} -Wl,-headerpad_max_install_names"
+	    LDFLAGS="${LDFLAGS} -Wl"
 	    ;;
 	*-sgi-irix* )
 	    ;;
@@ -328,7 +328,7 @@ else
       ;;
     *-apple-darwin* )
       CFLAGS="${CFLAGS} -fno-common -Wall"
-      LDFLAGS="${LDFLAGS} -Wl,-headerpad_max_install_names"
+      LDFLAGS="${LDFLAGS} -Wl"
       ;;
     *-freebsd* )
       CFLAGS="${CFLAGS} -Wstrict-prototypes -Wpointer-arith -Wall"

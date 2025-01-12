@@ -6,3 +6,12 @@ Building for native
 make
 ./dotc.sh
 ```
+
+Trying to build for wasm with emscripten
+
+```sh
+./autogen.sh
+emconfigure ./configure
+emmake make
+./dotc.sh
+```
