@@ -3,6 +3,9 @@ project(Graphviz)
 
 include(FeatureSummary)
 
+set(CMAKE_C_COMPILER_WORKS 1)
+set(MATH_LIBS "-lm")
+
 # =============================== Build options ================================
 set(ENABLE_LTDL AUTO CACHE STRING "Support on-demand plugin loading")
 set_property(CACHE ENABLE_LTDL PROPERTY STRINGS AUTO ON OFF)
