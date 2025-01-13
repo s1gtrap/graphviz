@@ -11,7 +11,7 @@ Trying to build for wasm with emscripten
 
 ```sh
 ./autogen.sh
-emconfigure ./configure
+emconfigure ./configure --disable-shared --enable-static
 emmake make
 ./dotc.sh
 ```
